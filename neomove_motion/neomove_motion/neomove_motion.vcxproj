@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{d4e5f6a7-b8c9-4d0e-a1b2-c3d4e5f6a7b8}</ProjectGuid>
+    <RootNamespace>neomovemotion</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetExt>.mot</TargetExt>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\motion\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetExt>.mot</TargetExt>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\motion\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>third_party\neomove\Include</AdditionalIncludeDirectories>
+      <AdditionalOptions>/execution-charset:utf-8 /source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>third_party\neomove\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>NeoMove CPlusPlus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>neomove_motion.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>third_party\neomove\Include</AdditionalIncludeDirectories>
+      <AdditionalOptions>/execution-charset:utf-8 /source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <SetChecksum>true</SetChecksum>
+      <AdditionalLibraryDirectories>third_party\neomove\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>NeoMove CPlusPlus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>neomove_motion.def</ModuleDefinitionFile>
+    </Link>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)merge_git_commit_id_to_rc.exe $(ProjectDir)neomove_motion.rc 2&gt;nul || exit 0</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="src\neomove_analog_io.cpp" />
+    <ClCompile Include="src\neomove_axis.cpp" />
+    <ClCompile Include="src\neomove_event_control.cpp" />
+    <ClCompile Include="src\neomove_input_io.cpp" />
+    <ClCompile Include="src\neomove_io_monitor_thread.cpp" />
+    <ClCompile Include="src\neomove_motion_control.cpp" />
+    <ClCompile Include="src\neomove_motion_mgr.cpp" />
+    <ClCompile Include="src\neomove_motion_mgr_context_impl.cpp" />
+    <ClCompile Include="src\neomove_output_io.cpp" />
+    <ClCompile Include="src\pitch_compensation_config\pitch_compensation_config.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\neomove_analog_io.h" />
+    <ClInclude Include="src\neomove_axis.h" />
+    <ClInclude Include="src\neomove_event_control.h" />
+    <ClInclude Include="src\neomove_input_io.h" />
+    <ClInclude Include="src\neomove_io_monitor_thread.h" />
+    <ClInclude Include="src\neomove_motion_control.h" />
+    <ClInclude Include="src\neomove_motion_mgr.h" />
+    <ClInclude Include="src\neomove_motion_mgr_context_impl.h" />
+    <ClInclude Include="src\neomove_output_io.h" />
+    <ClInclude Include="src\pitch_compensation_config\pitch_compensation_config.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="neomove_motion.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="neomove_motion.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
