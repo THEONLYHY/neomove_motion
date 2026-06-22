@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Pages">
+      <UniqueIdentifier>{B2CF2ED6-12FD-48A1-8C85-5D41756AA111}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pages">
+      <UniqueIdentifier>{39F70A39-D9FB-472F-AD99-1D7737A2B222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files\Pages">
+      <UniqueIdentifier>{A7D39159-C05B-43BD-A770-736364723333}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="MotionTestHost.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="MotionTestHost.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtMoc Include="MotionTestHost.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClCompile Include="MotionTestHost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ResourceCompile Include="$pro_name$.rc"></ResourceCompile>
+    <None Include="$pro_name$.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="$pro_name$.def">
+      <Filter>Resource Files</Filter>
+    </None>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="io_setting\io_setting.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="axis_setting\axis_setting.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="point_setting\point_setting.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_test\motion_test_page.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClInclude Include="motion_test\motion_test_page.h">
+      <Filter>Header Files\Pages</Filter>
+    </ClInclude>
+    <QtMoc Include="io_setting\io_setting.h">
+      <Filter>Header Files\Pages</Filter>
+    </QtMoc>
+    <QtMoc Include="axis_setting\axis_setting.h">
+      <Filter>Header Files\Pages</Filter>
+    </QtMoc>
+    <QtMoc Include="point_setting\point_setting.h">
+      <Filter>Header Files\Pages</Filter>
+    </QtMoc>
+    <QtUic Include="io_setting\io_setting.ui">
+      <Filter>Form Files\Pages</Filter>
+    </QtUic>
+    <QtUic Include="axis_setting\axis_setting.ui">
+      <Filter>Form Files\Pages</Filter>
+    </QtUic>
+    <QtUic Include="point_setting\point_setting.ui">
+      <Filter>Form Files\Pages</Filter>
+    </QtUic>
+    <QtUic Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\view\tools\limit_setting_view\limit_setting_view.ui">
+      <Filter>Form Files\Pages</Filter>
+    </QtUic>
+    <QtMoc Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\view\tools\limit_setting_view\limit_setting_view.h">
+      <Filter>Header Files\Pages</Filter>
+    </QtMoc>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\view\tools\limit_setting_view\limit_setting_view.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\controller\device_status_monitor\device_status_monitor.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\controller\real_time_data\real_time_data.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\controller\real_time_data\sys_data.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\controller\thickness_fitting\thickness_fitting.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\bin_info\bin_info.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\calibration\calibration_para.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\continuity_clean\continuity_clean_para.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\continuity_test\continuity_test_para.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\current_model\recipe_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\device_info\camera_config.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\device_info\module_info.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\device_info\motion_struct.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\die_pad_info\die_pad_info.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\die_pad_info\die_pad_info_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\fix_contact_test\fix_contact_test_para.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\maintenance_change\sensor_status.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\map_display_info\map_display_info.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\map_info\db_die_info_impl.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\map_info\map_info.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\map_info\map_info_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\model_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\multi_site_info\multi_site_info.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\multi_site_info\multi_site_info_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\operation_para\operation_para.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\pin_force_check\pin_force_check_para.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\post_process\post_process_info.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\probe_card_info\db_probe_card_info_impl.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\probe_card_info\probe_card_info_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\probe_card_pin_info\probe_card_pin_info.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\probe_card_pin_info\probe_card_pin_info_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\probe_configuration\probe_configuration.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\run_status\run_state.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\slot_info\slot_info.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\slot_info\slot_info_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\thickness_measurement\thickness_measurement_para.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\unit_info\unit_info_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\unit_info\unit_point_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\user_manage\user_manage.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\wafer_info\db_wafer_info_impl.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\model\wafer_info\wafer_info_mgr.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="stubs\shared_manager_stub.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\src\alg\ploynomial_fitting.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\alglibinternal.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\alglibmisc.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\ap.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\dataanalysis.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\diffequations.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\fasttransforms.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\integration.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\interpolation.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\linalg.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\optimization.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\solvers.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\specialfunctions.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\01_Code\xibi_probe_station\xibi_probe_station\third_party\alglib\statistics.cpp">
+      <Filter>Source Files\Pages</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
