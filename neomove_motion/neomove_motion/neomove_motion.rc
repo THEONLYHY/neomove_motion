@@ -27,7 +27,7 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2025 YottaImage"
             VALUE "OriginalFilename", "neomove_motion.mot"
             VALUE "ProductName", "NeoMove Motion"
-            VALUE "ProductVersion", "1.0.0.1"
+            VALUE "ProductVersion", "726bd0a"
         END
     END
     BLOCK "VarFileInfo"

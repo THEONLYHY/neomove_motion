@@ -74,6 +74,9 @@
       <AdditionalDependencies>NeoMove CPlusPlus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>neomove_motion.def</ModuleDefinitionFile>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y /D "$(ProjectDir)third_party\neomove\bin\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -104,6 +107,9 @@
     <PreBuildEvent>
       <Command>$(ProjectDir)merge_git_commit_id_to_rc.exe $(ProjectDir)neomove_motion.rc 2&gt;nul || exit 0</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /Y /D "$(ProjectDir)third_party\neomove\bin\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
