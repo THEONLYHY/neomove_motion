@@ -103,6 +103,7 @@ int YOTTA_API_CALL NeoMoveAxis::operation_state(AxisOperationState* operation_st
     return ret;
   }
   // 所有未完成的运动都归成了kPos，neomove中没有相应opstate
+  // 无法可靠区分 Jog、Pos、Stop、插补等意图
   if (axis_status.homing) {
     *operation_state = AxisOperationState::kHome;
   } else if (!axis_status.motionComplete) {
@@ -429,11 +430,12 @@ void* NeoMoveAxis::QueryInterface(const char* interface_name, size_t length) {
 }
 
 int YOTTA_API_CALL NeoMoveAxis::SetAxisWatcher(Watcher* watcher) {
+  if (!watcher) {
+    return 0;
+  }
   axis_watcher_ = watcher;
-  if (axis_watcher_) {
-    if (auto monitor = io_monitor_thread_.lock()) {
-      monitor->RegisterAxis(axis_index_, axis_watcher_, this);
-    }
+  if (auto monitor = io_monitor_thread_.lock()) {
+    monitor->RegisterAxis(axis_index_, axis_watcher_, this);
   }
   return 0;
 }

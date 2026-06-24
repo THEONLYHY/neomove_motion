@@ -112,17 +112,17 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="src\neomove_analog_io.cpp" />
-    <ClCompile Include="src\neomove_axis.cpp" />
-    <ClCompile Include="src\neomove_event_control.cpp" />
-    <ClCompile Include="src\neomove_input_io.cpp" />
-    <ClCompile Include="src\neomove_io_monitor_thread.cpp" />
-    <ClCompile Include="src\neomove_motion_control.cpp" />
-    <ClCompile Include="src\neomove_motion_mgr.cpp" />
-    <ClCompile Include="src\neomove_motion_mgr_context_impl.cpp" />
-    <ClCompile Include="src\neomove_output_io.cpp" />
-    <ClCompile Include="src\pitch_compensation_config\pitch_compensation_config.cpp" />
+    <ClCompile Include="dllmain.cc" />
+    <ClCompile Include="src\neomove_analog_io.cc" />
+    <ClCompile Include="src\neomove_axis.cc" />
+    <ClCompile Include="src\neomove_event_control.cc" />
+    <ClCompile Include="src\neomove_input_io.cc" />
+    <ClCompile Include="src\neomove_io_monitor_thread.cc" />
+    <ClCompile Include="src\neomove_motion_control.cc" />
+    <ClCompile Include="src\neomove_motion_mgr.cc" />
+    <ClCompile Include="src\neomove_motion_mgr_context_impl.cc" />
+    <ClCompile Include="src\neomove_output_io.cc" />
+    <ClCompile Include="src\pitch_compensation_config\pitch_compensation_config.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />

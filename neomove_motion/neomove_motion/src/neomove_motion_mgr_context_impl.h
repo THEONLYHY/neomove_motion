@@ -68,8 +68,8 @@ private:
   // 最近一次宿主配置位置和连接参数，归属于当前 context 实例。
   std::string config_path_;
   std::string config_file_;
-  std::string controller_ip_;
-  int controller_type_ = NM_CONTROLLERTYPE_E2_M300;
+  std::string controller_ip_ = "172.30.30.10";
+  int controller_type_ = NM_CONTROLLERTYPE_E2_M100;
   std::map<int, NeoMoveHomeParamConfig> home_param_configs_;
 };
 

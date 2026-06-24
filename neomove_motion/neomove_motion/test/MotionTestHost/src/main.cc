@@ -17,6 +17,12 @@ int main(int argc, char *argv[])
 
     common::MessageLoopPtr ui_message_loop =
         common::MessageLoop::Create(common::kUi, false);
+    // 运动测试页会把耗时运动任务投递到 MOTION loop，避免阻塞 Qt UI 线程。
+    common::MessageLoopPtr motion_message_loop =
+        common::MessageLoop::Create(common::kMotion, true);
+    if (!motion_message_loop || !motion_message_loop->Valid()) {
+        qWarning() << "MOTION MessageLoop initialization failed.";
+    }
 
     ServiceFrameworkHelper service_framework;
     if (!service_framework.InitDll() || !service_framework->Init()) {

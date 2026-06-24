@@ -42,6 +42,7 @@ class NeoMoveInputIo : public yotta::InputIO {
   int addr_;
   int bit_;
   std::weak_ptr<NeoMoveIoMonitorThread> io_monitor_thread_;
+  yotta::IOWatcherPtr io_watcher_ptr_;
 
   mutable ExecutionErrorPtr last_error_;
   mutable std::mutex error_mutex_;

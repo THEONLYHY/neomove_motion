@@ -27,7 +27,6 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
@@ -360,3 +359,12 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Local notes/spec scaffolding for the MotionTestHost test project
+neomove_motion/neomove_motion/test/.agents/
+neomove_motion/neomove_motion/test/.codex/
+neomove_motion/neomove_motion/test/.git/
+neomove_motion/neomove_motion/test/MotionTestHost/AGENTS.md
+neomove_motion/neomove_motion/test/MotionTestHost/README.md
+neomove_motion/neomove_motion/test/MotionTestHost/openspec/
+

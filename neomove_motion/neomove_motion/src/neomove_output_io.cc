@@ -39,6 +39,10 @@ int YOTTA_API_CALL NeoMoveOutputIo::ReadValue(unsigned char* byte_val) {
 }
 
 void YOTTA_API_CALL NeoMoveOutputIo::StartWatching(IOWatcher* callback) {
+  if (!callback) {
+    return;
+  }
+  io_watcher_ptr_ = std::shared_ptr<IOWatcher>(callback, [](IOWatcher*) {});
   if (auto monitor = io_monitor_thread_.lock()) {
     monitor->RegisterOutputIo(addr_, bit_, callback,
                               static_cast<yotta::IO*>(

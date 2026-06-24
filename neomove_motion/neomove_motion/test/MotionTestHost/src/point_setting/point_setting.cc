@@ -2,8 +2,10 @@
 
 #include <QTimer>
 
+#include <common/message_loop.h>
 #include <limit_motion/impl/acc_dec_profile_impl.h>
 #include <limit_motion/limit_motion_mgr.h>
+#include <main_process/module_mgr.h>
 
 #include <QPushButton>
 

@@ -1,0 +1,15 @@
+{
+  "neomove": {
+    "controller_index": 0,
+    "controller_type": 3,
+    "home": {
+      "0": {
+        "home_type": 35,
+        "velocity_fast": 10.0,
+        "velocity_slow": 1.0,
+        "acc": 100.0,
+        "dec": 100.0
+      }
+    }
+  }
+}

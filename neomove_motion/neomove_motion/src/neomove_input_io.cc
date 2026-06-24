@@ -32,11 +32,12 @@ int YOTTA_API_CALL NeoMoveInputIo::ReadValue(unsigned char* byte_val) {
     SetError(MotionErrors::ParamInvalid, "byte_val 参数为空");
     return 1;
   }
-
+  // 高 16 位 -> uIndex, 从0开始
+  // 低 16 位 -> gIndex, G编号
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short pdo_val = 0;
-
+  // master index 当前写死为0
   int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
                                 &pdo_val, 1);
   if (ret != NM_RETURN_OK) {
@@ -54,6 +55,11 @@ int YOTTA_API_CALL NeoMoveInputIo::ReadValue(unsigned char* byte_val) {
 }
 
 void YOTTA_API_CALL NeoMoveInputIo::StartWatching(IOWatcher* callback) {
+  LOG(INFO) << "StartWatching called, addr = " << addr_ << ", bit = " << bit_;
+  if (!callback) {
+    return;
+  }
+  io_watcher_ptr_ = std::shared_ptr<IOWatcher>(callback, [](IOWatcher*) {});
   if (auto monitor = io_monitor_thread_.lock()) {
     monitor->RegisterInputIo(addr_, bit_, callback, this);
   }

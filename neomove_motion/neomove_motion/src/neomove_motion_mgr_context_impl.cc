@@ -252,8 +252,8 @@ int NeoMoveMotionMgrContextImpl::LoadHomeConfig(
 // {
 //   "neomove": {
 //     "controller_index": 0,
-//     "controller_type": 3,
-//     "controller_ip": "192.168.0.10",
+//     "controller_type": 5,
+//     "controller_ip": "172.30.30.10",
 //     "home": {
 //       "0": {
 //         "home_type": 35,

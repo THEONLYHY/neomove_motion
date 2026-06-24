@@ -1,0 +1,44 @@
+{
+  "camera_configs": [
+  	{
+      "id": 1,
+      "name": "顶面相机",
+      "type": "hkws",
+      "serial_number": "DA9406464",
+      "exposure_time": 5000.0,
+      "gain": 1.0,
+      "frame_rate": 30,
+      "frame_count": 1,
+      "image_type": 2,
+      "reverse_image": 0,
+      "trigger_type": 4,
+      "image_node_number": 500,
+      "roi": {
+        "left": 0,
+        "top": 0,
+        "right": 1280,
+        "bottom": 1024
+      }
+    },
+    {
+      "id": 2,
+      "name": "侧面相机",
+      "type": "hkws",
+      "serial_number": "DA9455111",
+      "exposure_time": 1000.0,
+      "gain": 1.0,
+      "frame_rate": 30,
+      "frame_count": 1,
+      "image_type": 2,
+      "reverse_image": 1,
+      "trigger_type": 4,
+      "image_node_number": 500,
+      "roi": {
+        "left": 0,
+        "top": 0,
+        "right": 1280,
+        "bottom": 1024
+      }
+    }
+  ]
+}

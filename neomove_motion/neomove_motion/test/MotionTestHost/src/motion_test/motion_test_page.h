@@ -3,6 +3,8 @@
 #include <config/axis/axis_config.h>
 #include <config/io/io_config.h>
 #include <limit_motion/impl/acc_dec_profile_impl.h>
+#include <limit_motion/limit_motion_mgr.h>
+#include <motion/axis.h>
 
 #include <QComboBox>
 #include <QDoubleSpinBox>

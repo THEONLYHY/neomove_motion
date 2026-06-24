@@ -1,0 +1,174 @@
+{
+  "algorithm_configs": [
+    {
+      "type": "halcon_script_executor",
+      "desc": "halcon脚本执行算法",
+      "init_config": {
+        "procedures_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon",
+        "algorithms": [
+          {
+            "function_ids": "wafer_circle_edge",
+            "desc": "晶圆边缘定位",
+            "procedure_name": "wafer_circle_edge",
+            "halcon_window": {
+              "width": 1024,
+              "height": 1280,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "low_high_angle_creact_temp",
+            "desc": "晶圆转平建模板",
+            "procedure_name": "low_high_angle_creact_temp",
+            "halcon_window": {
+              "width": 1280,
+              "height": 1024,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "low_angle",
+            "desc": "晶圆低倍转平",
+            "procedure_name": "low_angle",
+            "halcon_window": {
+              "width": 1280,
+              "height": 1024,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "high_angle",
+            "desc": "晶圆高倍转平",
+            "procedure_name": "high_angle",
+            "halcon_window": {
+              "width": 1280,
+              "height": 1024,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "pad_find",
+            "desc": "找pad",
+            "procedure_name": "pad_find",
+            "halcon_window": {
+              "width": 1280,
+              "height": 1024,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "calbration_creact_temp",
+            "desc": "标定模板",
+            "procedure_name": "calbration_creact_temp",
+            "halcon_window": {
+              "width": 1280,
+              "height": 1024,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "calbration_match_temp",
+            "desc": "自动标定",
+            "procedure_name": "calbration_match_temp",
+            "halcon_window": {
+              "width": 1280,
+              "height": 1024,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "calbration_creact_temp2",
+            "desc": "标定模板",
+            "procedure_name": "calbration_creact_temp",
+            "halcon_window": {
+              "width": 1024,
+              "height": 1280,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "calbration_match_temp2",
+            "desc": "自动标定",
+            "procedure_name": "calbration_match_temp",
+            "halcon_window": {
+              "width": 1024,
+              "height": 1280,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "needle_camera_capturing_calibration_board",
+            "desc": "针相机拍标定板算法",
+            "procedure_name": "needle_camera_capturing_calibration_board",
+            "halcon_window": {
+              "width": 1280,
+              "height": 960,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "bridge_camera_capturing_calibration_board",
+            "desc": "桥相机拍标定板算法",
+            "procedure_name": "bridge_camera_capturing_calibration_board",
+            "halcon_window": {
+              "width": 1280,
+              "height": 1024,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "chuck_circle_edge",
+            "desc": "chuck边缘定位",
+            "procedure_name": "chuck_circle_edge",
+            "halcon_window": {
+              "width": 1280,
+              "height": 1024,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+          {
+            "function_ids": "TZT_QXD",
+            "desc": "清晰度计算",
+            "procedure_name": "TZT_QXD",
+            "halcon_window": {
+              "width": 1024,
+              "height": 1280,
+              "text_size": 50,
+              "line_width": 4
+            }
+          },
+		  {
+            "function_ids": "TZT_QXD_2",
+            "desc": "清晰度计算",
+            "procedure_name": "TZT_QXD",
+            "halcon_window": {
+              "width": 1280,
+              "height": 1024,
+              "text_size": 50,
+              "line_width": 4
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "auto_focus",
+      "desc": "自动对焦算法",
+      "init_config": {
+        "init_param": "根据算法需求自定义init_config节点下的配置"
+      }
+    }
+  ]
+}

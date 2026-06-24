@@ -1,0 +1,309 @@
+{
+  "analog_io": [],
+  "default_module": "neomove_motion",
+  "io_axis": [
+    {
+      "axis_ids": "平台R轴",
+      "io_in": [
+        {
+          "addr": 5,
+          "bit": 0,
+          "ids": "平台R轴静止",
+          "module": ""
+        },
+        {
+          "addr": 7,
+          "bit": 0,
+          "ids": "平台R轴正极限",
+          "module": ""
+        },
+        {
+          "addr": 14,
+          "bit": 0,
+          "ids": "平台R轴负极限",
+          "module": ""
+        },
+        {
+          "addr": 14,
+          "bit": 2,
+          "ids": "平台R轴原点",
+          "module": ""
+        }
+      ]
+    },
+    {
+      "axis_ids": "平台X轴",
+      "io_in": [
+        {
+          "addr": 5,
+          "bit": 0,
+          "ids": "平台X轴静止",
+          "module": ""
+        },
+        {
+          "addr": 2,
+          "bit": 1,
+          "ids": "平台X轴正极限",
+          "module": ""
+        },
+        {
+          "addr": 2,
+          "bit": 0,
+          "ids": "平台X轴负极限",
+          "module": ""
+        },
+        {
+          "addr": 2,
+          "bit": 2,
+          "ids": "平台X轴原点",
+          "module": ""
+        }
+      ]
+    },
+    {
+      "axis_ids": "平台Y轴",
+      "io_in": [
+        {
+          "addr": 9,
+          "bit": 0,
+          "ids": "平台Y轴静止",
+          "module": ""
+        },
+        {
+          "addr": 6,
+          "bit": 1,
+          "ids": "平台Y轴正极限",
+          "module": ""
+        },
+        {
+          "addr": 6,
+          "bit": 0,
+          "ids": "平台Y轴负极限",
+          "module": ""
+        },
+        {
+          "addr": 6,
+          "bit": 2,
+          "ids": "平台Y轴原点",
+          "module": ""
+        }
+      ]
+    },
+    {
+      "axis_ids": "平台Z轴",
+      "io_in": [
+        {
+          "addr": 13,
+          "bit": 0,
+          "ids": "平台Z轴静止",
+          "module": ""
+        },
+        {
+          "addr": 10,
+          "bit": 1,
+          "ids": "平台Z轴正极限",
+          "module": ""
+        },
+        {
+          "addr": 10,
+          "bit": 0,
+          "ids": "平台Z轴负极限",
+          "module": ""
+        },
+        {
+          "addr": 10,
+          "bit": 2,
+          "ids": "平台Z轴原点",
+          "module": ""
+        }
+      ]
+    },
+    {
+      "axis_ids": "视觉X轴",
+      "io_in": [
+        {
+          "addr": 21,
+          "bit": 0,
+          "ids": "视觉X轴静止",
+          "module": ""
+        },
+        {
+          "addr": 18,
+          "bit": 1,
+          "ids": "视觉X轴正极限",
+          "module": ""
+        },
+        {
+          "addr": 18,
+          "bit": 0,
+          "ids": "视觉X轴负极限",
+          "module": ""
+        },
+        {
+          "addr": 18,
+          "bit": 2,
+          "ids": "视觉X轴原点",
+          "module": ""
+        }
+      ]
+    },
+    {
+      "axis_ids": "视觉Y轴",
+      "io_in": [
+        {
+          "addr": 25,
+          "bit": 0,
+          "ids": "视觉Y轴静止",
+          "module": ""
+        },
+        {
+          "addr": 22,
+          "bit": 1,
+          "ids": "视觉Y轴正极限",
+          "module": ""
+        },
+        {
+          "addr": 22,
+          "bit": 0,
+          "ids": "视觉Y轴负极限",
+          "module": ""
+        },
+        {
+          "addr": 22,
+          "bit": 2,
+          "ids": "视觉Y轴原点",
+          "module": ""
+        }
+      ]
+    },
+    {
+      "axis_ids": "视觉Z轴",
+      "io_in": [
+        {
+          "addr": 33,
+          "bit": 0,
+          "ids": "视觉Z轴静止",
+          "module": ""
+        },
+        {
+          "addr": 30,
+          "bit": 1,
+          "ids": "视觉Z轴正极限",
+          "module": ""
+        },
+        {
+          "addr": 30,
+          "bit": 0,
+          "ids": "视觉Z轴负极限",
+          "module": ""
+        },
+        {
+          "addr": 30,
+          "bit": 2,
+          "ids": "视觉Z轴原点",
+          "module": ""
+        }
+      ]
+    }
+  ],
+  "io_in": [
+    {
+      "addr": 2,
+      "bit": 0,
+      "ids": "急停",
+      "module": ""
+    },
+    {
+      "addr": 2,
+      "bit": 0,
+      "ids": "阀1压力到达",
+      "module": ""
+    },
+    {
+      "addr": 0,
+      "bit": 5,
+      "ids": "阀2压力到达",
+      "module": ""
+    },
+    {
+      "addr": 0,
+      "bit": 6,
+      "ids": "阀3压力到达",
+      "module": ""
+    },
+    {
+      "addr": 0,
+      "bit": 7,
+      "ids": "阀4压力到达",
+      "module": ""
+    }
+  ],
+  "io_out": [
+    {
+      "addr": 2,
+      "bit": 0,
+      "ids": "顶面相机",
+      "module": ""
+    },
+    {
+      "addr": 0,
+      "bit": 1,
+      "ids": "侧面相机",
+      "module": ""
+    },
+    {
+      "addr": 0,
+      "bit": 2,
+      "ids": "相机光源",
+      "module": ""
+    },
+    {
+      "addr": 1,
+      "bit": 4,
+      "ids": "黄灯",
+      "module": ""
+    },
+    {
+      "addr": 1,
+      "bit": 5,
+      "ids": "绿灯",
+      "module": ""
+    },
+    {
+      "addr": 1,
+      "bit": 6,
+      "ids": "红灯",
+      "module": ""
+    },
+    {
+      "addr": 1,
+      "bit": 7,
+      "ids": "蜂鸣",
+      "module": ""
+    },
+    {
+      "addr": 0,
+      "bit": 3,
+      "ids": "真空电磁阀1",
+      "module": ""
+    },
+    {
+      "addr": 0,
+      "bit": 4,
+      "ids": "真空电磁阀2",
+      "module": ""
+    },
+    {
+      "addr": 0,
+      "bit": 5,
+      "ids": "真空电磁阀3",
+      "module": ""
+    },
+    {
+      "addr": 0,
+      "bit": 6,
+      "ids": "真空电磁阀4",
+      "module": ""
+    }
+  ]
+}
