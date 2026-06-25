@@ -4,7 +4,9 @@
 
 ## MotionTestHost 配置包
 
-`config/MotionTestHost/` 是 MotionTestHost 的样例运行配置。新人拉取代码后，如果本地运行目录还没有 `config`，可以把该目录下的文件复制到 MotionTestHost 可执行文件同级的 `config` 目录：
+`config/MotionTestHost/` 是 MotionTestHost 的样例运行配置。MotionTestHost
+工程构建后会自动把该目录下的文件复制到可执行文件同级的 `config` 目录。
+如果需要手动恢复本地运行目录，也可以执行：
 
 ```powershell
 $target = "neomove_motion\neomove_motion\test\MotionTestHost\x64\Debug\config"
@@ -21,6 +23,13 @@ neomove_motion/neomove_motion/test/MotionTestHost/x64/Debug/config/
 ```
 
 MotionTestHost 启动时会把 `<exe_dir>/config` 和 `neomove.json` 传给 `ModuleMgr::Init`。测试页面还会通过公共配置系统读取 `axis.json`、`io.json`、`unit.json` 等配置，所以本配置包不只包含 `neomove.json`。
+
+## MotionTestHost 运动调试注意事项
+
+- JOG 速度来自测试页的 JOG 速度输入框，不来自速度下拉框的 `velocity`。
+- 速度下拉框对 JOG 只保留 `acc`、`dec` 和 profile type；定点运动和两段运动使用速度配置中的 `velocity`、`acc`、`dec`。
+- `home_type=35` 表示当前位置回零，成功时不一定能看到机械移动，重点看回零返回值和当前位置是否被置零。
+- 如果轴处于报警、正/负限位、软限位或伺服未上状态，先人工确认现场状态，再手动点击“清除报警”和“当前轴上伺服”。运动按钮不会隐式清报警或隐式上伺服。
 
 ## 已包含文件
 

@@ -15,6 +15,22 @@ if ([string]::IsNullOrWhiteSpace($TargetDir)) {
 $targetFullPath = [System.IO.Path]::GetFullPath($TargetDir)
 New-Item -ItemType Directory -Force -Path $targetFullPath | Out-Null
 
+function Copy-FileIfChanged($sourcePath, $destinationPath) {
+  $sourceItem = Get-Item -LiteralPath $sourcePath
+  if (Test-Path -LiteralPath $destinationPath) {
+    $destinationItem = Get-Item -LiteralPath $destinationPath
+    if ($sourceItem.Length -eq $destinationItem.Length -and
+        $sourceItem.LastWriteTimeUtc -eq $destinationItem.LastWriteTimeUtc) {
+      return $false
+    }
+  }
+
+  New-Item -ItemType Directory -Force -Path (Split-Path -Parent $destinationPath) |
+    Out-Null
+  Copy-Item -LiteralPath $sourcePath -Destination $destinationPath -Force
+  return $true
+}
+
 $publicBin = $null
 foreach ($entry in ($LibraryPath -split ";")) {
   $libPath = $entry.Trim().Trim('"')
@@ -50,8 +66,34 @@ if ($dlls.Count -eq 0) {
   throw "No public runtime DLLs found in $publicBin."
 }
 
+$copiedDllCount = 0
 foreach ($dll in $dlls) {
-  Copy-Item -LiteralPath $dll.FullName -Destination $targetFullPath -Force
+  $destination = Join-Path $targetFullPath $dll.Name
+  if (Copy-FileIfChanged $dll.FullName $destination) {
+    $copiedDllCount += 1
+  }
 }
 
-Write-Host "Copied $($dlls.Count) public runtime DLLs from $publicBin to $targetFullPath."
+$actionSource = Join-Path $publicBin "action"
+if (!(Test-Path -LiteralPath $actionSource)) {
+  throw "No public action runtime directory found in $publicBin."
+}
+
+$actionFiles = Get-ChildItem -LiteralPath $actionSource -Recurse -File
+if ($actionFiles.Count -eq 0) {
+  throw "No public action runtime files found in $actionSource."
+}
+
+$actionTarget = Join-Path $targetFullPath "action"
+$copiedActionCount = 0
+foreach ($file in $actionFiles) {
+  $relativePath = $file.FullName.Substring($actionSource.Length).TrimStart(
+    [char[]]@([System.IO.Path]::DirectorySeparatorChar,
+              [System.IO.Path]::AltDirectorySeparatorChar))
+  $destination = Join-Path $actionTarget $relativePath
+  if (Copy-FileIfChanged $file.FullName $destination) {
+    $copiedActionCount += 1
+  }
+}
+
+Write-Host "Copied $copiedDllCount/$($dlls.Count) public runtime DLLs and $copiedActionCount/$($actionFiles.Count) action files from $publicBin to $targetFullPath."

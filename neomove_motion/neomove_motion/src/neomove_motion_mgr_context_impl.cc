@@ -1,4 +1,4 @@
-// copyright 2025 YottaImage. All rights reserved.
+﻿// copyright 2025 YottaImage. All rights reserved.
 #include "neomove_motion_mgr_context_impl.h"
 
 #include <common/encode_helper.h>
@@ -405,11 +405,15 @@ int NeoMoveMotionMgrContextImpl::Init(const char* path, size_t path_len,
   // NM_Open 是真正连接配置控制器的步骤。成功后 initialized_ 置为 true，
   // Finalize() 负责用同一个 controller_index 调用 NM_Close。
   ret = NM_Open(controller_index_);
-  if (ret != NM_RETURN_OK) {
+  if (ret != NM_RETURN_OK  && ret != NM_RETURN_ERROR_ALREADYOPEN ) {
     LOG(ERROR) << "NM_Open failed, ret=" << ret
                << ", controller_index=" << controller_index_;
     last_failed_api_ = "NM_Open";
     return ret;
+  }
+
+  if (ret == NM_RETURN_ERROR_ALREADYOPEN) {
+   LOG(INFO) << "NM_Open already open, controller_index=" << controller_index_;
   }
 
   initialized_ = true;

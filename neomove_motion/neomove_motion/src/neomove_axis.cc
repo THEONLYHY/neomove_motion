@@ -3,8 +3,10 @@
 
 #include <glog/glog_helper.h>
 
+#include <chrono>
 #include <cmath>
 #include <limits>
+#include <sstream>
 #include <thread>
 
 #include "neomove_io_monitor_thread.h"
@@ -20,6 +22,34 @@ double NormalizeReadbackMultiplier(double multiplier) {
     return 1.0;
   }
   return multiplier;
+}
+
+std::string FormatAxisStatus(const NM_AXISSTATUS& axis_status,
+                             double multiplier) {
+  const double readback_multiplier = NormalizeReadbackMultiplier(multiplier);
+  std::ostringstream oss;
+  oss << "servoOn=" << axis_status.servoOn
+      << ", motionComplete=" << axis_status.motionComplete
+      << ", inPos=" << axis_status.inPos
+      << ", ampAlarm=" << axis_status.ampAlarm
+      << ", axisAlarm=" << axis_status.axisAlarm
+      << ", followingErrorAlarm=" << axis_status.followingErrorAlarm
+      << ", ampAlarmCode=" << axis_status.ampAlarmCode
+      << ", positiveLS=" << axis_status.positiveLS
+      << ", negativeLS=" << axis_status.negativeLS
+      << ", positiveSoftLimit=" << axis_status.positiveSoftLimit
+      << ", negativeSoftLimit=" << axis_status.negativeSoftLimit
+      << ", actualPos=" << axis_status.actualPos / readback_multiplier
+      << ", posCmd=" << axis_status.posCmd / readback_multiplier;
+  return oss.str();
+}
+
+bool HasAxisFault(const NM_AXISSTATUS& axis_status) {
+  return axis_status.ampAlarm != 0 || axis_status.axisAlarm != 0 ||
+         axis_status.followingErrorAlarm != 0 ||
+         axis_status.positiveLS != 0 || axis_status.negativeLS != 0 ||
+         axis_status.positiveSoftLimit != 0 ||
+         axis_status.negativeSoftLimit != 0;
 }
 
 }  // namespace
@@ -121,8 +151,41 @@ int YOTTA_API_CALL NeoMoveAxis::SetServoOn() {
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "SetServoOn 调用失败",
              "neomove_api=NM_ServoOnOff, ret=" + ToHex(ret));
+    LOG(ERROR) << "NeoMoveAxis::SetServoOn failed, axis=" << axis_index_
+               << ", ret=" << ToHex(ret);
+    return ret;
   }
-  return ret;
+
+  NM_AXISSTATUS axis_status{};
+  int status_ret = NM_GetAxisStatus(GetControllerIndex(), axis_index_,
+                                    &axis_status);
+  if (status_ret == NM_RETURN_OK) {
+    LOG(INFO) << "NeoMoveAxis::SetServoOn status, axis=" << axis_index_
+              << ", " << FormatAxisStatus(axis_status, GetMultiplier());
+  } else {
+    LOG(ERROR) << "NeoMoveAxis::SetServoOn status read failed, axis="
+               << axis_index_ << ", ret=" << ToHex(status_ret);
+    SetError(MotionErrors::MoveFailed, "SetServoOn 状态读回失败",
+             "neomove_api=NM_GetAxisStatus, ret=" + ToHex(status_ret));
+    return status_ret;
+  }
+
+  const std::string status_text = FormatAxisStatus(axis_status, GetMultiplier());
+  if (!axis_status.servoOn) {
+    SetError(MotionErrors::MoveFailed, "SetServoOn 后伺服未使能",
+             "neomove_api=NM_GetAxisStatus, " + status_text);
+    LOG(ERROR) << "NeoMoveAxis::SetServoOn readback servo off, axis="
+               << axis_index_ << ", " << status_text;
+    return -1;
+  }
+  if (HasAxisFault(axis_status)) {
+    SetError(MotionErrors::MoveFailed, "SetServoOn 后检测到轴报警或限位",
+             "neomove_api=NM_GetAxisStatus, " + status_text);
+    LOG(ERROR) << "NeoMoveAxis::SetServoOn readback fault, axis="
+               << axis_index_ << ", " << status_text;
+    return -1;
+  }
+  return 0;
 }
 
 int YOTTA_API_CALL NeoMoveAxis::SetServoOff() {
@@ -134,20 +197,33 @@ int YOTTA_API_CALL NeoMoveAxis::SetServoOff() {
              "neomove_api=NM_ServoOnOff, ret=" + ToHex(ret));
     return ret;
   }
-  Wait();
 
   NM_AXISSTATUS axis_status{};
-  while (true) {
-    int status_ret =NM_GetAxisStatus(GetControllerIndex(), axis_index_, &axis_status);
+  int elapsed = 0;
+  const int timeout = 3000;
+  const int poll_interval_ms = 20;
+  while (elapsed < timeout) {
+    int status_ret = NM_GetAxisStatus(GetControllerIndex(), axis_index_,
+                                      &axis_status);
     if (status_ret != NM_RETURN_OK) {
       SetError(MotionErrors::MoveFailed, "获取轴状态失败",
-              "neomove_api=NM_GetAxisStatus, ret=" + ToHex(ret));
-      return ret;
+               "neomove_api=NM_GetAxisStatus, ret=" + ToHex(status_ret));
+      return status_ret;
     }
     if (!axis_status.servoOn) {
+      LOG(INFO) << "NeoMoveAxis::SetServoOff completed, axis=" << axis_index_
+                << ", elapsed_ms=" << elapsed << ", "
+                << FormatAxisStatus(axis_status, GetMultiplier());
       break;
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::milliseconds(poll_interval_ms));
+    elapsed += poll_interval_ms;
+  }
+  if (axis_status.servoOn) {
+    SetError(MotionErrors::MoveFailed, "SetServoOff 等待伺服关闭超时",
+             "neomove_api=NM_GetAxisStatus, " +
+                 FormatAxisStatus(axis_status, GetMultiplier()));
+    return -1;
   }
   return ret;
 }
@@ -164,6 +240,20 @@ int YOTTA_API_CALL NeoMoveAxis::ClearAxisAlarm() {
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "ClearAxisAlarm 调用失败",
              "neomove_api=ClearAxisAlarm, ret=" + ToHex(ret));
+    LOG(ERROR) << "NeoMoveAxis::ClearAxisAlarm failed, axis=" << axis_index_
+               << ", ret=" << ToHex(ret);
+    return ret;
+  }
+
+  NM_AXISSTATUS axis_status{};
+  int status_ret = NM_GetAxisStatus(GetControllerIndex(), axis_index_,
+                                    &axis_status);
+  if (status_ret == NM_RETURN_OK) {
+    LOG(INFO) << "NeoMoveAxis::ClearAxisAlarm after clear, axis=" << axis_index_
+              << ", " << FormatAxisStatus(axis_status, GetMultiplier());
+  } else {
+    LOG(ERROR) << "NeoMoveAxis::ClearAxisAlarm status read failed, axis="
+               << axis_index_ << ", ret=" << ToHex(status_ret);
   }
   return ret;
 }
@@ -304,7 +394,13 @@ int YOTTA_API_CALL NeoMoveAxis::AsyncMoveTo(double dest_pos,
   double multiplier = GetMultiplier();
   double pulse_dest = dest_pos * multiplier;
   LOG(INFO) << "NeoMoveAxis::AsyncMoveTo, axis=" << axis_index_
-            << ", dest=" << dest_pos << ", pulse_dest=" << pulse_dest;
+            << ", dest=" << dest_pos << ", pulse_dest=" << pulse_dest
+            << ", velocity=" << profile->velocity()
+            << ", acc=" << profile->acceleration()
+            << ", dec=" << profile->deceleration()
+            << ", pulse_velocity=" << profile->velocity() * multiplier
+            << ", pulse_acc=" << profile->acceleration() * multiplier
+            << ", pulse_dec=" << profile->deceleration() * multiplier;
 
   NM_POSITIONCOMMAND pos_cmd{};
   pos_cmd.axisIndex = static_cast<unsigned int>(axis_index_);
@@ -318,6 +414,8 @@ int YOTTA_API_CALL NeoMoveAxis::AsyncMoveTo(double dest_pos,
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "AsyncMoveTo 调用失败",
              "neomove_api=NM_Motion_PositionMode_Abs, ret=" + ToHex(ret));
+    LOG(ERROR) << "NeoMoveAxis::AsyncMoveTo failed, axis=" << axis_index_
+               << ", ret=" << ToHex(ret);
   }
   return ret;
 }
@@ -330,15 +428,42 @@ int YOTTA_API_CALL NeoMoveAxis::Wait() {
   int timeout = 60000;
   int elapsed = 0;
   const int poll_interval_ms = 20;
+  const double multiplier = GetMultiplier();
 
   while (elapsed < timeout) {
     int ret = NM_GetAxisStatus(GetControllerIndex(), axis_index_, &axis_status);
     if (ret != 0) {
       SetError(MotionErrors::MoveFailed, "Wait 获取状态失败",
                "neomove_api=NM_GetAxisStatus, ret=" + ToHex(ret));
+      LOG(ERROR) << "NeoMoveAxis::Wait status read failed, axis=" << axis_index_
+                 << ", ret=" << ToHex(ret);
       return ret;
     }
+    if (elapsed == 0 || elapsed % 1000 == 0) {
+      LOG(INFO) << "NeoMoveAxis::Wait status, axis=" << axis_index_
+                << ", elapsed_ms=" << elapsed << ", "
+                << FormatAxisStatus(axis_status, multiplier);
+    }
+    if (HasAxisFault(axis_status)) {
+      const std::string status_text = FormatAxisStatus(axis_status, multiplier);
+      SetError(MotionErrors::MoveFailed, "Wait 检测到轴报警或限位",
+               "neomove_api=NM_GetAxisStatus, " + status_text);
+      LOG(ERROR) << "NeoMoveAxis::Wait fault, axis=" << axis_index_
+                 << ", elapsed_ms=" << elapsed << ", " << status_text;
+      return -1;
+    }
+    if (!axis_status.servoOn) {
+      const std::string status_text = FormatAxisStatus(axis_status, multiplier);
+      SetError(MotionErrors::MoveFailed, "Wait 检测到伺服未使能",
+               "neomove_api=NM_GetAxisStatus, " + status_text);
+      LOG(ERROR) << "NeoMoveAxis::Wait servo off, axis=" << axis_index_
+                 << ", elapsed_ms=" << elapsed << ", " << status_text;
+      return -1;
+    }
     if (axis_status.motionComplete && axis_status.inPos) {
+      LOG(INFO) << "NeoMoveAxis::Wait completed, axis=" << axis_index_
+                << ", elapsed_ms=" << elapsed << ", "
+                << FormatAxisStatus(axis_status, multiplier);
       return 0;
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(poll_interval_ms));
@@ -346,6 +471,8 @@ int YOTTA_API_CALL NeoMoveAxis::Wait() {
   }
 
   SetError(MotionErrors::MoveFailed, "Wait 超时");
+  LOG(ERROR) << "NeoMoveAxis::Wait timeout, axis=" << axis_index_
+             << ", " << FormatAxisStatus(axis_status, multiplier);
   return -1;
 }
 
@@ -366,8 +493,21 @@ int YOTTA_API_CALL NeoMoveAxis::StartJog(yotta::AccDecProfile* profile,
   jog_cmd.velocity = profile->velocity() * multiplier * (positive ? 1.0 : -1.0);
   jog_cmd.acc = profile->acceleration() * multiplier;
   jog_cmd.dec = profile->deceleration() * multiplier;
+  jog_cmd.smoothTime = profile->moving_average_time_milliseconds();
+  LOG(INFO) << "NeoMoveAxis::StartJog command, axis=" << axis_index_
+            << ", direction=" << (positive ? "positive" : "negative")
+            << ", velocity=" << profile->velocity()
+            << ", acc=" << profile->acceleration()
+            << ", dec=" << profile->deceleration()
+            << ", smoothTime=" << jog_cmd.smoothTime
+            << ", multiplier=" << multiplier
+            << ", pulse_velocity=" << jog_cmd.velocity
+            << ", pulse_acc=" << jog_cmd.acc
+            << ", pulse_dec=" << jog_cmd.dec;
 
   int ret = NM_Motion_JogMode(GetControllerIndex(), jog_cmd);
+  LOG(INFO) << "NeoMoveAxis::StartJog ret, axis=" << axis_index_
+            << ", ret=" << ToHex(ret);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::JogFailed, "StartJog 调用失败",
              "neomove_api=NM_Motion_JogMode, ret=" + ToHex(ret));

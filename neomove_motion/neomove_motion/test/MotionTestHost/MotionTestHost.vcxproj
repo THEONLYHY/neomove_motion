@@ -142,5 +142,12 @@
   <Target Name="CopyPublicRuntime" AfterTargets="Build">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)/scripts/copy_public_runtime.ps1&quot; -LibraryPath &quot;$(LibraryPath)&quot; -TargetDir &quot;$(TargetDir).&quot;" />
   </Target>
+  <Target Name="CopyMotionTestHostConfig" AfterTargets="Build">
+    <ItemGroup>
+      <MotionTestHostConfigFile Include="$(MSBuildProjectDirectory)/../../doc/config/MotionTestHost/**/*" />
+    </ItemGroup>
+    <MakeDir Directories="@(MotionTestHostConfigFile->'$(TargetDir)config/%(RecursiveDir)')" />
+    <Copy SourceFiles="@(MotionTestHostConfigFile)" DestinationFiles="@(MotionTestHostConfigFile->'$(TargetDir)config/%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
 </Project>
 

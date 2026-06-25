@@ -1,10 +1,12 @@
 #include "motion_test_page.h"
 
 #include <common/message_loop.h>
+#include <glog/glog_helper.h>
 #include <main_process/module_mgr.h>
 #include <motion/acc_dec_profile.h>
 
 #include <QButtonGroup>
+#include <QCoreApplication>
 #include <QDateTime>
 #include <QFormLayout>
 #include <QGridLayout>
@@ -13,6 +15,7 @@
 #include <QMetaObject>
 #include <QPointer>
 #include <QPushButton>
+#include <QVariant>
 #include <QVBoxLayout>
 
 #include <chrono>
@@ -29,6 +32,32 @@ QString ToQString(const std::string& value) {
   return QString::fromStdString(value);
 }
 
+QString BoolText(bool value) {
+  return value ? QStringLiteral("true") : QStringLiteral("false");
+}
+
+QString FormatPositionResult(int ret, double position) {
+  if (ret != 0) {
+    return QStringLiteral("N/A");
+  }
+  return QString::number(position, 'f', 6);
+}
+
+QString FormatOptionalRet(bool executed, int ret) {
+  if (!executed) {
+    return QStringLiteral("未执行");
+  }
+  return QString::number(ret);
+}
+
+QString FormatDeltaResult(int before_ret, double before_pos, int after_ret,
+                          double after_pos) {
+  if (before_ret != 0 || after_ret != 0) {
+    return QStringLiteral("N/A");
+  }
+  return QString::number(after_pos - before_pos, 'f', 6);
+}
+
 std::string ReadAxisIds(const yotta::AxisConfigItemPtr& axis) {
   if (!axis) {
     return {};
@@ -36,6 +65,29 @@ std::string ReadAxisIds(const yotta::AxisConfigItemPtr& axis) {
   char ids[kTextBufferSize] = {};
   axis->GetIds(ids, sizeof(ids));
   return ids;
+}
+
+std::string ReadAxisModule(const yotta::AxisConfigItemPtr& axis) {
+  if (!axis) {
+    return {};
+  }
+  char module[kTextBufferSize] = {};
+  axis->GetModule(module, sizeof(module));
+  return module;
+}
+
+QString FormatExecutionError(const ExecutionErrorPtr& error) {
+  if (!error) {
+    return QStringLiteral("无错误对象");
+  }
+
+  return QStringLiteral("code=%1 layer=%2 entity=%3 message=%4 custom=%5 trace=%6")
+      .arg(error->code())
+      .arg(ToQString(error->layer()))
+      .arg(ToQString(error->entity_id()))
+      .arg(ToQString(error->message()))
+      .arg(ToQString(error->custom_data()))
+      .arg(ToQString(error->FullTrace()));
 }
 
 std::string ReadSpeedIds(const yotta::AxisSpeedConfigPtr& speed) {
@@ -118,6 +170,12 @@ void MotionTestPage::InitUi() {
   top_layout->addWidget(axis_state_label_, 1, 3);
   top_layout->addWidget(new QLabel(QStringLiteral("回零状态")), 1, 4);
   top_layout->addWidget(home_state_label_, 1, 5);
+  auto* servo_on_button = new QPushButton(QStringLiteral("当前轴上伺服"));
+  auto* servo_off_button = new QPushButton(QStringLiteral("当前轴下伺服"));
+  auto* clear_alarm_button = new QPushButton(QStringLiteral("清除报警"));
+  top_layout->addWidget(servo_on_button, 1, 6);
+  top_layout->addWidget(servo_off_button, 1, 7);
+  top_layout->addWidget(clear_alarm_button, 1, 8);
   root_layout->addWidget(top_group);
 
   connect(unit_combo_, qOverload<int>(&QComboBox::currentIndexChanged), this,
@@ -127,6 +185,12 @@ void MotionTestPage::InitUi() {
             RefreshSpeeds();
             RefreshStatus();
           });
+  connect(servo_on_button, &QPushButton::clicked, this,
+          [this]() { ServoOnAxis(); });
+  connect(servo_off_button, &QPushButton::clicked, this,
+          [this]() { ServoOffAxis(); });
+  connect(clear_alarm_button, &QPushButton::clicked, this,
+          [this]() { ClearAxisAlarm(); });
 
   auto* action_layout = new QGridLayout;
 
@@ -159,14 +223,15 @@ void MotionTestPage::InitUi() {
   auto* point_layout = new QFormLayout(point_group);
   absolute_radio_ = new QRadioButton(QStringLiteral("绝对"));
   relative_radio_ = new QRadioButton(QStringLiteral("相对"));
-  absolute_radio_->setChecked(true);
+  relative_radio_->setChecked(true);
   auto* mode_layout = new QHBoxLayout;
   mode_layout->addWidget(absolute_radio_);
   mode_layout->addWidget(relative_radio_);
   target_position_spin_ = CreatePositionSpin();
   auto* move_button = new QPushButton(QStringLiteral("执行定点运动"));
   point_layout->addRow(QStringLiteral("模式"), mode_layout);
-  point_layout->addRow(QStringLiteral("目标/距离"), target_position_spin_);
+  point_layout->addRow(QStringLiteral("目标坐标/相对步距"),
+                       target_position_spin_);
   point_layout->addRow(move_button);
   action_layout->addWidget(point_group, 0, 1);
   connect(move_button, &QPushButton::clicked, this, [this]() { MovePoint(); });
@@ -243,6 +308,28 @@ void MotionTestPage::InitUi() {
 }
 
 void MotionTestPage::LoadConfig() {
+  QCoreApplication* app = QCoreApplication::instance();
+  if (app) {
+    const int module_init_ret = app->property("module_init_ret").toInt();
+    AppendLog(
+        QStringLiteral(
+            "启动诊断: ServiceFrameworkDll=%1 ServiceFrameworkInit=%2 "
+            "MotionDllDirSet=%3 ModuleMgr=%4 ModuleMgr::Init ret=%5 "
+            "path=%6 file=%7")
+            .arg(BoolText(app->property("service_framework_dll_init").toBool()))
+            .arg(BoolText(app->property("service_framework_init").toBool()))
+            .arg(BoolText(app->property("motion_dll_dir_set").toBool()))
+            .arg(BoolText(app->property("module_mgr_available").toBool()))
+            .arg(module_init_ret)
+            .arg(app->property("module_init_path").toString())
+            .arg(app->property("module_init_file").toString()));
+    if (!app->property("motion_dll_dir_set").toBool()) {
+      AppendLog(QStringLiteral("motion DLL 目录设置失败: path=%1 error=%2")
+                    .arg(app->property("motion_dll_dir").toString())
+                    .arg(app->property("motion_dll_dir_error").toInt()));
+    }
+  }
+
   axis_config_ = yotta::ConfigFactory::GetInstance()->GetAxisConfig();
   io_config_ = yotta::ConfigFactory::GetInstance()->GetIoConfig();
   unit_info_mgr_ = ModelMgrSinglton::GetInstance()->unit_info_mgr();
@@ -255,6 +342,31 @@ void MotionTestPage::LoadConfig() {
   }
   if (!unit_info_mgr_) {
     AppendLog(QStringLiteral("unit_info_mgr 为空，请检查 ModelMgr 初始化和 config/unit.json"));
+  }
+
+  if (axis_config_) {
+    AppendLog(QStringLiteral("axis_config 已加载: axis_count=%1")
+                  .arg(axis_config_->GetAxisCount()));
+  }
+
+  auto module_mgr = main_process::GetModuleMgr();
+  if (!module_mgr) {
+    AppendLog(QStringLiteral("ModuleMgr 为空：请检查 module_runtime_d.dll"));
+    return;
+  }
+
+  yotta::LimitMotionMgrPtr limit_motion = module_mgr->GetLimitMotionMgr();
+  if (!limit_motion) {
+    AppendLog(QStringLiteral("LimitMotionMgr 为空：ModuleMgr 未初始化运动层"));
+    return;
+  }
+
+  ExecutionErrorPtr error = limit_motion->GetError();
+  if (error) {
+    AppendLog(QStringLiteral("LimitMotionMgr 当前错误: %1")
+                  .arg(FormatExecutionError(error)));
+  } else {
+    AppendLog(QStringLiteral("LimitMotionMgr 已获取，当前无错误对象"));
   }
 }
 
@@ -399,13 +511,30 @@ void MotionTestPage::StartJog(bool positive) {
                   if (!axis) {
                     return;
                   }
+                  if (!PrepareAxisForMotion(axis, QStringLiteral("JOG"))) {
+                    return;
+                  }
                   yotta::AccDecProfileImpl profile(0);
                   if (!BuildProfile(axis_id, speed_id, profile_type, &profile)) {
                     return;
                   }
                   profile.set_velocity(jog_velocity);
                   int ret = axis->StartJog(&profile, positive);
-                  AppendLogFromAnyThread(QStringLiteral("StartJog ret=%1").arg(ret));
+                  AppendLogFromAnyThread(
+                      QStringLiteral(
+                          "JOG 参数: axis=%1 speed_id=%2 profile_type=%3 "
+                          "velocity=%4 acc=%5 dec=%6 smoothTime=%7 "
+                          "direction=%8 StartJog ret=%9")
+                          .arg(ToQString(axis_id))
+                          .arg(ToQString(speed_id))
+                          .arg(static_cast<int>(profile_type))
+                          .arg(profile.velocity())
+                          .arg(profile.acceleration())
+                          .arg(profile.deceleration())
+                          .arg(profile.moving_average_time_milliseconds())
+                          .arg(positive ? QStringLiteral("positive")
+                                        : QStringLiteral("negative"))
+                          .arg(ret));
                 });
 }
 
@@ -418,6 +547,64 @@ void MotionTestPage::StopAxis() {
     }
     axis->Stop();
     AppendLogFromAnyThread(QStringLiteral("Stop 已下发"));
+  });
+}
+
+void MotionTestPage::ServoOnAxis() {
+  const std::string axis_id = CurrentAxisId();
+  RunMotionTask(QStringLiteral("当前轴上伺服"), [this, axis_id]() {
+    yotta::Axis* axis = GetAxis(axis_id);
+    if (!axis) {
+      return;
+    }
+
+    // 伺服上电是明确的硬件动作，只由测试页按钮触发，不在运动命令中隐式执行。
+    const int ret = axis->SetServoOn();
+    AppendLogFromAnyThread(QStringLiteral("当前轴上伺服 ret=%1").arg(ret));
+    QPointer<MotionTestPage> self(this);
+    QMetaObject::invokeMethod(this, [self]() {
+      if (self) {
+        self->RefreshStatus();
+      }
+    });
+  });
+}
+
+void MotionTestPage::ServoOffAxis() {
+  const std::string axis_id = CurrentAxisId();
+  RunMotionTask(QStringLiteral("当前轴下伺服"), [this, axis_id]() {
+    yotta::Axis* axis = GetAxis(axis_id);
+    if (!axis) {
+      return;
+    }
+
+    const int ret = axis->SetServoOff();
+    AppendLogFromAnyThread(QStringLiteral("当前轴下伺服 ret=%1").arg(ret));
+    QPointer<MotionTestPage> self(this);
+    QMetaObject::invokeMethod(this, [self]() {
+      if (self) {
+        self->RefreshStatus();
+      }
+    });
+  });
+}
+
+void MotionTestPage::ClearAxisAlarm() {
+  const std::string axis_id = CurrentAxisId();
+  RunMotionTask(QStringLiteral("清除当前轴报警"), [this, axis_id]() {
+    yotta::Axis* axis = GetAxis(axis_id);
+    if (!axis) {
+      return;
+    }
+
+    const int ret = axis->ClearAmpAlarm();
+    AppendLogFromAnyThread(QStringLiteral("清除当前轴报警 ret=%1").arg(ret));
+    QPointer<MotionTestPage> self(this);
+    QMetaObject::invokeMethod(this, [self]() {
+      if (self) {
+        self->RefreshStatus();
+      }
+    });
   });
 }
 
@@ -435,26 +622,57 @@ void MotionTestPage::MovePoint() {
     if (!axis) {
       return;
     }
+    if (!PrepareAxisForMotion(axis, QStringLiteral("定点运动"))) {
+      return;
+    }
+    double before_pos = 0.0;
+    const int before_ret = axis->GetActualPosition(&before_pos);
     double target = input_pos;
     if (!absolute) {
-      double current = 0.0;
-      if (axis->GetActualPosition(&current) != 0) {
-        AppendLogFromAnyThread(QStringLiteral("读取当前位置失败"));
+      if (before_ret != 0) {
+        AppendLogFromAnyThread(
+            QStringLiteral(
+                "定点运动闭环: axis=%1 mode=relative 运动前 GetActualPosition() "
+                "ret=%2 pos=%3 target=N/A AsyncMoveTo ret=未执行 "
+                "Wait ret=未执行 运动后 GetActualPosition() ret=未执行 "
+                "pos=N/A actual_delta=N/A")
+                .arg(ToQString(axis_id))
+                .arg(before_ret)
+                .arg(FormatPositionResult(before_ret, before_pos)));
         return;
       }
-      target = current + input_pos;
+      target = before_pos + input_pos;
     }
     yotta::AccDecProfileImpl profile(0);
     if (!BuildProfile(axis_id, speed_id, profile_type, &profile)) {
       return;
     }
-    int ret = axis->AsyncMoveTo(target, &profile);
-    if (ret == 0) {
-      ret = axis->Wait();
+    const int async_ret = axis->AsyncMoveTo(target, &profile);
+    int wait_ret = 0;
+    const bool wait_executed = async_ret == 0;
+    if (wait_executed) {
+      wait_ret = axis->Wait();
     }
-    AppendLogFromAnyThread(QStringLiteral("定点运动结束 ret=%1 target=%2")
-                               .arg(ret)
-                               .arg(target));
+
+    double after_pos = 0.0;
+    const int after_ret = axis->GetActualPosition(&after_pos);
+    AppendLogFromAnyThread(
+        QStringLiteral(
+            "定点运动闭环: axis=%1 mode=%2 运动前 GetActualPosition() "
+            "ret=%3 pos=%4 target=%5 AsyncMoveTo ret=%6 Wait ret=%7 "
+            "运动后 GetActualPosition() ret=%8 pos=%9 actual_delta=%10")
+            .arg(ToQString(axis_id))
+            .arg(absolute ? QStringLiteral("absolute")
+                          : QStringLiteral("relative"))
+            .arg(before_ret)
+            .arg(FormatPositionResult(before_ret, before_pos))
+            .arg(target)
+            .arg(async_ret)
+            .arg(FormatOptionalRet(wait_executed, wait_ret))
+            .arg(after_ret)
+            .arg(FormatPositionResult(after_ret, after_pos))
+            .arg(FormatDeltaResult(before_ret, before_pos, after_ret,
+                                   after_pos)));
   });
 }
 
@@ -503,16 +721,29 @@ void MotionTestPage::RunTwoStepMove() {
                   if (!axis) {
                     return;
                   }
+                  if (!PrepareAxisForMotion(axis, QStringLiteral("两段连续运动"))) {
+                    return;
+                  }
                   yotta::AccDecProfileImpl profile_1(0);
                   if (!BuildProfile(axis_id, speed_1, profile_type, &profile_1)) {
                     return;
                   }
-                  int ret = axis->AsyncMoveTo(pos_1, &profile_1);
-                  if (ret == 0) {
-                    ret = axis->Wait();
+                  const int async_ret_1 = axis->AsyncMoveTo(pos_1, &profile_1);
+                  int wait_ret_1 = 0;
+                  const bool wait_1_executed = async_ret_1 == 0;
+                  if (wait_1_executed) {
+                    wait_ret_1 = axis->Wait();
                   }
-                  AppendLogFromAnyThread(QStringLiteral("第1段 ret=%1").arg(ret));
-                  if (ret != 0) {
+                  AppendLogFromAnyThread(
+                      QStringLiteral(
+                          "第1段: axis=%1 target=%2 speed_id=%3 "
+                          "AsyncMoveTo ret=%4 Wait ret=%5")
+                          .arg(ToQString(axis_id))
+                          .arg(pos_1)
+                          .arg(ToQString(speed_1))
+                          .arg(async_ret_1)
+                          .arg(FormatOptionalRet(wait_1_executed, wait_ret_1)));
+                  if (async_ret_1 != 0 || wait_ret_1 != 0) {
                     return;
                   }
 
@@ -520,11 +751,21 @@ void MotionTestPage::RunTwoStepMove() {
                   if (!BuildProfile(axis_id, speed_2, profile_type, &profile_2)) {
                     return;
                   }
-                  ret = axis->AsyncMoveTo(pos_2, &profile_2);
-                  if (ret == 0) {
-                    ret = axis->Wait();
+                  const int async_ret_2 = axis->AsyncMoveTo(pos_2, &profile_2);
+                  int wait_ret_2 = 0;
+                  const bool wait_2_executed = async_ret_2 == 0;
+                  if (wait_2_executed) {
+                    wait_ret_2 = axis->Wait();
                   }
-                  AppendLogFromAnyThread(QStringLiteral("第2段 ret=%1").arg(ret));
+                  AppendLogFromAnyThread(
+                      QStringLiteral(
+                          "第2段: axis=%1 target=%2 speed_id=%3 "
+                          "AsyncMoveTo ret=%4 Wait ret=%5")
+                          .arg(ToQString(axis_id))
+                          .arg(pos_2)
+                          .arg(ToQString(speed_2))
+                          .arg(async_ret_2)
+                          .arg(FormatOptionalRet(wait_2_executed, wait_ret_2)));
                 });
 }
 
@@ -673,9 +914,48 @@ bool MotionTestPage::BuildProfile(const std::string& axis_id,
   return true;
 }
 
+bool MotionTestPage::PrepareAxisForMotion(yotta::Axis* axis,
+                                          const QString& action_name) {
+  if (!axis) {
+    AppendLogFromAnyThread(QStringLiteral("%1 未执行：axis 为空").arg(action_name));
+    return false;
+  }
+
+  yotta::Axis::AxisState state = yotta::Axis::AxisState::kUnknown;
+  int state_ret = axis->state(&state);
+  AppendLogFromAnyThread(
+      QStringLiteral("%1 前伺服状态 ret=%2 state=%3")
+          .arg(action_name)
+          .arg(state_ret)
+          .arg(static_cast<int>(state)));
+  if (state_ret != 0) {
+    AppendLogFromAnyThread(
+        QStringLiteral("%1 未执行：读取伺服状态失败，请先确认报警/限位状态")
+            .arg(action_name));
+    return false;
+  }
+
+  if (state != yotta::Axis::AxisState::kServoOn) {
+    AppendLogFromAnyThread(
+        QStringLiteral(
+            "%1 未执行：当前轴未上伺服，请先人工确认报警/限位状态，"
+            "再手动点击清除报警和当前轴上伺服")
+            .arg(action_name));
+    return false;
+  }
+
+  return true;
+}
+
 yotta::LimitMotionMgrPtr MotionTestPage::GetLimitMotionMgr() {
-  yotta::LimitMotionMgrPtr limit_motion =
-      main_process::GetModuleMgr()->GetLimitMotionMgr();
+  auto module_mgr = main_process::GetModuleMgr();
+  if (!module_mgr) {
+    AppendLogFromAnyThread(
+        QStringLiteral("ModuleMgr 为空：测试项目当前未初始化主流程模块"));
+    return nullptr;
+  }
+
+  yotta::LimitMotionMgrPtr limit_motion = module_mgr->GetLimitMotionMgr();
   if (!limit_motion) {
     AppendLogFromAnyThread(
         QStringLiteral("LimitMotionMgr 为空：测试项目当前未初始化运动硬件"));
@@ -691,6 +971,26 @@ yotta::Axis* MotionTestPage::GetAxis(const std::string& axis_id) {
   yotta::Axis* axis = limit_motion->GetAxisByIds(axis_id.c_str());
   if (!axis) {
     AppendLogFromAnyThread(QStringLiteral("未获取到轴对象: %1").arg(ToQString(axis_id)));
+    if (axis_config_) {
+      yotta::AxisConfigItemPtr axis_config =
+          axis_config_->GetAxisByIds(axis_id.c_str());
+      if (axis_config) {
+        AppendLogFromAnyThread(
+            QStringLiteral("轴配置: ids=%1 index=%2 module=%3")
+                .arg(ToQString(ReadAxisIds(axis_config)))
+                .arg(axis_config->GetIndex())
+                .arg(ToQString(ReadAxisModule(axis_config))));
+      } else {
+        AppendLogFromAnyThread(
+            QStringLiteral("轴配置未找到: %1").arg(ToQString(axis_id)));
+      }
+    } else {
+      AppendLogFromAnyThread(QStringLiteral("axis_config 为空，无法定位轴配置"));
+    }
+
+    ExecutionErrorPtr error = limit_motion->GetError();
+    AppendLogFromAnyThread(
+        QStringLiteral("LimitMotionMgr 错误: %1").arg(FormatExecutionError(error)));
   }
   return axis;
 }
@@ -703,6 +1003,11 @@ void MotionTestPage::RunMotionTask(const QString& name,
     return;
   }
 
+  if (motion_task_running_.exchange(true)) {
+    AppendLog(QStringLiteral("%1 未执行：已有运动任务正在执行").arg(name));
+    return;
+  }
+
   QPointer<MotionTestPage> self(this);
   loop->PostTask([self, name, task]() {
     if (!self) {
@@ -711,6 +1016,7 @@ void MotionTestPage::RunMotionTask(const QString& name,
     self->AppendLogFromAnyThread(QStringLiteral("开始: %1").arg(name));
     task();
     self->AppendLogFromAnyThread(QStringLiteral("结束: %1").arg(name));
+    self->motion_task_running_ = false;
   });
 }
 
@@ -719,6 +1025,7 @@ void MotionTestPage::AppendLog(const QString& message) {
       QStringLiteral("[%1] %2")
           .arg(QDateTime::currentDateTime().toString(QStringLiteral("HH:mm:ss.zzz")))
           .arg(message);
+  LOG(INFO) << line.toStdString();
   log_edit_->appendPlainText(line);
 }
 

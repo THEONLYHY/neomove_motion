@@ -5,6 +5,7 @@
 
 #include "neomove_io_monitor_thread.h"
 #include "neomove_motion_mgr_context_impl.h"
+#include "neomove_pdo_utils.h"
 
 using namespace yotta;
 
@@ -22,8 +23,8 @@ int YOTTA_API_CALL NeoMoveOutputIo::ReadValue(unsigned char* byte_val) {
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short pdo_val = 0;
 
-  int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                &pdo_val, 1);
+  int ret = neomove_pdo::ReadWord(GetControllerIndex(), uIndex, gIndex,
+                                  &pdo_val);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "ReadValue(output) 失败",
              "neomove_api=NM_EtherCATReadPDO, ret=" + ToHex(ret));
@@ -60,8 +61,8 @@ int YOTTA_API_CALL NeoMoveOutputIo::WriteValue(unsigned char byte_val) {
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short pdo_val = byte_val;
 
-  int ret = NM_EtherCATWritePDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                 &pdo_val, 1);
+  int ret = neomove_pdo::WriteWord(GetControllerIndex(), uIndex, gIndex,
+                                   pdo_val);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "WriteValue 失败",
              "neomove_api=NM_EtherCATWritePDO, ret=" + ToHex(ret));
@@ -74,14 +75,13 @@ int NeoMoveOutputIo::TurnBitOn(unsigned char bit_pos) {
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short pdo_val = 0;
 
-  int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                &pdo_val, 1);
+  int ret = neomove_pdo::ReadWord(GetControllerIndex(), uIndex, gIndex,
+                                  &pdo_val);
   if (ret != NM_RETURN_OK) return ret;
 
   pdo_val |= (1 << bit_pos);
 
-  ret = NM_EtherCATWritePDO(GetControllerIndex(), 0, uIndex, gIndex,
-                              &pdo_val, 1);
+  ret = neomove_pdo::WriteWord(GetControllerIndex(), uIndex, gIndex, pdo_val);
   return ret;
 }
 
@@ -90,13 +90,12 @@ int NeoMoveOutputIo::TurnBitOff(unsigned char bit_pos) {
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short pdo_val = 0;
 
-  int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                &pdo_val, 1);
+  int ret = neomove_pdo::ReadWord(GetControllerIndex(), uIndex, gIndex,
+                                  &pdo_val);
   if (ret != NM_RETURN_OK) return ret;
 
   pdo_val &= ~(1 << bit_pos);
 
-  ret = NM_EtherCATWritePDO(GetControllerIndex(), 0, uIndex, gIndex,
-                              &pdo_val, 1);
+  ret = neomove_pdo::WriteWord(GetControllerIndex(), uIndex, gIndex, pdo_val);
   return ret;
 }

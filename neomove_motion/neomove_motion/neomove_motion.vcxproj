@@ -135,6 +135,7 @@
     <ClInclude Include="src\neomove_motion_mgr.h" />
     <ClInclude Include="src\neomove_motion_mgr_context_impl.h" />
     <ClInclude Include="src\neomove_output_io.h" />
+    <ClInclude Include="src\neomove_pdo_utils.h" />
     <ClInclude Include="src\pitch_compensation_config\pitch_compensation_config.h" />
   </ItemGroup>
   <ItemGroup>

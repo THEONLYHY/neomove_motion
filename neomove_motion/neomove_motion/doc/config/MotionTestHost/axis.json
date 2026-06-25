@@ -21,25 +21,25 @@
       "region": [],
       "speed": [
         {
-          "acc": 1000.0,
-          "dec": 1000.0,
+          "acc": 100.0,
+          "dec": 100.0,
           "default": true,
           "ids": "单轴低速",
           "velocity": 10.0
         },
         {
-          "acc": 40000.0,
-          "dec": 40000.0,
+          "acc": 400.0,
+          "dec": 400.0,
           "default": false,
           "ids": "单轴高速",
           "velocity": 40.0
         },
         {
-          "acc": 50000.0,
-          "dec": 50000.0,
+          "acc": 2000.0,
+          "dec": 2000.0,
           "default": false,
           "ids": "定点速度",
-          "velocity": 50.0
+          "velocity": 20.0
         },
         {
           "acc": 2000.0,

@@ -95,6 +95,9 @@
     <ClInclude Include="src\neomove_output_io.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\neomove_pdo_utils.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
     <ClInclude Include="src\pitch_compensation_config\pitch_compensation_config.h">
       <Filter>Header Files\src\pitch_compensation_config</Filter>
     </ClInclude>

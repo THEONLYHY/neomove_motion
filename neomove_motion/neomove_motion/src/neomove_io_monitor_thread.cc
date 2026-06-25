@@ -1,10 +1,12 @@
-// copyright 2025 YottaImage. All rights reserved.
+﻿// copyright 2025 YottaImage. All rights reserved.
 #include "neomove_io_monitor_thread.h"
 
 #include <glog/glog_helper.h>
 
 #include <chrono>
 #include <cstring>
+
+#include "neomove_pdo_utils.h"
 
 NeoMoveIoMonitorThread::NeoMoveIoMonitorThread() {}
 
@@ -103,8 +105,8 @@ void NeoMoveIoMonitorThread::MonitorInputIo() {
     unsigned int gIndex = addr & 0xFFFF;
     unsigned short pdo_val = 0;
 
-    int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                  &pdo_val, 1);
+    int ret = neomove_pdo::ReadWord(GetControllerIndex(), uIndex, gIndex,
+                                    &pdo_val);
     if (ret != NM_RETURN_OK) continue;
 
     unsigned char new_state = 0;
@@ -143,8 +145,8 @@ void NeoMoveIoMonitorThread::MonitorOutputIo() {
     unsigned int gIndex = addr & 0xFFFF;
     unsigned short pdo_val = 0;
 
-    int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                  &pdo_val, 1);
+    int ret = neomove_pdo::ReadWord(GetControllerIndex(), uIndex, gIndex,
+                                    &pdo_val);
     if (ret != NM_RETURN_OK) continue;
 
     unsigned char new_state = 0;

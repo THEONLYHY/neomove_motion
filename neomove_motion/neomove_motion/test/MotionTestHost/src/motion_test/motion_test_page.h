@@ -14,6 +14,7 @@
 #include <QTimer>
 #include <QWidget>
 
+#include <atomic>
 #include <functional>
 #include <string>
 #include <vector>
@@ -36,6 +37,9 @@ class MotionTestPage : public QWidget {
 
   void StartJog(bool positive);
   void StopAxis();
+  void ServoOnAxis();
+  void ServoOffAxis();
+  void ClearAxisAlarm();
   void MovePoint();
   void HomeAxis();
   void HomeAllAxes();
@@ -50,6 +54,7 @@ class MotionTestPage : public QWidget {
   bool BuildProfile(const std::string& axis_id, const std::string& speed_id,
                     yotta::ProfileType profile_type,
                     yotta::AccDecProfileImpl* profile);
+  bool PrepareAxisForMotion(yotta::Axis* axis, const QString& action_name);
   yotta::LimitMotionMgrPtr GetLimitMotionMgr();
   yotta::Axis* GetAxis(const std::string& axis_id);
 
@@ -89,4 +94,5 @@ class MotionTestPage : public QWidget {
 
   QPlainTextEdit* log_edit_ = nullptr;
   QTimer* status_timer_ = nullptr;
+  std::atomic_bool motion_task_running_{false};
 };

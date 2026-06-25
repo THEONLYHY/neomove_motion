@@ -5,6 +5,7 @@
 #include <cstring>
 
 #include "neomove_motion_mgr_context_impl.h"
+#include "neomove_pdo_utils.h"
 
 using namespace yotta;
 
@@ -38,8 +39,7 @@ int YOTTA_API_CALL NeoMoveAnalogIo::SetOutChar(char analogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short val = static_cast<unsigned short>(analogData);
-  int ret = NM_EtherCATWritePDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                 &val, 1);
+  int ret = neomove_pdo::WriteWord(GetControllerIndex(), uIndex, gIndex, val);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "SetOutChar 失败",
              "neomove_api=NM_EtherCATWritePDO, ret=" + ToHex(ret));
@@ -52,8 +52,7 @@ int YOTTA_API_CALL NeoMoveAnalogIo::SetOutUChar(unsigned char analogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short val = analogData;
-  int ret = NM_EtherCATWritePDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                 &val, 1);
+  int ret = neomove_pdo::WriteWord(GetControllerIndex(), uIndex, gIndex, val);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "SetOutUChar 失败",
              "neomove_api=NM_EtherCATWritePDO, ret=" + ToHex(ret));
@@ -66,8 +65,7 @@ int YOTTA_API_CALL NeoMoveAnalogIo::SetOutShort(short analogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short val = static_cast<unsigned short>(analogData);
-  int ret = NM_EtherCATWritePDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                 &val, 1);
+  int ret = neomove_pdo::WriteWord(GetControllerIndex(), uIndex, gIndex, val);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "SetOutShort 失败",
              "neomove_api=NM_EtherCATWritePDO, ret=" + ToHex(ret));
@@ -80,8 +78,7 @@ int YOTTA_API_CALL NeoMoveAnalogIo::SetOutUShort(unsigned short analogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short val = analogData;
-  int ret = NM_EtherCATWritePDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                 &val, 1);
+  int ret = neomove_pdo::WriteWord(GetControllerIndex(), uIndex, gIndex, val);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "SetOutUShort 失败",
              "neomove_api=NM_EtherCATWritePDO, ret=" + ToHex(ret));
@@ -94,11 +91,11 @@ int YOTTA_API_CALL NeoMoveAnalogIo::SetOutInt(int analogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   // Write 2 shorts for a 32-bit int
-  unsigned short vals[2];
+  unsigned short vals[2] = {};
   vals[0] = static_cast<unsigned short>(analogData & 0xFFFF);
   vals[1] = static_cast<unsigned short>((analogData >> 16) & 0xFFFF);
-  int ret = NM_EtherCATWritePDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                 vals, 2);
+  int ret = neomove_pdo::WriteWords(GetControllerIndex(), uIndex, gIndex, vals,
+                                    2);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "SetOutInt 失败",
              "neomove_api=NM_EtherCATWritePDO, ret=" + ToHex(ret));
@@ -110,11 +107,11 @@ int YOTTA_API_CALL NeoMoveAnalogIo::SetOutUInt(unsigned int analogData) {
   ClearError();
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
-  unsigned short vals[2];
+  unsigned short vals[2] = {};
   vals[0] = static_cast<unsigned short>(analogData & 0xFFFF);
   vals[1] = static_cast<unsigned short>((analogData >> 16) & 0xFFFF);
-  int ret = NM_EtherCATWritePDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                 vals, 2);
+  int ret = neomove_pdo::WriteWords(GetControllerIndex(), uIndex, gIndex, vals,
+                                    2);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "SetOutUInt 失败",
              "neomove_api=NM_EtherCATWritePDO, ret=" + ToHex(ret));
@@ -128,8 +125,7 @@ int YOTTA_API_CALL NeoMoveAnalogIo::GetInChar(char* pAnalogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short val = 0;
-  int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                &val, 1);
+  int ret = neomove_pdo::ReadWord(GetControllerIndex(), uIndex, gIndex, &val);
   *pAnalogData = static_cast<char>(val);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "GetInChar 失败",
@@ -144,8 +140,7 @@ int YOTTA_API_CALL NeoMoveAnalogIo::GetInUChar(unsigned char* pAnalogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short val = 0;
-  int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                &val, 1);
+  int ret = neomove_pdo::ReadWord(GetControllerIndex(), uIndex, gIndex, &val);
   *pAnalogData = static_cast<unsigned char>(val);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "GetInUChar 失败",
@@ -160,8 +155,7 @@ int YOTTA_API_CALL NeoMoveAnalogIo::GetInShort(short* pAnalogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short val = 0;
-  int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                &val, 1);
+  int ret = neomove_pdo::ReadWord(GetControllerIndex(), uIndex, gIndex, &val);
   *pAnalogData = static_cast<short>(val);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "GetInShort 失败",
@@ -176,8 +170,7 @@ int YOTTA_API_CALL NeoMoveAnalogIo::GetInUShort(unsigned short* pAnalogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short val = 0;
-  int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                &val, 1);
+  int ret = neomove_pdo::ReadWord(GetControllerIndex(), uIndex, gIndex, &val);
   *pAnalogData = val;
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "GetInUShort 失败",
@@ -192,8 +185,8 @@ int YOTTA_API_CALL NeoMoveAnalogIo::GetInInt(int* pAnalogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short vals[2] = {};
-  int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                vals, 2);
+  int ret = neomove_pdo::ReadWords(GetControllerIndex(), uIndex, gIndex, vals,
+                                   2);
   *pAnalogData = static_cast<int>(vals[0] | (vals[1] << 16));
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "GetInInt 失败",
@@ -208,8 +201,8 @@ int YOTTA_API_CALL NeoMoveAnalogIo::GetInUInt(unsigned int* pAnalogData) {
   unsigned int uIndex = (addr_ >> 16) & 0xFFFF;
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short vals[2] = {};
-  int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                vals, 2);
+  int ret = neomove_pdo::ReadWords(GetControllerIndex(), uIndex, gIndex, vals,
+                                   2);
   *pAnalogData = static_cast<unsigned int>(vals[0] | (vals[1] << 16));
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "GetInUInt 失败",

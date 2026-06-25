@@ -1,7 +1,5 @@
 ﻿#include "MotionTestHost.h"
 
-#include <main_process/module_mgr.h>
-
 #include <QTabWidget>
 
 #include "axis_setting/axis_setting.h"
@@ -23,9 +21,4 @@ MotionTestHost::MotionTestHost(QWidget *parent)
     resize(1460, 975);
 }
 
-MotionTestHost::~MotionTestHost() {
-    auto module_mgr = main_process::GetModuleMgr();
-    if (module_mgr) {
-        module_mgr->Uninit();
-    }
-}
+MotionTestHost::~MotionTestHost() = default;

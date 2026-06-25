@@ -1,10 +1,11 @@
-// copyright 2025 YottaImage. All rights reserved.
+﻿// copyright 2025 YottaImage. All rights reserved.
 #include "neomove_input_io.h"
 
 #include <glog/glog_helper.h>
 
 #include "neomove_io_monitor_thread.h"
 #include "neomove_motion_mgr_context_impl.h"
+#include "neomove_pdo_utils.h"
 
 using namespace yotta;
 
@@ -38,8 +39,8 @@ int YOTTA_API_CALL NeoMoveInputIo::ReadValue(unsigned char* byte_val) {
   unsigned int gIndex = addr_ & 0xFFFF;
   unsigned short pdo_val = 0;
   // master index 当前写死为0
-  int ret = NM_EtherCATReadPDO(GetControllerIndex(), 0, uIndex, gIndex,
-                                &pdo_val, 1);
+  int ret = neomove_pdo::ReadWord(GetControllerIndex(), uIndex, gIndex,
+                                  &pdo_val);
   if (ret != NM_RETURN_OK) {
     SetError(MotionErrors::MoveFailed, "ReadValue 失败",
              "neomove_api=NM_EtherCATReadPDO, ret=" + ToHex(ret));
