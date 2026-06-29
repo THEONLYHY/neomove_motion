@@ -34,8 +34,13 @@ if (-not (Test-Path -LiteralPath $projectPath)) {
 }
 
 $project = Get-Content -LiteralPath $projectPath -Raw
-if ($project -match '<PublicSdkDir[^>]*>[A-Za-z]:\\') {
-  Write-Error "PublicSdkDir must not be committed as a machine-specific absolute path"
+if ($project -match '<YottaPublicDir[^>]*>[A-Za-z]:\\') {
+  Write-Error "YottaPublicDir must not be committed as a machine-specific absolute path"
+  exit 1
+}
+
+if ($project -notmatch 'ValidateYottaPublicDir') {
+  Write-Error "BaseUI project must validate YottaPublicDir before build"
   exit 1
 }
 
@@ -44,7 +49,7 @@ if ($project -notmatch '\.\.\\\.\.\\\.\.\\doc\\config\\BaseUI') {
   exit 1
 }
 
-if ($project -notmatch '\$\(PublicSdkDir\)bin\\motion') {
+if ($project -notmatch '\$\(YottaPublicDir\)bin\\motion') {
   Write-Error "BaseUI project must copy motion plugins from the public SDK into output motion directory"
   exit 1
 }

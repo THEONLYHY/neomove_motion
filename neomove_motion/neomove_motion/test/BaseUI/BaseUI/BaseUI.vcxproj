@@ -55,29 +55,33 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
-  <PropertyGroup Label="UserMacros">
-    <PublicSdkDir Condition="'$(PublicSdkDir)'==''">$(MSBuildProjectDirectory)\..\..\..\..\..\..\public\</PublicSdkDir>
-  </PropertyGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Target Name="ValidateYottaPublicDir" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(YottaPublicDir)'==''" Text="YottaPublicDir is not configured. Define YottaPublicDir in Microsoft.Cpp.$(Platform).user.props." />
+    <Error Condition="!Exists('$(YottaPublicDir)include')" Text="YottaPublicDir include directory does not exist: $(YottaPublicDir)include" />
+    <Error Condition="!Exists('$(YottaPublicDir)lib_2019')" Text="YottaPublicDir lib_2019 directory does not exist: $(YottaPublicDir)lib_2019" />
+    <Error Condition="!Exists('$(YottaPublicDir)bin')" Text="YottaPublicDir bin directory does not exist: $(YottaPublicDir)bin" />
+  </Target>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutDir>$(MSBuildProjectDirectory)\..\x64\$(Configuration)\</OutDir>
     <IntDir>$(MSBuildProjectDirectory)\x64\$(Configuration)\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <LocalDebuggerEnvironment>PATH=$(PublicSdkDir)bin;$(QtDllPath);%PATH%</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>PATH=$(YottaPublicDir)bin;$(QtDllPath);%PATH%</LocalDebuggerEnvironment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutDir>$(MSBuildProjectDirectory)\..\x64\$(Configuration)\</OutDir>
     <IntDir>$(MSBuildProjectDirectory)\x64\$(Configuration)\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <LocalDebuggerEnvironment>PATH=$(PublicSdkDir)bin;$(QtDllPath);%PATH%</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>PATH=$(YottaPublicDir)bin;$(QtDllPath);%PATH%</LocalDebuggerEnvironment>
   </PropertyGroup>
   <ItemGroup>
-    <QtIncludePath Include="$(PublicSdkDir)include" />
+    <QtIncludePath Include="$(YottaPublicDir)include" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(PublicSdkDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(YottaPublicDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PreprocessorDefinitions>_DEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -87,18 +91,18 @@
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
     <Link>
-      <AdditionalLibraryDirectories>$(PublicSdkDir)lib_2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(YottaPublicDir)lib_2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(PublicSdkDir)bin\*.dll" "$(OutDir)"
-xcopy /E /I /Y "$(PublicSdkDir)bin\motion\*" "$(OutDir)motion\"
+      <Command>copy /Y "$(YottaPublicDir)bin\*.dll" "$(OutDir)"
+xcopy /E /I /Y "$(YottaPublicDir)bin\motion\*" "$(OutDir)motion\"
 xcopy /E /I /Y "$(MSBuildProjectDirectory)\..\..\..\doc\config\BaseUI\*" "$(OutDir)config\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(PublicSdkDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(YottaPublicDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -108,11 +112,11 @@ xcopy /E /I /Y "$(MSBuildProjectDirectory)\..\..\..\doc\config\BaseUI\*" "$(OutD
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
     <Link>
-      <AdditionalLibraryDirectories>$(PublicSdkDir)lib_2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(YottaPublicDir)lib_2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(PublicSdkDir)bin\*.dll" "$(OutDir)"
-xcopy /E /I /Y "$(PublicSdkDir)bin\motion\*" "$(OutDir)motion\"
+      <Command>copy /Y "$(YottaPublicDir)bin\*.dll" "$(OutDir)"
+xcopy /E /I /Y "$(YottaPublicDir)bin\motion\*" "$(OutDir)motion\"
 xcopy /E /I /Y "$(MSBuildProjectDirectory)\..\..\..\doc\config\BaseUI\*" "$(OutDir)config\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
