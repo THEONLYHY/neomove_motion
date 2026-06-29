@@ -44,12 +44,17 @@ std::string FormatAxisStatus(const NM_AXISSTATUS& axis_status,
   return oss.str();
 }
 
-bool HasAxisFault(const NM_AXISSTATUS& axis_status) {
+bool HasAxisHardFault(const NM_AXISSTATUS& axis_status) {
   return axis_status.ampAlarm != 0 || axis_status.axisAlarm != 0 ||
-         axis_status.followingErrorAlarm != 0 ||
-         axis_status.positiveLS != 0 || axis_status.negativeLS != 0 ||
-         axis_status.positiveSoftLimit != 0 ||
-         axis_status.negativeSoftLimit != 0;
+         axis_status.followingErrorAlarm != 0;
+}
+
+bool IsAtPositiveLimit(const NM_AXISSTATUS& axis_status) {
+  return axis_status.positiveLS != 0 || axis_status.positiveSoftLimit != 0;
+}
+
+bool IsAtNegativeLimit(const NM_AXISSTATUS& axis_status) {
+  return axis_status.negativeLS != 0 || axis_status.negativeSoftLimit != 0;
 }
 
 }  // namespace
@@ -178,8 +183,8 @@ int YOTTA_API_CALL NeoMoveAxis::SetServoOn() {
                << axis_index_ << ", " << status_text;
     return -1;
   }
-  if (HasAxisFault(axis_status)) {
-    SetError(MotionErrors::MoveFailed, "SetServoOn 后检测到轴报警或限位",
+  if (HasAxisHardFault(axis_status)) {
+    SetError(MotionErrors::MoveFailed, "SetServoOn 后检测到轴硬件报警",
              "neomove_api=NM_GetAxisStatus, " + status_text);
     LOG(ERROR) << "NeoMoveAxis::SetServoOn readback fault, axis="
                << axis_index_ << ", " << status_text;
@@ -391,6 +396,31 @@ int YOTTA_API_CALL NeoMoveAxis::AsyncMoveTo(double dest_pos,
     return 1;
   }
 
+  // 预检限位：读取当前状态，拒绝朝已触发限位方向的运动
+  NM_AXISSTATUS cur_status{};
+  int status_ret = NM_GetAxisStatus(GetControllerIndex(), axis_index_, &cur_status);
+  if (status_ret == NM_RETURN_OK) {
+    double multiplier_check = NormalizeReadbackMultiplier(GetMultiplier());
+    double cur_pos = cur_status.actualPos / multiplier_check;
+    bool going_positive = dest_pos > cur_pos;
+    bool going_negative = dest_pos < cur_pos;
+    if (going_positive && IsAtPositiveLimit(cur_status)) {
+      SetError(MotionErrors::MoveFailed, "AsyncMoveTo 被正限位阻止",
+               "dest=" + std::to_string(dest_pos) + ", cur=" + std::to_string(cur_pos));
+      LOG(WARNING) << "NeoMoveAxis::AsyncMoveTo blocked by positive limit, axis="
+                   << axis_index_ << ", dest=" << dest_pos << ", cur=" << cur_pos;
+      return -1;
+    }
+    if (going_negative && IsAtNegativeLimit(cur_status)) {
+      SetError(MotionErrors::MoveFailed, "AsyncMoveTo 被负限位阻止",
+               "dest=" + std::to_string(dest_pos) + ", cur=" + std::to_string(cur_pos));
+      LOG(WARNING) << "NeoMoveAxis::AsyncMoveTo blocked by negative limit, axis="
+                   << axis_index_ << ", dest=" << dest_pos << ", cur=" << cur_pos;
+      return -1;
+    }
+    last_move_direction_ = going_positive ? 1 : (going_negative ? -1 : 0);
+  }
+
   double multiplier = GetMultiplier();
   double pulse_dest = dest_pos * multiplier;
   LOG(INFO) << "NeoMoveAxis::AsyncMoveTo, axis=" << axis_index_
@@ -444,12 +474,29 @@ int YOTTA_API_CALL NeoMoveAxis::Wait() {
                 << ", elapsed_ms=" << elapsed << ", "
                 << FormatAxisStatus(axis_status, multiplier);
     }
-    if (HasAxisFault(axis_status)) {
+    if (HasAxisHardFault(axis_status)) {
       const std::string status_text = FormatAxisStatus(axis_status, multiplier);
-      SetError(MotionErrors::MoveFailed, "Wait 检测到轴报警或限位",
+      SetError(MotionErrors::MoveFailed, "Wait 检测到轴硬件报警",
                "neomove_api=NM_GetAxisStatus, " + status_text);
-      LOG(ERROR) << "NeoMoveAxis::Wait fault, axis=" << axis_index_
+      LOG(ERROR) << "NeoMoveAxis::Wait hard fault, axis=" << axis_index_
                  << ", elapsed_ms=" << elapsed << ", " << status_text;
+      return -1;
+    }
+    // 限位方向感知：只有朝触发限位方向运动时才中止
+    if (IsAtPositiveLimit(axis_status) && last_move_direction_ > 0) {
+      const std::string status_text = FormatAxisStatus(axis_status, multiplier);
+      SetError(MotionErrors::MoveFailed, "Wait 检测到正限位",
+               "neomove_api=NM_GetAxisStatus, " + status_text);
+      LOG(WARNING) << "NeoMoveAxis::Wait positive limit, axis=" << axis_index_
+                   << ", elapsed_ms=" << elapsed << ", " << status_text;
+      return -1;
+    }
+    if (IsAtNegativeLimit(axis_status) && last_move_direction_ < 0) {
+      const std::string status_text = FormatAxisStatus(axis_status, multiplier);
+      SetError(MotionErrors::MoveFailed, "Wait 检测到负限位",
+               "neomove_api=NM_GetAxisStatus, " + status_text);
+      LOG(WARNING) << "NeoMoveAxis::Wait negative limit, axis=" << axis_index_
+                   << ", elapsed_ms=" << elapsed << ", " << status_text;
       return -1;
     }
     if (!axis_status.servoOn) {
@@ -482,6 +529,23 @@ int YOTTA_API_CALL NeoMoveAxis::StartJog(yotta::AccDecProfile* profile,
   if (!profile) {
     SetError(MotionErrors::ParamInvalid, "profile 参数为空");
     return 1;
+  }
+
+  // 预检限位：拒绝朝已触发限位方向的 Jog
+  NM_AXISSTATUS cur_status{};
+  int status_ret = NM_GetAxisStatus(GetControllerIndex(), axis_index_, &cur_status);
+  if (status_ret == NM_RETURN_OK) {
+    if (positive && IsAtPositiveLimit(cur_status)) {
+      SetError(MotionErrors::JogFailed, "StartJog 被正限位阻止", "direction=positive");
+      LOG(WARNING) << "NeoMoveAxis::StartJog blocked by positive limit, axis=" << axis_index_;
+      return -1;
+    }
+    if (!positive && IsAtNegativeLimit(cur_status)) {
+      SetError(MotionErrors::JogFailed, "StartJog 被负限位阻止", "direction=negative");
+      LOG(WARNING) << "NeoMoveAxis::StartJog blocked by negative limit, axis=" << axis_index_;
+      return -1;
+    }
+    last_move_direction_ = positive ? 1 : -1;
   }
 
   double multiplier = GetMultiplier();
@@ -566,7 +630,32 @@ void NeoMoveAxis::DecelerationStop(double deceleration) {
 }
 
 void* NeoMoveAxis::QueryInterface(const char* interface_name, size_t length) {
+  static constexpr char kNeoMoveAxisInterface[] = "NeoMoveAxis";
+  if (length == sizeof(kNeoMoveAxisInterface) - 1 &&
+      strncmp(interface_name, kNeoMoveAxisInterface, length) == 0) {
+    return static_cast<NeoMoveAxis*>(this);
+  }
   return nullptr;
+}
+
+int NeoMoveAxis::ApplySoftLimit(double positive, double negative) {
+  ClearError();
+  const double multiplier = GetMultiplier();
+  const double pulse_positive = positive * multiplier;
+  const double pulse_negative = negative * multiplier;
+  LOG(INFO) << "NeoMoveAxis::ApplySoftLimit, axis=" << axis_index_
+            << ", positive=" << positive << ", negative=" << negative
+            << ", pulse_positive=" << pulse_positive
+            << ", pulse_negative=" << pulse_negative;
+  int ret = NM_SetSoftLimit(GetControllerIndex(), static_cast<unsigned int>(axis_index_),
+                             1, pulse_positive, pulse_negative);
+  if (ret != NM_RETURN_OK) {
+    SetError(MotionErrors::MoveFailed, "ApplySoftLimit 调用失败",
+             "neomove_api=NM_SetSoftLimit, ret=" + ToHex(ret));
+    LOG(ERROR) << "NeoMoveAxis::ApplySoftLimit failed, axis=" << axis_index_
+               << ", ret=" << ToHex(ret);
+  }
+  return ret;
 }
 
 int YOTTA_API_CALL NeoMoveAxis::SetAxisWatcher(Watcher* watcher) {

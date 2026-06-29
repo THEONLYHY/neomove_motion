@@ -7,6 +7,7 @@
 #include <main_process/module_mgr.h>
 #include <windows.h>
 
+#include <cstring>
 #include <QPushButton>
 
 #include "config/config_factory.h"
@@ -15,6 +16,7 @@
 #include "controller/log_manager/log_view_sink.h"
 #include "controller/motion_control/motion_control.h"
 #include "model/model_mgr.h"
+#include "neomove_axis.h"
 #include "view/components/ps_button/ps_button.h"
 #include "view/pages/maintenance_change_view/maintenance_change_view.h"
 #include "view/pages/main_page/main_page.h"
@@ -170,6 +172,20 @@ bool BaseMainWindow::InitModuleMgr() {
     }
 
     int result = axis_motion->ClearAmpAlarm();
+
+    // 从 UI 配置读取软限位并下发到控制器
+    yotta::AxisAttributeConfigPtr attr = axis_config_item->GetAttribute();
+    if (attr) {
+      double limit_positive = 0;
+      double limit_negative = 0;
+      attr->GetLimitPositive(&limit_positive);
+      attr->GetLimitNegative(&limit_negative);
+      void* raw = axis_motion->QueryInterface("NeoMoveAxis", strlen("NeoMoveAxis"));
+      if (auto* neomove_axis = static_cast<NeoMoveAxis*>(raw)) {
+        neomove_axis->ApplySoftLimit(limit_positive, limit_negative);
+      }
+    }
+
     result += axis_motion->SetServoOn();
     if (result != 0) {
       LOG(ERROR) << "axis init failed, ids=" << char_ids

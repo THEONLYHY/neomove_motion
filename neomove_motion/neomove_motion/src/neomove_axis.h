@@ -65,7 +65,8 @@ public:
                                       size_t length) override;
 
   void SetIoMonitorThread(std::weak_ptr<NeoMoveIoMonitorThread> monitor);
-  
+  int ApplySoftLimit(double positive, double negative);
+
 private:
     // 获取控制器编号
   int GetControllerIndex();
@@ -77,6 +78,7 @@ private:
 
   int axis_index_; // 轴号
   AxisCommandMode current_mode_ = AxisCommandMode::kPosition; // 当前缓存模式
+  std::atomic<int> last_move_direction_{0}; // +1=正向, -1=负向, 0=未知
   Watcher* axis_watcher_ = nullptr; // 轴状态回调
   std::weak_ptr<NeoMoveIoMonitorThread> io_monitor_thread_; // 监控线程弱引用
 
