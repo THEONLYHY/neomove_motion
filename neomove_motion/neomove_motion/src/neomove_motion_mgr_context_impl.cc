@@ -124,7 +124,7 @@ bool NeoMoveMotionMgrContextImpl::IsValidControllerType(int controller_type) {
 // 业务白名单，不是SDK全量枚举
 bool NeoMoveMotionMgrContextImpl::IsValidHomeType(int home_type) {
   switch (home_type) {
-    case 30:
+    case 21:
     case 33:
     case 34:
     case 35:
@@ -277,12 +277,12 @@ int NeoMoveMotionMgrContextImpl::LoadConfig(const char* path, size_t path_len,
   }
 
   controller_index_ = 0;
-  controller_type_ = NM_CONTROLLERTYPE_E2_M300;
+  controller_type_ = NM_CONTROLLERTYPE_E2_M100;
   controller_ip_.clear();
   home_param_configs_.clear();
 
   // 读取可选配置前先恢复安全默认值。缺失 json 字段时会回退到
-  // controller 0、E2_M300 和默认 IP 连接方式。
+  // controller 0、E2_M100 和默认 IP 连接方式。
   std::filesystem::path config_file =
       MakeControllerConfigFilePath(path, path_len, file, file_len);
   std::wstring config_file_wide = config_file.wstring();

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/image_show_view">
+        <file>icon/深蓝/69_49--按下.png</file>
+        <file>icon/深蓝/69_49--正常.png</file>
+        <file>icon/深蓝/69_29--正常.png</file>
+        <file>icon/深蓝/69_29--按下.png</file>
+    </qresource>
+</RCC>

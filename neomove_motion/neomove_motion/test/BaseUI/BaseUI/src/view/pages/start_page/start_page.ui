@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui version="4.0">
+  <class>StartPageClass</class>
+  <widget class="QWidget" name="StartPageClass">
+    <property name="geometry">
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1920</width>
+        <height>865</height>
+      </rect>
+    </property>
+    <property name="minimumSize">
+      <size>
+        <width>1920</width>
+        <height>865</height>
+      </size>
+    </property>
+    <property name="maximumSize">
+      <size>
+        <width>1920</width>
+        <height>865</height>
+      </size>
+    </property>
+    <property name="windowTitle">
+      <string>Form</string>
+    </property>
+    <widget class="QStackedWidget" name="stackedWidget">
+      <property name="geometry">
+        <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1920</width>
+          <height>865</height>
+        </rect>
+      </property>
+      <property name="minimumSize">
+        <size>
+          <width>1920</width>
+          <height>865</height>
+        </size>
+      </property>
+      <property name="maximumSize">
+        <size>
+          <width>1920</width>
+          <height>865</height>
+        </size>
+      </property>
+      <property name="currentIndex">
+        <number>0</number>
+      </property>
+      <widget class="QWidget" name="first_page">
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+            <spacer name="verticalSpacer_5">
+              <property name="orientation">
+                <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+                <size>
+                  <width>20</width>
+                  <height>143</height>
+                </size>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_14">
+              <item>
+                <spacer name="horizontalSpacer_16">
+                  <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                    <size>
+                      <width>40</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                </spacer>
+              </item>
+              <item>
+                <widget class="QLabel" name="label">
+                  <property name="font">
+                    <font>
+                      <pointsize>64</pointsize>
+                    </font>
+                  </property>
+                  <property name="text">
+                    <string>BaseUI</string>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <spacer name="horizontalSpacer_8">
+                  <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                    <size>
+                      <width>40</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                </spacer>
+              </item>
+            </layout>
+          </item>
+          <item>
+            <spacer name="verticalSpacer_4">
+              <property name="orientation">
+                <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+                <size>
+                  <width>20</width>
+                  <height>40</height>
+                </size>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_24">
+              <property name="spacing">
+                <number>20</number>
+              </property>
+              <item>
+                <spacer name="horizontalSpacer_15">
+                  <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                    <size>
+                      <width>40</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                </spacer>
+              </item>
+              <item>
+                <widget class="PsButton" name="probe_config">
+                  <property name="minimumSize">
+                    <size>
+                      <width>220</width>
+                      <height>120</height>
+                    </size>
+                  </property>
+                  <property name="maximumSize">
+                    <size>
+                      <width>220</width>
+                      <height>120</height>
+                    </size>
+                  </property>
+                  <property name="font">
+                    <font>
+                      <pointsize>20</pointsize>
+                    </font>
+                  </property>
+                  <property name="text">
+                    <string>系统设置</string>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <widget class="PsButton" name="maintenance_change">
+                  <property name="minimumSize">
+                    <size>
+                      <width>220</width>
+                      <height>120</height>
+                    </size>
+                  </property>
+                  <property name="maximumSize">
+                    <size>
+                      <width>220</width>
+                      <height>120</height>
+                    </size>
+                  </property>
+                  <property name="font">
+                    <font>
+                      <pointsize>20</pointsize>
+                    </font>
+                  </property>
+                  <property name="text">
+                    <string>校准页面</string>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <spacer name="horizontalSpacer_6">
+                  <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                    <size>
+                      <width>40</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                </spacer>
+              </item>
+            </layout>
+          </item>
+          <item>
+            <spacer name="verticalSpacer_10">
+              <property name="orientation">
+                <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+                <size>
+                  <width>20</width>
+                  <height>40</height>
+                </size>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
+              <item>
+                <spacer name="horizontalSpacer_17">
+                  <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                    <size>
+                      <width>40</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                </spacer>
+              </item>
+              <item>
+                <widget class="PsButton" name="motion_zero">
+                  <property name="minimumSize">
+                    <size>
+                      <width>270</width>
+                      <height>69</height>
+                    </size>
+                  </property>
+                  <property name="maximumSize">
+                    <size>
+                      <width>270</width>
+                      <height>69</height>
+                    </size>
+                  </property>
+                  <property name="font">
+                    <font>
+                      <pointsize>20</pointsize>
+                    </font>
+                  </property>
+                  <property name="text">
+                    <string>初始化</string>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <spacer name="horizontalSpacer_10">
+                  <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                    <size>
+                      <width>40</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                </spacer>
+              </item>
+            </layout>
+          </item>
+          <item>
+            <spacer name="verticalSpacer_17">
+              <property name="orientation">
+                <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+                <size>
+                  <width>20</width>
+                  <height>40</height>
+                </size>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <spacer name="verticalSpacer_6">
+              <property name="orientation">
+                <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+                <size>
+                  <width>20</width>
+                  <height>142</height>
+                </size>
+              </property>
+            </spacer>
+          </item>
+        </layout>
+      </widget>
+    </widget>
+  </widget>
+  <customwidgets>
+    <customwidget>
+      <class>PsButton</class>
+      <extends>QPushButton</extends>
+      <header>view/components/ps_button/ps_button.h</header>
+    </customwidget>
+    <customwidget>
+      <class>PsLineEdit</class>
+      <extends>QLineEdit</extends>
+      <header>view/components/ps_line_edit/ps_line_edit.h</header>
+    </customwidget>
+  </customwidgets>
+  <resources>
+    <include location="../../../../res/main_res.qrc" />
+  </resources>
+  <connections />
+</ui>

@@ -1,0 +1,741 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="res">
+      <UniqueIdentifier>{EF86B860-17A8-496D-B5E2-6BE03DC73B50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{BC2F86EB-B19F-433C-AEF3-8A10FBEF8E8A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\alg">
+      <UniqueIdentifier>{FD36FEF1-33F8-4AD0-A25C-EA07D99B1227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\third_party">
+      <UniqueIdentifier>{2E02D3D7-A108-47A0-A95B-56CC4E27563D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\third_party\alglib">
+      <UniqueIdentifier>{611A00EC-F05A-48D8-A806-B5F6C3689709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller">
+      <UniqueIdentifier>{3376574D-C435-49C4-B8D4-8C8009C4AE8F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\action">
+      <UniqueIdentifier>{0A2785FF-5D97-4E73-88CC-1C82F223FF55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\action\open_camera">
+      <UniqueIdentifier>{B07AE0BF-1E1A-4B69-A997-4DBAB7CDFCBC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\action\vision_point">
+      <UniqueIdentifier>{59835C41-8309-4E24-91F8-6BBEF787A459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\action\wait_condition">
+      <UniqueIdentifier>{B765B88F-0A7E-4B95-9272-C407562533ED}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\algorithm_process">
+      <UniqueIdentifier>{4E9A4A95-A8D7-4CBE-A779-A970DDD7C42E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\algorithm_result_wait_manager">
+      <UniqueIdentifier>{B2B4BC6E-0331-4DAD-99DE-BAD1E113097E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\async_wait">
+      <UniqueIdentifier>{A762042D-25B2-433E-B35D-B48E4B440DAE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\calibration">
+      <UniqueIdentifier>{F7E42A4C-0A64-4F79-8129-8447622F22DE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\camera_manager">
+      <UniqueIdentifier>{7E73C023-D480-4C2E-9A14-7EB8AF2A3582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\device_status_monitor">
+      <UniqueIdentifier>{6DCAF7D5-ED7B-497C-8492-F0448287B8C1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\log_manager">
+      <UniqueIdentifier>{DB25EF97-5A06-4F93-B3B0-AF6A2E520E1E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\motion_control">
+      <UniqueIdentifier>{156C93D4-77C0-4A06-AE56-28B1FFC4D968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\qt_async_serial">
+      <UniqueIdentifier>{8C2338ED-70E6-4B59-9222-471BE9B6EE6C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\real_time_data">
+      <UniqueIdentifier>{6F70A6CC-536C-4F9E-945E-59E69B938B00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\robot_manual">
+      <UniqueIdentifier>{E15D20A3-AF26-4836-B673-98D25D92B0EE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller\task">
+      <UniqueIdentifier>{5998AB5D-ECB6-4B21-8570-5860B6BBACF6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\model">
+      <UniqueIdentifier>{A8DBAD6E-CF62-4107-B5B9-0F3D3FCD5679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\model\camera_config">
+      <UniqueIdentifier>{90EEF295-9985-425A-A83C-AB2A7BEE4B45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\model\calibration">
+      <UniqueIdentifier>{F5F35DD8-39BC-4277-A99B-3F304460833E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\model\common">
+      <UniqueIdentifier>{4C64202C-58DF-4D08-9140-F208B5F939DC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\model\module_info">
+      <UniqueIdentifier>{BF001875-8135-4609-9AAA-8B18D2CFD5EC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\model\unit_info">
+      <UniqueIdentifier>{2241A7D3-D2D5-48FC-9950-88B0A31AA27D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\model\user_manage">
+      <UniqueIdentifier>{1735D9D0-F4E4-4C78-BDC6-FC2060429106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view">
+      <UniqueIdentifier>{A7C83487-CCE0-4E05-8046-032A19CCA9E4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components">
+      <UniqueIdentifier>{D5F56892-4B81-4D3B-976D-16B0A049EE7C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_arrow_button">
+      <UniqueIdentifier>{6808791E-EA1D-46F6-8FAF-139DFCAC3B80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_button">
+      <UniqueIdentifier>{57E1888A-3F0D-46E6-B010-51D09E232186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_color">
+      <UniqueIdentifier>{AFA98FBC-6BDF-4D48-A74D-374473E9B431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_combo_box">
+      <UniqueIdentifier>{E62727EB-1194-4D42-B830-D75FDB4EA52B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_label">
+      <UniqueIdentifier>{11AA1343-0B58-4CFC-9CDA-03EB97F1F3A3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_line_edit">
+      <UniqueIdentifier>{3CDC23FA-FEC6-4FB9-AB12-69D4ABBB3B67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_loading_spinner">
+      <UniqueIdentifier>{D743CF36-962E-45B2-8876-6A54D75D9459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_progress_bar">
+      <UniqueIdentifier>{C9D32EB5-4D62-4EA3-B3E4-5AB6755EE1A3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_style">
+      <UniqueIdentifier>{555027A9-A61B-4AB6-BD7E-DFAD4872BCA0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_table_widget">
+      <UniqueIdentifier>{7FC6ED00-B76B-4499-81EA-DFEA8230DE74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\components\ps_text_edit">
+      <UniqueIdentifier>{04E3F026-FD5E-4214-957D-B783FC3BFEAA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\main_window">
+      <UniqueIdentifier>{CA07D107-D3AC-453F-8C44-4BADC47251D6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\pages">
+      <UniqueIdentifier>{57A51D1F-54F3-4160-85BD-B3A31B3589C8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\pages\main_page">
+      <UniqueIdentifier>{8E46F153-A6CB-449B-B707-FED4057283E0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\pages\init_page_view">
+      <UniqueIdentifier>{F8986D8A-4CDA-4DEB-A075-9537A6BB456C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\pages\maintenance_change_view">
+      <UniqueIdentifier>{9EEE7FEF-F037-4B15-9311-0543B95C418E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\pages\maintenance_change_view\camera_calibration_view">
+      <UniqueIdentifier>{7A0E38DA-9570-4646-B321-D0D39D6099F8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\pages\maintenance_change_view\sensor_status">
+      <UniqueIdentifier>{238B60A6-7BBC-4083-A806-E22832117B62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\pages\start_page">
+      <UniqueIdentifier>{8F726592-5D12-43C2-9F4F-6A3092CDB55D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\pages\system_setting_page">
+      <UniqueIdentifier>{C58C28E0-7D5C-49F7-BB3D-6060F4502796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\pages\title_bar_view">
+      <UniqueIdentifier>{03162290-3600-4942-898A-18F8BE9605BE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools">
+      <UniqueIdentifier>{2818C901-39C4-4328-8402-00D8A5753F22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\alarm_lamp_view">
+      <UniqueIdentifier>{A51D386D-553A-4892-A550-C4F2D17C7DDB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\axis_setting_view">
+      <UniqueIdentifier>{1876135E-4220-4889-9FA5-4885F6195C13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\error_list_view">
+      <UniqueIdentifier>{12FEAB79-4075-4772-8C9C-4BE0137172E9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\export_config_view">
+      <UniqueIdentifier>{D2E21BC8-649F-43AA-9202-34914EE39DDD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\io_setting_view">
+      <UniqueIdentifier>{1F828AAA-ACC4-44D5-BAB4-124C89973EEA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\limit_setting_view">
+      <UniqueIdentifier>{F9EC10AB-9823-4C7C-9C8B-ED139B58903F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\log_view">
+      <UniqueIdentifier>{5A84EE06-9DA8-44BF-8E15-AF1C79BA1C32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\login_dialog">
+      <UniqueIdentifier>{3249B0AC-C10C-46DA-91C0-C1A222C24066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\multi_image_show_view">
+      <UniqueIdentifier>{9A6BCB0F-2DD7-4005-A2A4-CAD04D5BE303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\multi_image_show_view\image_show_view">
+      <UniqueIdentifier>{A9412D5D-C9CA-4730-9088-A5AF278FB4A0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\point_setting_view">
+      <UniqueIdentifier>{4B44D084-FD85-4354-B9AF-A4695DD2CD66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\popup_dialog">
+      <UniqueIdentifier>{35303564-DE4A-4A42-BFDC-55FC7442B1ED}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\robot_xyrz_view">
+      <UniqueIdentifier>{50170D14-5851-4059-8BCE-550B60BBF9FA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\view\tools\virtual_keyboard">
+      <UniqueIdentifier>{6D3478AA-3D22-485A-83D8-8C8F0B321F55}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\alg\alg_calibration.cc">
+      <Filter>src\alg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\alg\polynomial_fitting.cc">
+      <Filter>src\alg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\alg\simple_matrix.cc">
+      <Filter>src\alg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\action\custom_total_action.cc">
+      <Filter>src\controller\action</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\algorithm_process\algorithm_process_callback_impl.cc">
+      <Filter>src\controller\algorithm_process</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\calibration\calibration_alg.cc">
+      <Filter>src\controller\calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\camera_manager\base.pb.cc">
+      <Filter>src\controller\camera_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\camera_manager\camera_config.pb.cc">
+      <Filter>src\controller\camera_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\camera_manager\camera_manager.cc">
+      <Filter>src\controller\camera_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\device_status_monitor\device_status_monitor.cc">
+      <Filter>src\controller\device_status_monitor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\motion_control\motion_control.cc">
+      <Filter>src\controller\motion_control</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\qt_async_serial\qt_async_serial.cc">
+      <Filter>src\controller\qt_async_serial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\real_time_data\real_time_data.cc">
+      <Filter>src\controller\real_time_data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\robot_manual\robot_manual.cc">
+      <Filter>src\controller\robot_manual</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controller\task\task_callback_impl.cc">
+      <Filter>src\controller\task</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\calibration\calibration_para.cc">
+      <Filter>src\model\calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\camera_config\camera_config.cc">
+      <Filter>src\model\camera_config</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\model_mgr.cc">
+      <Filter>src\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\module_info\module_info.cc">
+      <Filter>src\model\module_info</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\unit_info\unit_info_mgr.cc">
+      <Filter>src\model\unit_info</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\unit_info\unit_point_mgr.cc">
+      <Filter>src\model\unit_info</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\user_manage\user_manage.cc">
+      <Filter>src\model\user_manage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\alglibinternal.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\alglibmisc.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\ap.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\dataanalysis.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\diffequations.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\fasttransforms.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\integration.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\interpolation.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\linalg.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\optimization.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\solvers.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\specialfunctions.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\third_party\alglib\statistics.cc">
+      <Filter>src\third_party\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_arrow_button\ps_arrow_button.cc">
+      <Filter>src\view\components\ps_arrow_button</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_button\ps_button.cc">
+      <Filter>src\view\components\ps_button</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_color\ps_color.cc">
+      <Filter>src\view\components\ps_color</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_combo_box\ps_combo_box.cc">
+      <Filter>src\view\components\ps_combo_box</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_label\ps_label.cc">
+      <Filter>src\view\components\ps_label</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_line_edit\ps_line_edit.cc">
+      <Filter>src\view\components\ps_line_edit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_loading_spinner\ps_loading_spinner.cc">
+      <Filter>src\view\components\ps_loading_spinner</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_progress_bar\ps_progress_bar.cc">
+      <Filter>src\view\components\ps_progress_bar</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_style\ps_legacy_painter.cc">
+      <Filter>src\view\components\ps_style</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_style\ps_surface_painter.cc">
+      <Filter>src\view\components\ps_style</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_table_widget\ps_table_widget.cc">
+      <Filter>src\view\components\ps_table_widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\components\ps_text_edit\ps_text_edit.cc">
+      <Filter>src\view\components\ps_text_edit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\main_window\base_main_window.cc">
+      <Filter>src\view\main_window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\pages\main_page\main_page.cc">
+      <Filter>src\view\pages\main_page</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\pages\init_page_view\init_page_view.cc">
+      <Filter>src\view\pages\init_page_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\pages\maintenance_change_view\camera_calibration_view\camera_calibration_view.cc">
+      <Filter>src\view\pages\maintenance_change_view\camera_calibration_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\pages\maintenance_change_view\maintenance_change_view.cc">
+      <Filter>src\view\pages\maintenance_change_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\pages\maintenance_change_view\sensor_status\sensor_status_view.cc">
+      <Filter>src\view\pages\maintenance_change_view\sensor_status</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\pages\start_page\start_page.cc">
+      <Filter>src\view\pages\start_page</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\pages\system_setting_page\system_setting_page.cc">
+      <Filter>src\view\pages\system_setting_page</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\pages\title_bar_view\title_bar_view.cc">
+      <Filter>src\view\pages\title_bar_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\alarm_lamp_view\alarm_lamp_view.cc">
+      <Filter>src\view\tools\alarm_lamp_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\axis_setting_view\axis_setting_view.cc">
+      <Filter>src\view\tools\axis_setting_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\error_list_view\error_list_view.cc">
+      <Filter>src\view\tools\error_list_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\export_config_view\export_config_view.cc">
+      <Filter>src\view\tools\export_config_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\io_setting_view\io_setting_view.cc">
+      <Filter>src\view\tools\io_setting_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\limit_setting_view\limit_setting_view.cc">
+      <Filter>src\view\tools\limit_setting_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\log_view\log_view.cc">
+      <Filter>src\view\tools\log_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\login_dialog\login_dialog.cc">
+      <Filter>src\view\tools\login_dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\multi_image_show_view\image_show_view\image_show_view.cc">
+      <Filter>src\view\tools\multi_image_show_view\image_show_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\multi_image_show_view\multi_image_show_view.cc">
+      <Filter>src\view\tools\multi_image_show_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\point_setting_view\point_setting_view.cc">
+      <Filter>src\view\tools\point_setting_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\popup_dialog\popup_dialog.cc">
+      <Filter>src\view\tools\popup_dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\robot_xyrz_view\robot_xyrz.cc">
+      <Filter>src\view\tools\robot_xyrz_view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\view\tools\virtual_keyboard\virtual_keyboard.cc">
+      <Filter>src\view\tools\virtual_keyboard</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\alg\alg_calibration.h">
+      <Filter>src\alg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alg\polynomial_fitting.h">
+      <Filter>src\alg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alg\simple_matrix.h">
+      <Filter>src\alg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\action\custom_total_action.h">
+      <Filter>src\controller\action</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\action\open_camera\open_camera_action.h">
+      <Filter>src\controller\action\open_camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\action\vision_point\vision_point_action.h">
+      <Filter>src\controller\action\vision_point</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\action\wait_condition\wait_condition_action.h">
+      <Filter>src\controller\action\wait_condition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\algorithm_process\algorithm_process_callback_impl.h">
+      <Filter>src\controller\algorithm_process</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\algorithm_result_wait_manager\algorithm_result_wait_manager.h">
+      <Filter>src\controller\algorithm_result_wait_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\async_wait\async_wait.h">
+      <Filter>src\controller\async_wait</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\calibration\calibration_alg.h">
+      <Filter>src\controller\calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\camera_manager\camera_config.pb.h">
+      <Filter>src\controller\camera_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\device_status_monitor\device_status_monitor.h">
+      <Filter>src\controller\device_status_monitor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\log_manager\log_view_sink.h">
+      <Filter>src\controller\log_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\motion_control\motion_control.h">
+      <Filter>src\controller\motion_control</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\real_time_data\real_time_data.h">
+      <Filter>src\controller\real_time_data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\robot_manual\robot_define.h">
+      <Filter>src\controller\robot_manual</Filter>
+    </ClInclude>
+    <ClInclude Include="src\controller\task\task_callback_impl.h">
+      <Filter>src\controller\task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\calibration\calibration_para.h">
+      <Filter>src\model\calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\camera_config\camera_config.h">
+      <Filter>src\model\camera_config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\common\collection_db_manager.h">
+      <Filter>src\model\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\common\config_db_manager.h">
+      <Filter>src\model\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\common\db.h">
+      <Filter>src\model\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\common\db_helpers.h">
+      <Filter>src\model\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\db.h">
+      <Filter>src\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\error_define.h">
+      <Filter>src\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\model_mgr.h">
+      <Filter>src\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\module_info\module_info.h">
+      <Filter>src\model\module_info</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\unit_info\unit_info_mgr.h">
+      <Filter>src\model\unit_info</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\unit_info\unit_point_mgr.h">
+      <Filter>src\model\unit_info</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\user_manage\user_manage.h">
+      <Filter>src\model\user_manage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\alglibinternal.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\alglibmisc.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\ap.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\dataanalysis.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\diffequations.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\fasttransforms.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\integration.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\interpolation.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\linalg.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\optimization.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\solvers.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\specialfunctions.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\statistics.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\third_party\alglib\stdafx.h">
+      <Filter>src\third_party\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\view\components\ps_color\ps_color.h">
+      <Filter>src\view\components\ps_color</Filter>
+    </ClInclude>
+    <ClInclude Include="src\view\components\ps_style\ps_legacy_painter.h">
+      <Filter>src\view\components\ps_style</Filter>
+    </ClInclude>
+    <ClInclude Include="src\view\components\ps_style\ps_surface_painter.h">
+      <Filter>src\view\components\ps_style</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src\controller\camera_manager\camera_manager.h">
+      <Filter>src\controller\camera_manager</Filter>
+    </QtMoc>
+    <QtMoc Include="src\controller\qt_async_serial\qt_async_serial.h">
+      <Filter>src\controller\qt_async_serial</Filter>
+    </QtMoc>
+    <QtMoc Include="src\controller\robot_manual\robot_manual.h">
+      <Filter>src\controller\robot_manual</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\components\ps_arrow_button\ps_arrow_button.h">
+      <Filter>src\view\components\ps_arrow_button</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\components\ps_button\ps_button.h">
+      <Filter>src\view\components\ps_button</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\components\ps_combo_box\ps_combo_box.h">
+      <Filter>src\view\components\ps_combo_box</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\components\ps_label\ps_label.h">
+      <Filter>src\view\components\ps_label</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\components\ps_line_edit\ps_line_edit.h">
+      <Filter>src\view\components\ps_line_edit</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\components\ps_loading_spinner\ps_loading_spinner.h">
+      <Filter>src\view\components\ps_loading_spinner</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\components\ps_progress_bar\ps_progress_bar.h">
+      <Filter>src\view\components\ps_progress_bar</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\components\ps_table_widget\ps_table_widget.h">
+      <Filter>src\view\components\ps_table_widget</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\components\ps_text_edit\ps_text_edit.h">
+      <Filter>src\view\components\ps_text_edit</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\main_window\base_main_window.h">
+      <Filter>src\view\main_window</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\pages\main_page\main_page.h">
+      <Filter>src\view\pages\main_page</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\pages\init_page_view\init_page_view.h">
+      <Filter>src\view\pages\init_page_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\pages\maintenance_change_view\camera_calibration_view\camera_calibration_view.h">
+      <Filter>src\view\pages\maintenance_change_view\camera_calibration_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\pages\maintenance_change_view\maintenance_change_view.h">
+      <Filter>src\view\pages\maintenance_change_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\pages\maintenance_change_view\sensor_status\sensor_status_view.h">
+      <Filter>src\view\pages\maintenance_change_view\sensor_status</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\pages\start_page\start_page.h">
+      <Filter>src\view\pages\start_page</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\pages\system_setting_page\system_setting_page.h">
+      <Filter>src\view\pages\system_setting_page</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\pages\title_bar_view\title_bar_view.h">
+      <Filter>src\view\pages\title_bar_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\alarm_lamp_view\alarm_lamp_view.h">
+      <Filter>src\view\tools\alarm_lamp_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\axis_setting_view\axis_setting_view.h">
+      <Filter>src\view\tools\axis_setting_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\error_list_view\error_list_view.h">
+      <Filter>src\view\tools\error_list_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\export_config_view\export_config_view.h">
+      <Filter>src\view\tools\export_config_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\io_setting_view\io_setting_view.h">
+      <Filter>src\view\tools\io_setting_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\limit_setting_view\limit_setting_view.h">
+      <Filter>src\view\tools\limit_setting_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\log_view\log_view.h">
+      <Filter>src\view\tools\log_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\login_dialog\login_dialog.h">
+      <Filter>src\view\tools\login_dialog</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\multi_image_show_view\image_show_view\image_show_view.h">
+      <Filter>src\view\tools\multi_image_show_view\image_show_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\multi_image_show_view\multi_image_show_view.h">
+      <Filter>src\view\tools\multi_image_show_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\point_setting_view\point_setting_view.h">
+      <Filter>src\view\tools\point_setting_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\popup_dialog\popup_dialog.h">
+      <Filter>src\view\tools\popup_dialog</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\robot_xyrz_view\robot_xyrz.h">
+      <Filter>src\view\tools\robot_xyrz_view</Filter>
+    </QtMoc>
+    <QtMoc Include="src\view\tools\virtual_keyboard\virtual_keyboard.h">
+      <Filter>src\view\tools\virtual_keyboard</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="res\main_res.qrc">
+      <Filter>res</Filter>
+    </QtRcc>
+    <QtRcc Include="src\view\tools\multi_image_show_view\image_show_view\image_show_view.qrc">
+      <Filter>src\view\tools\multi_image_show_view\image_show_view</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="src\view\main_window\base_main_window.ui">
+      <Filter>src\view\main_window</Filter>
+    </QtUic>
+    <QtUic Include="src\view\pages\init_page_view\init_page_view.ui">
+      <Filter>src\view\pages\init_page_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\pages\maintenance_change_view\camera_calibration_view\camera_calibration_view.ui">
+      <Filter>src\view\pages\maintenance_change_view\camera_calibration_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\pages\maintenance_change_view\maintenance_change_view.ui">
+      <Filter>src\view\pages\maintenance_change_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\pages\maintenance_change_view\sensor_status\sensor_status_view.ui">
+      <Filter>src\view\pages\maintenance_change_view\sensor_status</Filter>
+    </QtUic>
+    <QtUic Include="src\view\pages\start_page\start_page.ui">
+      <Filter>src\view\pages\start_page</Filter>
+    </QtUic>
+    <QtUic Include="src\view\pages\system_setting_page\system_setting_page.ui">
+      <Filter>src\view\pages\system_setting_page</Filter>
+    </QtUic>
+    <QtUic Include="src\view\pages\title_bar_view\title_bar_view.ui">
+      <Filter>src\view\pages\title_bar_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\alarm_lamp_view\alarm_lamp_view.ui">
+      <Filter>src\view\tools\alarm_lamp_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\axis_setting_view\axis_setting_view.ui">
+      <Filter>src\view\tools\axis_setting_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\error_list_view\error_list_view.ui">
+      <Filter>src\view\tools\error_list_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\export_config_view\export_config_view.ui">
+      <Filter>src\view\tools\export_config_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\io_setting_view\io_setting_view.ui">
+      <Filter>src\view\tools\io_setting_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\limit_setting_view\limit_setting_view.ui">
+      <Filter>src\view\tools\limit_setting_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\log_view\log_view.ui">
+      <Filter>src\view\tools\log_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\multi_image_show_view\image_show_view\image_show_view.ui">
+      <Filter>src\view\tools\multi_image_show_view\image_show_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\multi_image_show_view\multi_image_show_view.ui">
+      <Filter>src\view\tools\multi_image_show_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\point_setting_view\point_setting_view.ui">
+      <Filter>src\view\tools\point_setting_view</Filter>
+    </QtUic>
+    <QtUic Include="src\view\tools\robot_xyrz_view\robot_xyrz.ui">
+      <Filter>src\view\tools\robot_xyrz_view</Filter>
+    </QtUic>
+  </ItemGroup>
+</Project>

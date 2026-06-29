@@ -1,0 +1,2762 @@
+﻿{
+  "steps": [
+    {
+      "ids": "顶面相机实时",
+      "actions": [
+        {
+          "type": "io_output",
+          "param": {
+            "io_out": [
+              {
+                "ids": "相机光源",
+                "value": 1
+              }
+            ]
+          }
+        },
+        {
+          "type": "open_camera",
+          "param": {
+            "camera_id": 1,
+            "camera_config_ids": "顶面相机实时"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "顶面相机触发",
+      "actions": [
+        {
+          "type": "io_output",
+          "param": {
+            "io_out": [
+              {
+                "ids": "相机光源",
+                "value": 1
+              }
+            ]
+          }
+        },
+        {
+          "type": "open_camera",
+          "param": {
+            "camera_id": 1,
+            "camera_config_ids": "顶面相机触发"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "侧面相机实时",
+      "actions": [
+        {
+          "type": "io_output",
+          "param": {
+            "io_out": [
+              {
+                "ids": "相机光源",
+                "value": 1
+              }
+            ]
+          }
+        },
+        {
+          "type": "open_camera",
+          "param": {
+            "camera_id": 2,
+            "camera_config_ids": "侧面相机实时"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "侧面相机触发",
+      "actions": [
+        {
+          "type": "io_output",
+          "param": {
+            "io_out": [
+              {
+                "ids": "相机光源",
+                "value": 1
+              }
+            ]
+          }
+        },
+        {
+          "type": "open_camera",
+          "param": {
+            "camera_id": 2,
+            "camera_config_ids": "侧面相机触发"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "ALG-顶面相机标定创建模板",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 8,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "顶面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "ALG-侧面相机标定创建模板",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 81,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "侧面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+	 "ids": "侧面相机标定算法匹配-平台XY-开始",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 91,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "侧面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 1,
+            "is_end": 0,
+            "camera_id": 2,
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴"
+          }
+        }
+      ]
+	},
+	{
+      "ids": "侧面相机标定算法匹配-平台XY",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 91,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "侧面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 0,
+            "is_end": 0,
+            "camera_id": 2,
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "1_九点移动-平台XY-1",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "运行速度",
+                "offset": 0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "2_九点移动-平台XY-2",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Y轴",
+                "speed_ids": "运行速度",
+                "offset": -0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "3_九点移动-平台XY-3",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "运行速度",
+                "offset": -0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "4_九点移动-平台XY-4",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "运行速度",
+                "offset": -0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "5_九点移动-平台XY-5",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Y轴",
+                "speed_ids": "运行速度",
+                "offset": 0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "6_九点移动-平台XY-6",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Y轴",
+                "speed_ids": "运行速度",
+                "offset": 0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "7_九点移动-平台XY-7",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "运行速度",
+                "offset": 0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "8_九点移动-平台XY-8",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "运行速度",
+                "offset": 0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "侧面相机标定算法匹配-平台XY-结束",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 91,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "侧面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 0,
+            "is_end": 1,
+            "camera_id": 2,
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "顶面相机标定算法匹配-平台XY-开始",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 200
+          }
+        },
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 9,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "顶面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 1,
+            "is_end": 0,
+            "camera_id": 1,
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "顶面相机标定算法匹配-平台XY",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 200
+          }
+        },
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 9,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "顶面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 0,
+            "is_end": 0,
+            "camera_id": 1,
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "顶面相机标定算法匹配-平台XY-结束",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 200
+          }
+        },
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 9,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "顶面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 0,
+            "is_end": 1,
+            "camera_id": 1,
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴"
+          }
+        }
+      ]
+    },
+	{
+	 "ids": "侧面相机标定算法匹配-视觉XY-开始",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 91,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "侧面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 1,
+            "is_end": 0,
+            "camera_id": 2,
+            "axis_1_ids": "视觉X轴",
+            "axis_2_ids": "视觉Y轴"
+          }
+        }
+      ]
+	},
+	{
+      "ids": "侧面相机标定算法匹配-视觉XY",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 91,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "侧面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 0,
+            "is_end": 0,
+            "camera_id": 2,
+            "axis_1_ids": "视觉X轴",
+            "axis_2_ids": "视觉Y轴"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "1_九点移动-视觉XY-1",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "视觉X轴",
+                "speed_ids": "运行速度",
+                "offset": 0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "2_九点移动-视觉XY-2",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "视觉Y轴",
+                "speed_ids": "运行速度",
+                "offset": -0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "3_九点移动-视觉XY-3",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "视觉X轴",
+                "speed_ids": "运行速度",
+                "offset": -0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "4_九点移动-视觉XY-4",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "视觉X轴",
+                "speed_ids": "运行速度",
+                "offset": -0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "5_九点移动-视觉XY-5",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "视觉Y轴",
+                "speed_ids": "运行速度",
+                "offset": 0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "6_九点移动-视觉XY-6",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "视觉Y轴",
+                "speed_ids": "运行速度",
+                "offset": 0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "7_九点移动-视觉XY-7",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "视觉X轴",
+                "speed_ids": "运行速度",
+                "offset": 0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "8_九点移动-视觉XY-8",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "视觉X轴",
+                "speed_ids": "运行速度",
+                "offset": 0.01
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "侧面相机标定算法匹配-视觉XY-结束",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 91,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "侧面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 0,
+            "is_end": 1,
+            "camera_id": 2,
+            "axis_1_ids": "视觉X轴",
+            "axis_2_ids": "视觉Y轴"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "顶面相机标定算法匹配-视觉XY-开始",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 200
+          }
+        },
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 9,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "顶面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 1,
+            "is_end": 0,
+            "camera_id": 1,
+            "axis_1_ids": "视觉X轴",
+            "axis_2_ids": "视觉Y轴"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "顶面相机标定算法匹配-视觉XY",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 200
+          }
+        },
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 9,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "顶面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 0,
+            "is_end": 0,
+            "camera_id": 1,
+            "axis_1_ids": "视觉X轴",
+            "axis_2_ids": "视觉Y轴"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "顶面相机标定算法匹配-视觉XY-结束",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 200
+          }
+        },
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 9,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "顶面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 0,
+            "is_end": 1,
+            "camera_id": 1,
+            "axis_1_ids": "视觉X轴",
+            "axis_2_ids": "视觉Y轴"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "顶面相机-自动对焦算法",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 6,
+            "actions": [
+			  {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "dynamic_trigger_camera",
+                "param": {
+                  "axis_ids": "平台Z轴",
+                  "speed_ids": "扫描速度",
+                  "grab_count": 100,
+                  "step": 0.003,
+                  "offset": 0,
+                  "io_out": [
+                    {
+                      "ids": "顶面相机"
+                    }
+                  ]
+                }
+              },
+			  {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_ids": "平台Z轴",
+            "grab_num": 100,
+            "step": 0.003,
+            "direction": 1
+          }
+        },
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "运行速度",
+                "offset": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "侧面相机-自动对焦算法",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 61,
+            "actions": [
+			  {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "dynamic_trigger_camera",
+                "param": {
+                  "axis_ids": "平台Z轴",
+                  "speed_ids": "扫描速度",
+                  "grab_count": 60,
+                  "step": 0.001,
+                  "offset": 0,
+                  "io_out": [
+                    {
+                      "ids": "侧面相机"
+                    }
+                  ]
+                }
+              },
+			  {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_ids": "平台Z轴",
+            "grab_num": 60,
+            "step": 0.001,
+            "direction": 1
+          }
+        },
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "运行速度",
+                "offset": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "侧面相机-自动对焦遍历算法-小步长",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "扫描速度",
+                "offset": -0.03
+              }
+            ]
+          }
+        },
+        {
+          "type": "closed_loop_compensation",
+          "param": {
+            "deviations": [ 0.0001 ],
+            "max_loop_count": 20,
+            "actions": [
+              {
+                "type": "algorithm_process",
+                "param": {
+                  "alg_step_id": 15,
+                  "actions": [
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "static_trigger_camera",
+                      "param": {
+                        "millisecond": 20,
+                        "io_out": [
+                          {
+                            "ids": "侧面相机"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "data_process_placeholder",
+                "param": {
+                  "is_end": 0,
+                  "is_max_min": 0,
+                  "result_index": 1,
+                  "step": 0.003,
+                  "axis_ids": "平台Z轴",
+                  "speed_ids": "扫描速度"
+                }
+              },
+              {
+                "type": "move_offset",
+                "param": {
+                  "axis": [
+                    {
+                      "axis_ids": "平台Z轴",
+                      "speed_ids": "扫描速度",
+                      "offset": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "侧面相机-自动对焦回到最清晰高度-小步长",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_end": 1,
+            "is_max_min": 0,
+            "result_index": 1,
+            "step": 0.003,
+            "axis_ids": "平台Z轴",
+            "speed_ids": "扫描速度"
+          }
+        },
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "扫描速度",
+                "offset": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "侧面相机-自动对焦遍历算法-大步长",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "运行速度",
+                "offset": -1.2
+              }
+            ]
+          }
+        },
+        {
+          "type": "closed_loop_compensation",
+          "param": {
+            "deviations": [ 0.0001 ],
+            "max_loop_count": 20,
+            "actions": [
+              {
+                "type": "algorithm_process",
+                "param": {
+                  "alg_step_id": 15,
+                  "actions": [
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "static_trigger_camera",
+                      "param": {
+                        "millisecond": 20,
+                        "io_out": [
+                          {
+                            "ids": "侧面相机"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "data_process_placeholder",
+                "param": {
+                  "is_end": 0,
+                  "is_max_min": 0,
+                  "result_index": 1,
+                  "step": 0.06,
+                  "axis_ids": "平台Z轴",
+                  "speed_ids": "运行速度"
+                }
+              },
+              {
+                "type": "move_offset",
+                "param": {
+                  "axis": [
+                    {
+                      "axis_ids": "平台Z轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "侧面相机-自动对焦回到最清晰高度-大步长",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_end": 1,
+            "is_max_min": 0,
+            "result_index": 1,
+            "step": 0.06,
+            "axis_ids": "平台Z轴",
+            "speed_ids": "运行速度"
+          }
+        },
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "运行速度",
+                "offset": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "顶面相机-自动对焦遍历算法",
+      "actions": [
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "扫描速度",
+                "offset": -0.03
+              }
+            ]
+          }
+        },
+        {
+          "type": "closed_loop_compensation",
+          "param": {
+            "deviations": [ 0.0001 ],
+            "max_loop_count": 20,
+            "actions": [
+              {
+                "type": "algorithm_process",
+                "param": {
+                  "alg_step_id": 151,
+                  "actions": [
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "static_trigger_camera",
+                      "param": {
+                        "millisecond": 20,
+                        "io_out": [
+                          {
+                            "ids": "顶面相机"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "data_process_placeholder",
+                "param": {
+                  "is_end": 0,
+                  "is_max_min": 0,
+                  "result_index": 1,
+                  "step": 0.003,
+                  "axis_ids": "平台Z轴",
+                  "speed_ids": "扫描速度"
+                }
+              },
+              {
+                "type": "move_offset",
+                "param": {
+                  "axis": [
+                    {
+                      "axis_ids": "平台Z轴",
+                      "speed_ids": "扫描速度",
+                      "offset": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "顶面相机-自动对焦回到最清晰高度",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_end": 1,
+            "is_max_min": 0,
+            "result_index": 1,
+            "step": 0.003,
+            "axis_ids": "平台Z轴",
+            "speed_ids": "扫描速度"
+          }
+        },
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "扫描速度",
+                "offset": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "GOTO-晶圆中心Die",
+      "actions": [
+        {
+          "type": "move_to",
+          "param": {
+            "point_ids": "WAFER中心Die",
+            "speed": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "运行速度"
+              },
+              {
+                "axis_ids": "平台Y轴",
+                "speed_ids": "运行速度"
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆低倍转平-移动左边小间距",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴",
+            "speed_ids": "运行速度",
+            "is_left": 1,
+            "is_high": 0,
+            "is_large": 0
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 100
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆低倍转平-左边定位",
+      "actions": [
+        {
+          "type": "closed_loop_compensation",
+          "param": {
+            "deviations": [ 0.005, 0.005 ],
+            "max_loop_count": 20,
+            "actions": [
+              {
+                "type": "algorithm_process",
+                "param": {
+                  "alg_step_id": 3,
+                  "actions": [
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "static_trigger_camera",
+                      "param": {
+                        "millisecond": 20,
+                        "io_out": [
+                          {
+                            "ids": "侧面相机"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "data_process_placeholder",
+                "param": {
+                  "calibration_para_ids": "侧面相机平台XY"
+                }
+              },
+              {
+                "type": "move_offset",
+                "param": {
+                  "axis": [
+                    {
+                      "axis_ids": "平台X轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    },
+                    {
+                      "axis_ids": "平台Y轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "creact_vision_point",
+          "param": {
+            "point_ids": "晶圆转平左边点",
+            "vision_point_axis": [
+              { "axis_ids": "平台X轴" },
+              { "axis_ids": "平台Y轴" }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆低倍转平-移动右边小间距",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴",
+            "speed_ids": "运行速度",
+            "is_left": 0,
+            "is_high": 0,
+            "is_large": 0
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 100
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆低倍转平-右边定位",
+      "actions": [
+        {
+          "type": "closed_loop_compensation",
+          "param": {
+            "deviations": [ 0.005, 0.005 ],
+            "max_loop_count": 20,
+            "actions": [
+              {
+                "type": "algorithm_process",
+                "param": {
+                  "alg_step_id": 3,
+                  "actions": [
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "static_trigger_camera",
+                      "param": {
+                        "millisecond": 20,
+                        "io_out": [
+                          {
+                            "ids": "侧面相机"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "data_process_placeholder",
+                "param": {
+                  "calibration_para_ids": "侧面相机平台XY"
+                }
+              },
+              {
+                "type": "move_offset",
+                "param": {
+                  "axis": [
+                    {
+                      "axis_ids": "平台X轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    },
+                    {
+                      "axis_ids": "平台Y轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "creact_vision_point",
+          "param": {
+            "point_ids": "晶圆转平右边点",
+            "vision_point_axis": [
+              { "axis_ids": "平台X轴" },
+              { "axis_ids": "平台Y轴" }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆转平",
+      "actions": [
+        {
+          "type": "io_output",
+          "param": {
+            "io_out": [
+              {
+                "ids": "相机光源",
+                "value": 1
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 500
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "speed_ids": "运行速度",
+            "axis_ids": "平台R轴"
+          }
+        },
+        {
+          "type": "io_output",
+          "param": {
+            "io_out": [
+              {
+                "ids": "相机光源",
+                "value": 1
+              },
+              {
+                "ids": "相机光源",
+                "value": 1
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 500
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆低倍转平-移动左边大间距",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴",
+            "speed_ids": "运行速度",
+            "is_left": 1,
+            "is_high": 0,
+            "is_large": 1
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 100
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆低倍转平-移动右边大间距",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴",
+            "speed_ids": "运行速度",
+            "is_left": 0,
+            "is_high": 0,
+            "is_large": 1
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 100
+          }
+        }
+      ]
+    },
+	{
+      "ids": "ALG-晶圆低倍转平建标",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 2,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "侧面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "GOTO-晶圆中心DiePad",
+      "actions": [
+        {
+          "type": "move_to",
+          "param": {
+            "point_ids": "WAFER中心DiePad",
+            "speed": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "运行速度"
+              },
+              {
+                "axis_ids": "平台Y轴",
+                "speed_ids": "运行速度"
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆高倍转平-移动左边小间距",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴",
+            "speed_ids": "运行速度",
+            "is_left": 1,
+            "is_high": 1,
+            "is_large": 0
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 100
+          }
+        }
+      ]
+    },
+	{
+      "ids": "顶面相机高倍-自动对焦算法1000",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 6,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "dynamic_trigger_camera",
+                "param": {
+                  "axis_ids": "平台Z轴",
+                  "speed_ids": "扫描速度",
+                  "grab_count": 100,
+                  "step": 0.003,
+                  "offset": 0,
+                  "io_out": [
+                    {
+                      "ids": "顶面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_ids": "平台Z轴",
+            "grab_num": 100,
+            "step": 0.003,
+            "direction": 1
+          }
+        },
+        {
+          "type": "move_offset",
+          "param": {
+            "axis": [
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "运行速度",
+                "offset": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆高倍转平-左边定位",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 100
+          }
+        },
+        {
+          "type": "closed_loop_compensation",
+          "param": {
+            "deviations": [ 0.001, 0.001 ],
+            "max_loop_count": 20,
+            "actions": [
+              {
+                "type": "algorithm_process",
+                "param": {
+                  "alg_step_id": 5,
+                  "actions": [
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "static_trigger_camera",
+                      "param": {
+                        "millisecond": 20,
+                        "io_out": [
+                          {
+                            "ids": "顶面相机"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "data_process_placeholder",
+                "param": {
+                  "calibration_para_ids": "顶面相机平台XY"
+                }
+              },
+              {
+                "type": "move_offset",
+                "param": {
+                  "axis": [
+                    {
+                      "axis_ids": "平台X轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    },
+                    {
+                      "axis_ids": "平台Y轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "creact_vision_point",
+          "param": {
+            "point_ids": "晶圆转平左边点",
+            "vision_point_axis": [
+              { "axis_ids": "平台X轴" },
+              { "axis_ids": "平台Y轴" }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆高倍转平-移动右边小间距",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴",
+            "speed_ids": "运行速度",
+            "is_left": 0,
+            "is_high": 1,
+            "is_large": 0
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 100
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆高倍转平-右边定位",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 100
+          }
+        },
+        {
+          "type": "closed_loop_compensation",
+          "param": {
+            "deviations": [ 0.001, 0.001 ],
+            "max_loop_count": 20,
+            "actions": [
+              {
+                "type": "algorithm_process",
+                "param": {
+                  "alg_step_id": 5,
+                  "actions": [
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "static_trigger_camera",
+                      "param": {
+                        "millisecond": 20,
+                        "io_out": [
+                          {
+                            "ids": "顶面相机"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "data_process_placeholder",
+                "param": {
+                  "calibration_para_ids": "顶面相机平台XY"
+                }
+              },
+              {
+                "type": "move_offset",
+                "param": {
+                  "axis": [
+                    {
+                      "axis_ids": "平台X轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    },
+                    {
+                      "axis_ids": "平台Y轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "creact_vision_point",
+          "param": {
+            "point_ids": "晶圆转平右边点",
+            "vision_point_axis": [
+              { "axis_ids": "平台X轴" },
+              { "axis_ids": "平台Y轴" }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆高倍转平-移动左边大间距",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴",
+            "speed_ids": "运行速度",
+            "is_left": 1,
+            "is_high": 1,
+            "is_large": 1
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 100
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆高倍转平-移动右边大间距",
+      "actions": [
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴",
+            "speed_ids": "运行速度",
+            "is_left": 0,
+            "is_high": 1,
+            "is_large": 1
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 100
+          }
+        }
+      ]
+    },
+	{
+      "ids": "ALG-晶圆高倍转平建标",
+      "actions": [
+        {
+          "type": "algorithm_process",
+          "param": {
+            "alg_step_id": 4,
+            "actions": [
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "static_trigger_camera",
+                "param": {
+                  "millisecond": 20,
+                  "io_out": [
+                    {
+                      "ids": "顶面相机"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "io_output",
+                "param": {
+                  "io_out": [
+                    {
+                      "ids": "相机光源",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "GOTO-CHUCK上料位",
+      "actions": [
+        {
+          "type": "move_to",
+          "param": {
+            "point_ids": "晶圆高倍清晰高度",
+            "speed": [
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "运行速度"
+              }
+            ]
+          }
+        },
+        {
+          "type": "move_to",
+          "param": {
+            "point_ids": "CHUCK上料位",
+            "speed": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "运行速度"
+              },
+              {
+                "axis_ids": "平台Y轴",
+                "speed_ids": "运行速度"
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 1000
+          }
+        }
+      ]
+    },
+	{
+      "ids": "GOTO-边缘定位1",
+      "actions": [
+        {
+          "type": "move_to",
+          "param": {
+            "point_ids": "边缘定位1",
+            "speed": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "单轴高速"
+              },
+              {
+                "axis_ids": "平台Y轴",
+                "speed_ids": "单轴高速"
+              },
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "运行速度"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "GOTO-边缘定位2",
+      "actions": [
+        {
+          "type": "move_to",
+          "param": {
+            "point_ids": "边缘定位2",
+            "speed": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "单轴高速"
+              },
+              {
+                "axis_ids": "平台Y轴",
+                "speed_ids": "单轴高速"
+              },
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "运行速度"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "GOTO-边缘定位3",
+      "actions": [
+        {
+          "type": "move_to",
+          "param": {
+            "point_ids": "边缘定位3",
+            "speed": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "单轴高速"
+              },
+              {
+                "axis_ids": "平台Y轴",
+                "speed_ids": "单轴高速"
+              },
+              {
+                "axis_ids": "平台Z轴",
+                "speed_ids": "运行速度"
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "打开晶圆真空",
+      "actions": [
+        {
+          "type": "io_output",
+          "param": {
+            "io_out": [
+              {
+                "ids": "真空电磁阀1",
+                "value": 1
+              },
+              {
+                "ids": "真空电磁阀3",
+                "value": 1
+              }
+            ]
+          }
+        }
+      ]
+    },
+	{
+      "ids": "晶圆边缘定位算法",
+      "actions": [
+        {
+          "type": "closed_loop_compensation",
+          "param": {
+            "deviations": [ 0.05, 0.05 ],
+            "max_loop_count": 20,
+            "actions": [
+              {
+                "type": "algorithm_process",
+                "param": {
+                  "alg_step_id": 1,
+                  "actions": [
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "static_trigger_camera",
+                      "param": {
+                        "millisecond": 20,
+                        "io_out": [
+                          {
+                            "ids": "侧面相机"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "io_output",
+                      "param": {
+                        "io_out": [
+                          {
+                            "ids": "相机光源",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "data_process_placeholder",
+                "param": {
+                  "calibration_para_ids": "侧面相机平台XY"
+                }
+              },
+              {
+                "type": "move_offset",
+                "param": {
+                  "axis": [
+                    {
+                      "axis_ids": "平台X轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    },
+                    {
+                      "axis_ids": "平台Y轴",
+                      "speed_ids": "运行速度",
+                      "offset": 0
+                    }
+                  ]
+                }
+              },
+			  {
+			    "type": "wait",
+			    "param": {
+				  "millisecond": 200
+			    }
+			  }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ids": "晶圆边缘定位记录当前点1",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 200
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 1,
+            "is_end": 0,
+            "is_wafer_chuck": 0,
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴"
+          }
+        }
+      ]
+    },
+    {
+      "ids": "晶圆边缘定位记录当前点2",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 200
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 0,
+            "is_end": 0,
+            "is_wafer_chuck": 0,
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴"
+          }
+        }
+      ]
+    },
+    {
+      "ids": "晶圆边缘定位记录当前点3",
+      "actions": [
+        {
+          "type": "wait",
+          "param": {
+            "millisecond": 200
+          }
+        },
+        {
+          "type": "data_process_placeholder",
+          "param": {
+            "is_start": 0,
+            "is_end": 1,
+            "is_wafer_chuck": 0,
+            "axis_1_ids": "平台X轴",
+            "axis_2_ids": "平台Y轴"
+          }
+        }
+      ]
+    },
+	{
+      "ids": "GOTO-晶圆中心XY",
+      "actions": [
+        {
+          "type": "move_to",
+          "param": {
+            "point_ids": "WAFER中心",
+            "speed": [
+              {
+                "axis_ids": "平台X轴",
+                "speed_ids": "单轴高速"
+              },
+              {
+                "axis_ids": "平台Y轴",
+                "speed_ids": "单轴高速"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+

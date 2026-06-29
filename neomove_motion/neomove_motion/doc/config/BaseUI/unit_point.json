@@ -1,0 +1,57 @@
+{
+    "平台": [
+        {
+            "points_ids": "边缘定位1"
+        },
+        {
+            "points_ids": "边缘定位2"
+        },
+        {
+            "points_ids": "边缘定位3"
+        },
+        {
+            "points_ids": "桥低倍标定片"
+        },
+        {
+            "points_ids": "CHUCK边缘定位1"
+        },
+        {
+            "points_ids": "CHUCK边缘定位2"
+        },
+        {
+            "points_ids": "CHUCK边缘定位3"
+        },
+        {
+            "points_ids": "晶圆高倍清晰高度"
+        },
+        {
+            "points_ids": "CHUCK高倍清晰高度"
+        },
+        {
+            "points_ids": "3PIN顶针高度"
+        },
+        {
+            "points_ids": "3PIN旋转高度"
+        },
+        {
+            "points_ids": "3PIN顶住角度"
+        },
+        {
+            "points_ids": "CHUCK上料位"
+        },
+        {
+            "points_ids": "清针高度"
+        },
+        {
+            "points_ids": "平行角度"
+        }
+    ],
+    "视觉": [
+        {
+            "points_ids": "拍pad"
+        },
+        {
+            "points_ids": "视觉拍摄点"
+        }
+    ]
+}

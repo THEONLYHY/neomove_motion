@@ -1,0 +1,722 @@
+﻿{
+  "algorithm_steps": [
+    {
+      "id": 1,
+      "name": "晶圆定位",
+      "description": "晶圆找边定位",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 2,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "wafer_circle_edge",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1024,
+              "bottom": 1280
+            }
+          ],
+          "points": [
+            {
+              "left": 0,
+              "top": 0
+            }
+          ],
+          "dl_models": [
+            {
+              "model_file": "",
+              "param_file": ""
+            }
+          ],
+          "shape_models": [
+            ""
+          ],
+          "ncc_models": [
+            ""
+          ],
+          "cssz": [
+            1024,
+            1280,
+            1,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "id": 111,
+      "name": "晶圆定位",
+      "description": "晶圆找边定位",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 1,
+        "trigger_type": 1
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "wafer_circle_edge",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ],
+          "points": [
+            {
+              "left": 0,
+              "top": 0
+            }
+          ],
+          "dl_models": [
+            {
+              "model_file": "",
+              "param_file": ""
+            }
+          ],
+          "shape_models": [
+            ""
+          ],
+          "ncc_models": [
+            ""
+          ],
+          "cssz": [
+            1280,
+            1024,
+            1,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "低倍角度模板",
+      "description": "桥相机低倍角度创建模板",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 2,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "low_high_angle_creact_temp",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ],
+          "points": [
+            {
+              "left": 0,
+              "top": 0
+            }
+          ],
+          "dl_models": [
+            {
+              "model_file": "",
+              "param_file": ""
+            }
+          ],
+          "shape_models": [
+            ""
+          ],
+          "ncc_models": [
+            ""
+          ],
+          "cssz": [
+            1280,
+            1024,
+            1,
+            2
+          ],
+          "template_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon\\low_angle"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "低倍角度",
+      "description": "桥相机低倍角度",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 1,
+        "trigger_type": 1
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "low_angle",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ],
+          "points": [
+            {
+              "left": 0,
+              "top": 0
+            }
+          ],
+          "dl_models": [
+            {
+              "model_file": "",
+              "param_file": ""
+            }
+          ],
+          "shape_models": [
+            ""
+          ],
+          "ncc_models": [
+            ""
+          ],
+          "cssz": [
+            1280,
+            1024,
+            1,
+            2
+          ],
+          "template_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon\\low_angle"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "高倍角度模板",
+      "description": "高倍角度创建模板",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 1,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "low_high_angle_creact_temp",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ],
+          "points": [
+            {
+              "left": 0,
+              "top": 0
+            }
+          ],
+          "dl_models": [
+            {
+              "model_file": "",
+              "param_file": ""
+            }
+          ],
+          "shape_models": [
+            ""
+          ],
+          "ncc_models": [
+            ""
+          ],
+          "cssz": [
+            1280,
+            1024,
+            1,
+            2
+          ],
+          "sfsz": [
+            180,
+            180
+          ],
+          "ljsz": "none",
+          "template_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon\\high_angle"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "高倍角度",
+      "description": "高倍角度转平",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 1,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "high_angle",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ],
+          "points": [
+            {
+              "left": 0,
+              "top": 0
+            }
+          ],
+          "dl_models": [
+            {
+              "model_file": "",
+              "param_file": ""
+            }
+          ],
+          "shape_models": [
+            ""
+          ],
+          "ncc_models": [
+            ""
+          ],
+          "cssz": [
+            1280,
+            1024,
+            1,
+            2
+          ],
+          "sfsz": [
+            180,
+            180
+          ],
+          "ljsz": "none",
+          "template_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon\\high_angle"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "顶面相机自动对焦算法",
+      "description": "顶面相机自动对焦算法",
+      "image_count": 100,
+      "CameraConfig": {
+        "id": 1,
+        "trigger_type": 2,
+        "frame_rate": 90
+      },
+      "algorithm": {
+        "type": "auto_focus",
+        "StepConfig": {
+          "function_ids": "auto_focus",
+          "desc": "自动对焦",
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ]
+        }
+      }
+    },
+	{
+      "id": 61,
+      "name": "侧面相机自动对焦算法",
+      "description": "侧面相机自动对焦算法",
+      "image_count": 60,
+      "CameraConfig": {
+        "id": 2,
+        "trigger_type": 2,
+        "frame_rate": 60
+      },
+      "algorithm": {
+        "type": "auto_focus",
+        "StepConfig": {
+          "function_ids": "auto_focus",
+          "desc": "自动对焦",
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1024,
+              "bottom": 1280
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 7,
+      "name": "PAD定位",
+      "description": "PAD定位",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 1,
+        "frame_rate": 10,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "pad_find",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 600,
+              "top": 300,
+              "right": 870,
+              "bottom": 560
+            }
+          ],
+          "points": [
+            {
+              "left": 0,
+              "top": 0
+            }
+          ],
+          "dl_models": [
+            {
+              "model_file": "",
+              "param_file": ""
+            }
+          ],
+          "shape_models": [
+            ""
+          ],
+          "ncc_models": [
+            ""
+          ],
+          "cssz": [
+            1280,
+            1024,
+            1,
+            2
+          ],
+          "sfsz": [
+            204,
+            204
+          ],
+          "ljsz": "none"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "name": "顶面相机标定模板",
+      "description": "顶面相机标定模板",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 1,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "calbration_creact_temp",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ],
+          "template_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "name": "顶面相机自动标定",
+      "description": "顶面相机自动标定",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 1,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "calbration_match_temp",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ],
+          "template_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon"
+        }
+      }
+    },
+    {
+      "id": 81,
+      "name": "侧面相机标定模板",
+      "description": "侧面相机标定模板",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 2,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "calbration_creact_temp2",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 960
+            }
+          ],
+          "template_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon"
+        }
+      }
+    },
+    {
+      "id": 91,
+      "name": "侧面相机自动标定",
+      "description": "侧面相机自动标定",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 2,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "calbration_match_temp2",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 960
+            }
+          ],
+          "template_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "name": "针相机拍标定板算法",
+      "description": "针相机拍标定板算法",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 2,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "needle_camera_capturing_calibration_board",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 960
+            }
+          ],
+          "template_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon"
+        }
+      }
+    },
+    {
+      "id": 11,
+      "name": "桥相机拍标定板算法",
+      "description": "桥相机拍标定板算法",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 1,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "bridge_camera_capturing_calibration_board",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ],
+          "template_path": "D:\\work\\xibi_probe_station\\x64\\Debug\\Halcon"
+        }
+      }
+    },
+    {
+      "id": 14,
+      "name": "chuck定位",
+      "description": "chuck找边定位",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 1,
+        "trigger_type": 1
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "chuck_circle_edge",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ],
+          "points": [
+            {
+              "left": 0,
+              "top": 0
+            }
+          ],
+          "dl_models": [
+            {
+              "model_file": "",
+              "param_file": ""
+            }
+          ],
+          "shape_models": [
+            ""
+          ],
+          "ncc_models": [
+            ""
+          ],
+          "cssz": [
+            1280,
+            1024,
+            1,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "id": 15,
+      "name": "清晰度计算",
+      "description": "清晰度计算",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 2,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "TZT_QXD",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1280,
+              "bottom": 1024
+            }
+          ],
+          "points": [
+            {
+              "left": 0,
+              "top": 0
+            }
+          ],
+          "dl_models": [
+            {
+              "model_file": "",
+              "param_file": ""
+            }
+          ],
+          "shape_models": [
+            ""
+          ],
+          "ncc_models": [
+            ""
+          ],
+          "cssz": [
+            4,
+            4,
+            1,
+            2
+          ]
+        }
+      }
+    },
+	{
+      "id": 151,
+      "name": "顶面相机清晰度计算",
+      "description": "顶面相机清晰度计算",
+      "image_count": 1,
+      "CameraConfig": {
+        "id": 1,
+        "trigger_type": 2
+      },
+      "algorithm": {
+        "type": "halcon_script_executor",
+        "StepConfig": {
+          "function_ids": "TZT_QXD_2",
+          "debug_halcon": false,
+          "roi_rects": [
+            {
+              "left": 0,
+              "top": 0,
+              "right": 1024,
+              "bottom": 1280
+            }
+          ],
+          "points": [
+            {
+              "left": 0,
+              "top": 0
+            }
+          ],
+          "dl_models": [
+            {
+              "model_file": "",
+              "param_file": ""
+            }
+          ],
+          "shape_models": [
+            ""
+          ],
+          "ncc_models": [
+            ""
+          ],
+          "cssz": [
+            4,
+            4,
+            1,
+            2
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="22.11.0.0">
+<procedure name="probe_G0_bridge_low_V1_circle_edge">
+<interface>
+<ic>
+<par name="inval" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="outvald" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>**返回值 0状态 1row 2col</c>
+<l>gen_empty_obj (imgout)</l>
+<l>outvald:=dict{}</l>
+<l>gen_empty_obj (ggreg)</l>
+<l>gen_empty_obj (bbreg)</l>
+<l>gen_empty_obj (rrreg)</l>
+<l>try</l>
+<c>****直接赋值，方便修改</c>
+<l>    cssz := inval.cssz</l>
+<l>    cssz2 := inval.cssz2</l>
+<l>    str_array := inval.str_array</l>
+<l>    single_str := inval.single_str</l>
+<l>    single_int := inval.single_int</l>
+<l>    get_dict_object (roi, inval, 'roi')</l>
+<l>    get_dict_object (Image, inval, 'inimg')</l>
+<l>    windid :=inval.windid</l>
+<l>    outval:=[]</l>
+<c></c>
+<l>    numt:=0</l>
+<l>    tzxh:=cssz[numt]</l>
+<l>    numt:=numt+1</l>
+<c>***************************开始算法</c>
+<l>    get_image_size (Image, Width, Height)</l>
+<l>    gen_cross_contour_xld (Cross, Height/2, Width/2, 1280,0)</l>
+<c>    </c>
+<c></c>
+<l>    binary_threshold (Image, Region, 'smooth_histo', 'light', UsedThreshold)</l>
+<l>    fill_up (Region, RegionFillUp)</l>
+<l>    closing_circle (Region, RegionClosing, 10)</l>
+<l>    opening_circle (RegionClosing, RegionOpening, 20)</l>
+<l>    connection (RegionOpening, ConnectedRegions1)</l>
+<l>    select_shape_std (ConnectedRegions1, SelectedRegions1, 'max_area', 70)</l>
+<l>    shape_trans (SelectedRegions1, RegionTrans, 'convex')</l>
+<c>    </c>
+<l>    gen_region_points (Region1, Height/2, Width/2)</l>
+<l>    distance_rr_min (Region1, RegionTrans, MinDistance, Row1, Column1, Row, Column)</l>
+<l>    gen_cross_contour_xld (Cross1, Row, Column, 500, 0.785398)</l>
+<c>    </c>
+<l>    concat_obj (ggreg, Cross1, ggreg)</l>
+<l>    concat_obj (bbreg, Cross, bbreg)</l>
+<c>    </c>
+<c>    </c>
+<l>    outval:=[outval,0,Row,Column,0]</l>
+<c>    </c>
+<c>    </c>
+<c>*************************开始显示     </c>
+<l>    disp_obj (Image, inval.windid)</l>
+<l>    set_color (inval.windid, 'green')</l>
+<l>    disp_obj (ggreg, inval.windid)</l>
+<l>    set_color (inval.windid, 'blue')</l>
+<l>    disp_obj (bbreg, inval.windid)</l>
+<l>    set_color (inval.windid, 'red')</l>
+<l>    disp_obj (rrreg, inval.windid)</l>
+<l>    dump_window_image (Imageout, inval.windid)</l>
+<c>    </c>
+<l>    outvald.outimg:=Imageout</l>
+<l>    outvald.errms:=''</l>
+<l>    outvald.outval:=outval</l>
+<l>    outvald.objOut:=Imageout</l>
+<l>    outvald.errms2:='result中文'</l>
+<l>    outvald.outval2:=outval</l>
+<l> catch (Exception)</l>
+<l>        outval:=100         </l>
+<l>        outvald.outimg:=inval.inimg</l>
+<l>        tuple_string (Exception, '0', String)</l>
+<l>        outvald.errms:=sum(String)</l>
+<l>        outvald.outval:=outval</l>
+<l> endtry</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="probe_G0_bridge_low_V1_circle_edge">
+<parameters>
+<parameter id="inval"/>
+<parameter id="outvald"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

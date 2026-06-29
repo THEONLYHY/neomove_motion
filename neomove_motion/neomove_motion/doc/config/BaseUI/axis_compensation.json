@@ -1,0 +1,24 @@
+{
+  "axis": {
+    "0": {
+      "type": "2D",
+      "enabled": true,
+      "2d": {
+        "ref_axis_x": 1,
+        "ref_axis_y": 0,
+        "origin_position_x": 0,
+        "origin_position_y": 0,
+        "interval_x": 1,
+        "interval_y": 155.4,
+        "points_width": 1,
+        "points_height": 4,
+        "points": [
+          [-0.066352],
+          [-0.033176],
+          [0],
+          [0.033176]
+        ]
+      }
+    }
+  }
+}

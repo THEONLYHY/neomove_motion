@@ -1,0 +1,72 @@
+﻿{
+  "camera_configs": [
+  	{
+      "config_ids": "顶面相机实时",
+      "exposure_time": 5000.0,
+      "frame_count": 1,
+      "frame_rate": 30,
+      "gain":  1,
+      "id": 1,
+      "image_type": 1,
+      "reverse_image": 0,
+      "roi": {
+        "bottom": 1024,
+        "left": 0,
+        "right": 1280,
+        "top": 0
+      },
+      "trigger_type": 4
+    },
+    {
+      "config_ids": "顶面相机触发",
+      "exposure_time": 5000.0,
+      "frame_count": 1,
+      "frame_rate": 30,
+      "gain": 1,
+      "id": 1,
+      "image_type": 1,
+      "reverse_image": 0,
+      "roi": {
+        "bottom": 1024,
+        "left": 0,
+        "right": 1280,
+        "top": 0
+      },
+      "trigger_type": 2
+    },
+    {
+      "config_ids": "侧面相机实时",
+      "exposure_time": 1000.0,
+      "frame_count": 1,
+      "frame_rate": 30,
+      "gain": 1.0,
+      "id": 2,
+      "image_type": 2,
+      "reverse_image": 1,
+      "roi": {
+        "bottom": 1280,
+        "left": 0,
+        "right": 1024,
+        "top": 0
+      },
+      "trigger_type": 4
+    },
+    {
+      "config_ids": "侧面相机触发",
+      "exposure_time": 1000.0,
+      "frame_count": 1,
+      "frame_rate": 30,
+      "gain": 1.0,
+      "id": 2,
+      "image_type": 2,
+      "reverse_image": 1,
+      "roi": {
+        "bottom": 1280,
+        "left": 0,
+        "right": 1024,
+        "top": 0
+      },
+      "trigger_type": 2
+    }
+  ]
+}

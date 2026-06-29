@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{04E76E01-7FBB-339E-9562-E2E5FB86AE0D}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>5.15.2_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>5.15.2_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <PublicSdkDir Condition="'$(PublicSdkDir)'==''">$(MSBuildProjectDirectory)\..\..\..\..\..\..\public\</PublicSdkDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <OutDir>$(MSBuildProjectDirectory)\..\x64\$(Configuration)\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\x64\$(Configuration)\</IntDir>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <LocalDebuggerEnvironment>PATH=$(PublicSdkDir)bin;$(QtDllPath);%PATH%</LocalDebuggerEnvironment>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutDir>$(MSBuildProjectDirectory)\..\x64\$(Configuration)\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\x64\$(Configuration)\</IntDir>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <LocalDebuggerEnvironment>PATH=$(PublicSdkDir)bin;$(QtDllPath);%PATH%</LocalDebuggerEnvironment>
+  </PropertyGroup>
+  <ItemGroup>
+    <QtIncludePath Include="$(PublicSdkDir)include" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(PublicSdkDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>_DEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+    <Link>
+      <AdditionalLibraryDirectories>$(PublicSdkDir)lib_2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(PublicSdkDir)bin\*.dll" "$(OutDir)"
+xcopy /E /I /Y "$(PublicSdkDir)bin\motion\*" "$(OutDir)motion\"
+xcopy /E /I /Y "$(MSBuildProjectDirectory)\..\..\..\doc\config\BaseUI\*" "$(OutDir)config\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(PublicSdkDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+    <Link>
+      <AdditionalLibraryDirectories>$(PublicSdkDir)lib_2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(PublicSdkDir)bin\*.dll" "$(OutDir)"
+xcopy /E /I /Y "$(PublicSdkDir)bin\motion\*" "$(OutDir)motion\"
+xcopy /E /I /Y "$(MSBuildProjectDirectory)\..\..\..\doc\config\BaseUI\*" "$(OutDir)config\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\alg\alg_calibration.cc" />
+    <ClCompile Include="src\alg\polynomial_fitting.cc" />
+    <ClCompile Include="src\alg\simple_matrix.cc" />
+    <ClCompile Include="src\controller\action\custom_total_action.cc" />
+    <ClCompile Include="src\controller\algorithm_process\algorithm_process_callback_impl.cc" />
+    <ClCompile Include="src\controller\calibration\calibration_alg.cc" />
+    <ClCompile Include="src\controller\camera_manager\base.pb.cc" />
+    <ClCompile Include="src\controller\camera_manager\camera_config.pb.cc" />
+    <ClCompile Include="src\controller\camera_manager\camera_manager.cc" />
+    <ClCompile Include="src\controller\device_status_monitor\device_status_monitor.cc" />
+    <ClCompile Include="src\controller\motion_control\motion_control.cc" />
+    <ClCompile Include="src\controller\qt_async_serial\qt_async_serial.cc" />
+    <ClCompile Include="src\controller\real_time_data\real_time_data.cc" />
+    <ClCompile Include="src\controller\robot_manual\robot_manual.cc" />
+    <ClCompile Include="src\controller\task\task_callback_impl.cc" />
+    <ClCompile Include="src\main.cc" />
+    <ClCompile Include="src\model\calibration\calibration_para.cc" />
+    <ClCompile Include="src\model\camera_config\camera_config.cc" />
+    <ClCompile Include="src\model\model_mgr.cc" />
+    <ClCompile Include="src\model\module_info\module_info.cc" />
+    <ClCompile Include="src\model\unit_info\unit_info_mgr.cc" />
+    <ClCompile Include="src\model\unit_info\unit_point_mgr.cc" />
+    <ClCompile Include="src\model\user_manage\user_manage.cc" />
+    <ClCompile Include="src\third_party\alglib\alglibinternal.cc" />
+    <ClCompile Include="src\third_party\alglib\alglibmisc.cc" />
+    <ClCompile Include="src\third_party\alglib\ap.cc" />
+    <ClCompile Include="src\third_party\alglib\dataanalysis.cc" />
+    <ClCompile Include="src\third_party\alglib\diffequations.cc" />
+    <ClCompile Include="src\third_party\alglib\fasttransforms.cc" />
+    <ClCompile Include="src\third_party\alglib\integration.cc" />
+    <ClCompile Include="src\third_party\alglib\interpolation.cc" />
+    <ClCompile Include="src\third_party\alglib\linalg.cc" />
+    <ClCompile Include="src\third_party\alglib\optimization.cc" />
+    <ClCompile Include="src\third_party\alglib\solvers.cc" />
+    <ClCompile Include="src\third_party\alglib\specialfunctions.cc" />
+    <ClCompile Include="src\third_party\alglib\statistics.cc" />
+    <ClCompile Include="src\view\components\ps_arrow_button\ps_arrow_button.cc" />
+    <ClCompile Include="src\view\components\ps_button\ps_button.cc" />
+    <ClCompile Include="src\view\components\ps_color\ps_color.cc" />
+    <ClCompile Include="src\view\components\ps_combo_box\ps_combo_box.cc" />
+    <ClCompile Include="src\view\components\ps_label\ps_label.cc" />
+    <ClCompile Include="src\view\components\ps_line_edit\ps_line_edit.cc" />
+    <ClCompile Include="src\view\components\ps_loading_spinner\ps_loading_spinner.cc" />
+    <ClCompile Include="src\view\components\ps_progress_bar\ps_progress_bar.cc" />
+    <ClCompile Include="src\view\components\ps_style\ps_legacy_painter.cc" />
+    <ClCompile Include="src\view\components\ps_style\ps_surface_painter.cc" />
+    <ClCompile Include="src\view\components\ps_table_widget\ps_table_widget.cc" />
+    <ClCompile Include="src\view\components\ps_text_edit\ps_text_edit.cc" />
+    <ClCompile Include="src\view\main_window\base_main_window.cc" />
+    <ClCompile Include="src\view\pages\main_page\main_page.cc" />
+    <ClCompile Include="src\view\pages\init_page_view\init_page_view.cc" />
+    <ClCompile Include="src\view\pages\maintenance_change_view\camera_calibration_view\camera_calibration_view.cc" />
+    <ClCompile Include="src\view\pages\maintenance_change_view\maintenance_change_view.cc" />
+    <ClCompile Include="src\view\pages\maintenance_change_view\sensor_status\sensor_status_view.cc" />
+    <ClCompile Include="src\view\pages\start_page\start_page.cc" />
+    <ClCompile Include="src\view\pages\system_setting_page\system_setting_page.cc" />
+    <ClCompile Include="src\view\pages\title_bar_view\title_bar_view.cc" />
+    <ClCompile Include="src\view\tools\alarm_lamp_view\alarm_lamp_view.cc" />
+    <ClCompile Include="src\view\tools\axis_setting_view\axis_setting_view.cc" />
+    <ClCompile Include="src\view\tools\error_list_view\error_list_view.cc" />
+    <ClCompile Include="src\view\tools\export_config_view\export_config_view.cc" />
+    <ClCompile Include="src\view\tools\io_setting_view\io_setting_view.cc" />
+    <ClCompile Include="src\view\tools\limit_setting_view\limit_setting_view.cc" />
+    <ClCompile Include="src\view\tools\log_view\log_view.cc" />
+    <ClCompile Include="src\view\tools\login_dialog\login_dialog.cc" />
+    <ClCompile Include="src\view\tools\multi_image_show_view\image_show_view\image_show_view.cc" />
+    <ClCompile Include="src\view\tools\multi_image_show_view\multi_image_show_view.cc" />
+    <ClCompile Include="src\view\tools\point_setting_view\point_setting_view.cc" />
+    <ClCompile Include="src\view\tools\popup_dialog\popup_dialog.cc" />
+    <ClCompile Include="src\view\tools\robot_xyrz_view\robot_xyrz.cc" />
+    <ClCompile Include="src\view\tools\virtual_keyboard\virtual_keyboard.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\alg\alg_calibration.h" />
+    <ClInclude Include="src\alg\polynomial_fitting.h" />
+    <ClInclude Include="src\alg\simple_matrix.h" />
+    <ClInclude Include="src\controller\action\custom_total_action.h" />
+    <ClInclude Include="src\controller\action\open_camera\open_camera_action.h" />
+    <ClInclude Include="src\controller\action\vision_point\vision_point_action.h" />
+    <ClInclude Include="src\controller\action\wait_condition\wait_condition_action.h" />
+    <ClInclude Include="src\controller\algorithm_process\algorithm_process_callback_impl.h" />
+    <ClInclude Include="src\controller\algorithm_result_wait_manager\algorithm_result_wait_manager.h" />
+    <ClInclude Include="src\controller\async_wait\async_wait.h" />
+    <ClInclude Include="src\controller\calibration\calibration_alg.h" />
+    <ClInclude Include="src\controller\camera_manager\camera_config.pb.h" />
+    <ClInclude Include="src\controller\device_status_monitor\device_status_monitor.h" />
+    <ClInclude Include="src\controller\log_manager\log_view_sink.h" />
+    <ClInclude Include="src\controller\motion_control\motion_control.h" />
+    <ClInclude Include="src\controller\real_time_data\real_time_data.h" />
+    <ClInclude Include="src\controller\robot_manual\robot_define.h" />
+    <ClInclude Include="src\controller\task\task_callback_impl.h" />
+    <ClInclude Include="src\model\calibration\calibration_para.h" />
+    <ClInclude Include="src\model\camera_config\camera_config.h" />
+    <ClInclude Include="src\model\common\collection_db_manager.h" />
+    <ClInclude Include="src\model\common\config_db_manager.h" />
+    <ClInclude Include="src\model\common\db.h" />
+    <ClInclude Include="src\model\common\db_helpers.h" />
+    <ClInclude Include="src\model\db.h" />
+    <ClInclude Include="src\model\error_define.h" />
+    <ClInclude Include="src\model\model_mgr.h" />
+    <ClInclude Include="src\model\module_info\module_info.h" />
+    <ClInclude Include="src\model\unit_info\unit_info_mgr.h" />
+    <ClInclude Include="src\model\unit_info\unit_point_mgr.h" />
+    <ClInclude Include="src\model\user_manage\user_manage.h" />
+    <ClInclude Include="src\third_party\alglib\alglibinternal.h" />
+    <ClInclude Include="src\third_party\alglib\alglibmisc.h" />
+    <ClInclude Include="src\third_party\alglib\ap.h" />
+    <ClInclude Include="src\third_party\alglib\dataanalysis.h" />
+    <ClInclude Include="src\third_party\alglib\diffequations.h" />
+    <ClInclude Include="src\third_party\alglib\fasttransforms.h" />
+    <ClInclude Include="src\third_party\alglib\integration.h" />
+    <ClInclude Include="src\third_party\alglib\interpolation.h" />
+    <ClInclude Include="src\third_party\alglib\linalg.h" />
+    <ClInclude Include="src\third_party\alglib\optimization.h" />
+    <ClInclude Include="src\third_party\alglib\solvers.h" />
+    <ClInclude Include="src\third_party\alglib\specialfunctions.h" />
+    <ClInclude Include="src\third_party\alglib\statistics.h" />
+    <ClInclude Include="src\third_party\alglib\stdafx.h" />
+    <ClInclude Include="src\view\components\ps_color\ps_color.h" />
+    <ClInclude Include="src\view\components\ps_style\ps_legacy_painter.h" />
+    <ClInclude Include="src\view\components\ps_style\ps_surface_painter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src\controller\camera_manager\camera_manager.h" />
+    <QtMoc Include="src\controller\qt_async_serial\qt_async_serial.h" />
+    <QtMoc Include="src\controller\robot_manual\robot_manual.h" />
+    <QtMoc Include="src\view\components\ps_arrow_button\ps_arrow_button.h" />
+    <QtMoc Include="src\view\components\ps_button\ps_button.h" />
+    <QtMoc Include="src\view\components\ps_combo_box\ps_combo_box.h" />
+    <QtMoc Include="src\view\components\ps_label\ps_label.h" />
+    <QtMoc Include="src\view\components\ps_line_edit\ps_line_edit.h" />
+    <QtMoc Include="src\view\components\ps_loading_spinner\ps_loading_spinner.h" />
+    <QtMoc Include="src\view\components\ps_progress_bar\ps_progress_bar.h" />
+    <QtMoc Include="src\view\components\ps_table_widget\ps_table_widget.h" />
+    <QtMoc Include="src\view\components\ps_text_edit\ps_text_edit.h" />
+    <QtMoc Include="src\view\main_window\base_main_window.h" />
+    <QtMoc Include="src\view\pages\main_page\main_page.h" />
+    <QtMoc Include="src\view\pages\init_page_view\init_page_view.h" />
+    <QtMoc Include="src\view\pages\maintenance_change_view\camera_calibration_view\camera_calibration_view.h" />
+    <QtMoc Include="src\view\pages\maintenance_change_view\maintenance_change_view.h" />
+    <QtMoc Include="src\view\pages\maintenance_change_view\sensor_status\sensor_status_view.h" />
+    <QtMoc Include="src\view\pages\start_page\start_page.h" />
+    <QtMoc Include="src\view\pages\system_setting_page\system_setting_page.h" />
+    <QtMoc Include="src\view\pages\title_bar_view\title_bar_view.h" />
+    <QtMoc Include="src\view\tools\alarm_lamp_view\alarm_lamp_view.h" />
+    <QtMoc Include="src\view\tools\axis_setting_view\axis_setting_view.h" />
+    <QtMoc Include="src\view\tools\error_list_view\error_list_view.h" />
+    <QtMoc Include="src\view\tools\export_config_view\export_config_view.h" />
+    <QtMoc Include="src\view\tools\io_setting_view\io_setting_view.h" />
+    <QtMoc Include="src\view\tools\limit_setting_view\limit_setting_view.h" />
+    <QtMoc Include="src\view\tools\log_view\log_view.h" />
+    <QtMoc Include="src\view\tools\login_dialog\login_dialog.h" />
+    <QtMoc Include="src\view\tools\multi_image_show_view\image_show_view\image_show_view.h" />
+    <QtMoc Include="src\view\tools\multi_image_show_view\multi_image_show_view.h" />
+    <QtMoc Include="src\view\tools\point_setting_view\point_setting_view.h" />
+    <QtMoc Include="src\view\tools\popup_dialog\popup_dialog.h" />
+    <QtMoc Include="src\view\tools\robot_xyrz_view\robot_xyrz.h" />
+    <QtMoc Include="src\view\tools\virtual_keyboard\virtual_keyboard.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="res\main_res.qrc" />
+    <QtRcc Include="src\view\tools\multi_image_show_view\image_show_view\image_show_view.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="src\view\main_window\base_main_window.ui" />
+    <QtUic Include="src\view\pages\init_page_view\init_page_view.ui" />
+    <QtUic Include="src\view\pages\maintenance_change_view\camera_calibration_view\camera_calibration_view.ui" />
+    <QtUic Include="src\view\pages\maintenance_change_view\maintenance_change_view.ui" />
+    <QtUic Include="src\view\pages\maintenance_change_view\sensor_status\sensor_status_view.ui" />
+    <QtUic Include="src\view\pages\start_page\start_page.ui" />
+    <QtUic Include="src\view\pages\system_setting_page\system_setting_page.ui" />
+    <QtUic Include="src\view\pages\title_bar_view\title_bar_view.ui" />
+    <QtUic Include="src\view\tools\alarm_lamp_view\alarm_lamp_view.ui" />
+    <QtUic Include="src\view\tools\axis_setting_view\axis_setting_view.ui" />
+    <QtUic Include="src\view\tools\error_list_view\error_list_view.ui" />
+    <QtUic Include="src\view\tools\export_config_view\export_config_view.ui" />
+    <QtUic Include="src\view\tools\io_setting_view\io_setting_view.ui" />
+    <QtUic Include="src\view\tools\limit_setting_view\limit_setting_view.ui" />
+    <QtUic Include="src\view\tools\log_view\log_view.ui" />
+    <QtUic Include="src\view\tools\multi_image_show_view\image_show_view\image_show_view.ui" />
+    <QtUic Include="src\view\tools\multi_image_show_view\multi_image_show_view.ui" />
+    <QtUic Include="src\view\tools\point_setting_view\point_setting_view.ui" />
+    <QtUic Include="src\view\tools\robot_xyrz_view\robot_xyrz.ui" />
+  </ItemGroup>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>
+

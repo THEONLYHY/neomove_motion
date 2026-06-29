@@ -1,0 +1,11 @@
+﻿{
+    "algorithm_configs":  [
+                              {
+                                  "type":  "auto_focus",
+                                  "desc":  "自动对焦算法",
+                                  "init_config":  {
+                                                      "init_param":  "根据算法需求自定义init_config节点下的配置"
+                                                  }
+                              }
+                          ]
+}

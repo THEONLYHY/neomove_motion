@@ -4,7 +4,7 @@ VisualStudioVersion = 16.0.35425.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neomove_motion", "neomove_motion\neomove_motion.vcxproj", "{D4E5F6A7-B8C9-4D0E-A1B2-C3D4E5F6A7B8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MotionTestHost", "neomove_motion\test\MotionTestHost\MotionTestHost.vcxproj", "{600E50CE-B4D6-41C9-8330-CC704ABF5913}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseUI", "neomove_motion\test\BaseUI\BaseUI\BaseUI.vcxproj", "{04E76E01-7FBB-339E-9562-E2E5FB86AE0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +16,10 @@ Global
 		{D4E5F6A7-B8C9-4D0E-A1B2-C3D4E5F6A7B8}.Debug|x64.Build.0 = Debug|x64
 		{D4E5F6A7-B8C9-4D0E-A1B2-C3D4E5F6A7B8}.Release|x64.ActiveCfg = Release|x64
 		{D4E5F6A7-B8C9-4D0E-A1B2-C3D4E5F6A7B8}.Release|x64.Build.0 = Release|x64
-		{600E50CE-B4D6-41C9-8330-CC704ABF5913}.Debug|x64.ActiveCfg = Debug|x64
-		{600E50CE-B4D6-41C9-8330-CC704ABF5913}.Debug|x64.Build.0 = Debug|x64
-		{600E50CE-B4D6-41C9-8330-CC704ABF5913}.Release|x64.ActiveCfg = Release|x64
-		{600E50CE-B4D6-41C9-8330-CC704ABF5913}.Release|x64.Build.0 = Release|x64
+		{04E76E01-7FBB-339E-9562-E2E5FB86AE0D}.Debug|x64.ActiveCfg = Debug|x64
+		{04E76E01-7FBB-339E-9562-E2E5FB86AE0D}.Debug|x64.Build.0 = Debug|x64
+		{04E76E01-7FBB-339E-9562-E2E5FB86AE0D}.Release|x64.ActiveCfg = Release|x64
+		{04E76E01-7FBB-339E-9562-E2E5FB86AE0D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
