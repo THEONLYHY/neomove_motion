@@ -368,3 +368,8 @@ neomove_motion/neomove_motion/test/MotionTestHost/AGENTS.md
 neomove_motion/neomove_motion/test/MotionTestHost/README.md
 neomove_motion/neomove_motion/test/MotionTestHost/openspec/
 
+# Halcon vision model binaries (too large for Git, distribute separately)
+neomove_motion/neomove_motion/doc/config/BaseUI/halcon_demo/Model_Ncc_Low
+*.shm
+**/halcon_demo/Model_*
+
