@@ -471,15 +471,15 @@ void InitPageView::OnEquipmentInitClicked() {
       tr("设备开始初始化......"), {tr("轴上使能"), tr("轴初始化")}, 600);
   PopupDialogSingleton::GetInstance()->PopupOperationStatusAppend("轴上使能",
                                                                   2);
-  yotta::AxisConfigPtr axis_config =
-      yotta::ConfigFactory::GetInstance()->GetAxisConfig();
-  for (int i = 0; i < axis_config->GetAxisCount(); i++) {
-    yotta::AxisConfigItemPtr axis_config_item = axis_config->GetAxis(i);
 
-    char char_ids[256];
-    axis_config_item->GetIds(char_ids, 256);
+  common::MessageLoop::GetMessageLoop(common::kMotion)->PostTask([this] {
+    yotta::AxisConfigPtr axis_config =
+        yotta::ConfigFactory::GetInstance()->GetAxisConfig();
+    if (!axis_config) {
+      LOG(ERROR) << "get axis_config error";
+      return;
+    }
 
-    std::string axis_ids = char_ids;
     yotta::LimitMotionMgrPtr limit_motion =
         main_process::GetModuleMgr()->GetLimitMotionMgr();
     if (!limit_motion) {
@@ -487,22 +487,39 @@ void InitPageView::OnEquipmentInitClicked() {
       return;
     }
 
-    yotta::Axis *axis_motion = limit_motion->GetAxisByIds(axis_ids.c_str());
-    if (!axis_motion) {
-      LOG(ERROR) << "get axis_motion error";
-      return;
-    }
-    int result = axis_motion->ClearAmpAlarm();
-    result += axis_motion->SetServoOn();
-    if (result) {
-      LOG(ERROR) << "轴初始化失败!请重试";
-      return;
-    }
-  }
-  PopupDialogSingleton::GetInstance()->PopupOperationStatusAppend("轴上使能",
-                                                                  1);
+    for (int i = 0; i < axis_config->GetAxisCount(); i++) {
+      yotta::AxisConfigItemPtr axis_config_item = axis_config->GetAxis(i);
+      if (!axis_config_item) {
+        LOG(ERROR) << "get axis_config_item error, index=" << i;
+        return;
+      }
 
-  common::MessageLoop::GetMessageLoop(common::kMotion)->PostTask([this] {
+      char char_ids[256] = {};
+      axis_config_item->GetIds(char_ids, 256);
+
+      const std::string axis_ids = char_ids;
+      yotta::Axis* axis_motion = limit_motion->GetAxisByIds(axis_ids.c_str());
+      if (!axis_motion) {
+        LOG(ERROR) << "get axis_motion error, ids=" << axis_ids;
+        return;
+      }
+
+      const int clear_alarm_ret = axis_motion->ClearAmpAlarm();
+      if (clear_alarm_ret != 0) {
+        LOG(ERROR) << "axis clear alarm failed, ids=" << axis_ids
+                   << ", ret=" << clear_alarm_ret;
+        return;
+      }
+
+      const int servo_on_ret = axis_motion->SetServoOn();
+      if (servo_on_ret != 0) {
+        LOG(ERROR) << "axis servo on failed, ids=" << axis_ids
+                   << ", ret=" << servo_on_ret;
+        return;
+      }
+    }
+    PopupDialogSingleton::GetInstance()->PopupOperationStatusAppend("轴上使能",
+                                                                    1);
     PopupDialogSingleton::GetInstance()->PopupOperationStatusAppend("轴初始化",
                                                                     2);
     const int result = MotionControlSinglton::GetInstance()->DoTaskSync(

@@ -27,6 +27,13 @@ if ($source -notmatch "if\s*\(\s*module_mgr_initialized_\s*\)\s*\{[\s\S]*DeviceS
   exit 1
 }
 
+if ($source -match '"neomove_axis\.h"' -or
+    $source -match 'ApplySoftLimit' -or
+    $source -match 'QueryInterface\("NeoMoveAxis"') {
+  Write-Error "BaseUI must not depend on NeoMoveAxis private implementation"
+  exit 1
+}
+
 $projectPath = Join-Path $RepoRoot "neomove_motion\test\BaseUI\BaseUI\BaseUI.vcxproj"
 if (-not (Test-Path -LiteralPath $projectPath)) {
   Write-Error "BaseUI.vcxproj not found: $projectPath"
@@ -49,8 +56,14 @@ if ($project -notmatch '\.\.\\\.\.\\\.\.\\doc\\config\\BaseUI') {
   exit 1
 }
 
-if ($project -notmatch '\$\(YottaPublicDir\)bin\\motion') {
-  Write-Error "BaseUI project must copy motion plugins from the public SDK into output motion directory"
+if ($project -match '\$\(YottaPublicDir\)bin\\motion\\\*') {
+  Write-Error "BaseUI project must not copy motion plugins from YottaPublicDir"
+  exit 1
+}
+
+if ($project -notmatch 'NeoMoveMotionOutputDir' -or
+    $project -notmatch '\$\(NeoMoveMotionOutputDir\)neomove_motion\.mot') {
+  Write-Error "BaseUI project must copy neomove_motion.mot from the local NeoMove build output"
   exit 1
 }
 

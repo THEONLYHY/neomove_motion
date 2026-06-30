@@ -60,6 +60,9 @@
     <ClCompile Include="src\neomove_output_io.cc">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\neomove_sdk_guard.cc">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
     <ClCompile Include="src\pitch_compensation_config\pitch_compensation_config.cc">
       <Filter>Source Files\src\pitch_compensation_config</Filter>
     </ClCompile>
@@ -96,6 +99,9 @@
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="src\neomove_pdo_utils.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neomove_sdk_guard.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="src\pitch_compensation_config\pitch_compensation_config.h">

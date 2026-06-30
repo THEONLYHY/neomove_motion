@@ -7,6 +7,13 @@
 #include <cstring>
 
 #include "neomove_pdo_utils.h"
+#include "neomove_sdk_guard.h"
+
+namespace {
+
+constexpr int kMonitorPollIntervalMs = 20;
+
+}  // namespace
 
 NeoMoveIoMonitorThread::NeoMoveIoMonitorThread() {}
 
@@ -88,7 +95,10 @@ void NeoMoveIoMonitorThread::MonitorLoop() {
     MonitorInputIo();
     MonitorOutputIo();
     MonitorAxis();
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    // Polling observes IO/axis state only. It exits when Stop() clears
+    // running_, and uses a low frequency to avoid starving controller commands.
+    std::this_thread::sleep_for(
+        std::chrono::milliseconds(kMonitorPollIntervalMs));
   }
   LOG(INFO) << "NeoMoveIoMonitorThread::MonitorLoop exited.";
 }
@@ -181,7 +191,9 @@ void NeoMoveIoMonitorThread::MonitorAxis() {
     auto& entry = pair.second;
 
     NM_AXISSTATUS axis_status{};
-    int ret = NM_GetAxisStatus(GetControllerIndex(), axis_id, &axis_status);
+    int ret = neomove_sdk_guard::Call([&]() {
+      return NM_GetAxisStatus(GetControllerIndex(), axis_id, &axis_status);
+    });
     if (ret != NM_RETURN_OK) continue;
 
     bool new_alarm = axis_status.ampAlarm != 0;

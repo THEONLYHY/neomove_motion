@@ -7,7 +7,6 @@
 #include <main_process/module_mgr.h>
 #include <windows.h>
 
-#include <cstring>
 #include <QPushButton>
 
 #include "config/config_factory.h"
@@ -16,7 +15,6 @@
 #include "controller/log_manager/log_view_sink.h"
 #include "controller/motion_control/motion_control.h"
 #include "model/model_mgr.h"
-#include "neomove_axis.h"
 #include "view/components/ps_button/ps_button.h"
 #include "view/pages/maintenance_change_view/maintenance_change_view.h"
 #include "view/pages/main_page/main_page.h"
@@ -140,60 +138,8 @@ bool BaseMainWindow::InitModuleMgr() {
     return false;
   }
 
-  yotta::AxisConfigPtr axis_config =
-      yotta::ConfigFactory::GetInstance()->GetAxisConfig();
-  if (!axis_config) {
-    LOG(ERROR) << "GetAxisConfig failed.";
-    return false;
-  }
-
-  yotta::LimitMotionMgrPtr limit_motion =
-      main_process::GetModuleMgr()->GetLimitMotionMgr();
-  if (!limit_motion) {
-    LOG(ERROR) << "get limit_motion error";
-    return false;
-  }
-
-  // 所有轴上使能。
-  for (int i = 0; i < axis_config->GetAxisCount(); i++) {
-    yotta::AxisConfigItemPtr axis_config_item = axis_config->GetAxis(i);
-    if (!axis_config_item) {
-      LOG(ERROR) << "get axis_config_item error, index=" << i;
-      return false;
-    }
-
-    char char_ids[256] = {};
-    axis_config_item->GetIds(char_ids, 256);
-
-    yotta::Axis* axis_motion = limit_motion->GetAxisByIds(char_ids);
-    if (!axis_motion) {
-      LOG(ERROR) << "get axis_motion error, ids=" << char_ids;
-      return false;
-    }
-
-    int result = axis_motion->ClearAmpAlarm();
-
-    // 从 UI 配置读取软限位并下发到控制器
-    yotta::AxisAttributeConfigPtr attr = axis_config_item->GetAttribute();
-    if (attr) {
-      double limit_positive = 0;
-      double limit_negative = 0;
-      attr->GetLimitPositive(&limit_positive);
-      attr->GetLimitNegative(&limit_negative);
-      void* raw = axis_motion->QueryInterface("NeoMoveAxis", strlen("NeoMoveAxis"));
-      if (auto* neomove_axis = static_cast<NeoMoveAxis*>(raw)) {
-        neomove_axis->ApplySoftLimit(limit_positive, limit_negative);
-      }
-    }
-
-    result += axis_motion->SetServoOn();
-    if (result != 0) {
-      LOG(ERROR) << "axis init failed, ids=" << char_ids
-                 << ", result=" << result;
-      return false;
-    }
-  }
-
+  // 启动阶段只加载运动模块和配置，不直接清报警或上使能。
+  // 真实硬件动作由 InitPageView::OnEquipmentInitClicked() 排到运动线程执行。
   return true;
 }
 

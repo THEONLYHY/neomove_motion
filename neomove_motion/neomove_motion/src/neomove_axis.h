@@ -65,7 +65,6 @@ public:
                                       size_t length) override;
 
   void SetIoMonitorThread(std::weak_ptr<NeoMoveIoMonitorThread> monitor);
-  int ApplySoftLimit(double positive, double negative);
 
 private:
     // 获取控制器编号

@@ -7,12 +7,16 @@
 #include <glog/glog_helper.h>
 #include <nlohmann/json.hpp>
 
+#include <chrono>
 #include <cmath>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <memory>
 #include <string>
+#include <thread>
+
+#include "neomove_sdk_guard.h"
 
 namespace {
 
@@ -23,6 +27,10 @@ constexpr char kVelocityFastKey[] = "velocity_fast";
 constexpr char kVelocitySlowKey[] = "velocity_slow";
 constexpr char kAccKey[] = "acc";
 constexpr char kDecKey[] = "dec";
+constexpr int kMasterIndex = 0;
+constexpr unsigned int kMasterStatusRunning = 1;
+constexpr int kMasterRunningTimeoutMs = 15000;
+constexpr int kMasterRunningPollIntervalMs = 100;
 
 // JsonConfig 将运动插件配置放在 "neomove" 根节点下。
 // 统一在这里拼接 key，避免各配置项使用不一致的字面量前缀。
@@ -141,6 +149,48 @@ NeoMoveHomeParamConfig NeoMoveMotionMgrContextImpl::GetHomeParamConfig(
     return DefaultNeoMoveHomeParamConfig();
   }
   return iter->second;
+}
+
+int NeoMoveMotionMgrContextImpl::WaitForMasterRunning() {
+  int last_ret = NM_RETURN_OK;
+  unsigned int last_status = 0;
+  int elapsed_ms = 0;
+
+  while (elapsed_ms <= kMasterRunningTimeoutMs) {
+    unsigned int status = 0;
+    const int ret = neomove_sdk_guard::Call([&]() {
+      return NM_GetMasterStatus(controller_index_, kMasterIndex, &status);
+    });
+    last_ret = ret;
+    last_status = status;
+    if (ret == NM_RETURN_OK && status == kMasterStatusRunning) {
+      LOG(INFO) << "NeoMove master running, controller_index="
+                << controller_index_ << ", master_index=" << kMasterIndex
+                << ", elapsed_ms=" << elapsed_ms;
+      return 0;
+    }
+
+    if (elapsed_ms == 0 || elapsed_ms % 1000 == 0) {
+      LOG(WARNING) << "Waiting NeoMove master running, controller_index="
+                   << controller_index_ << ", master_index=" << kMasterIndex
+                   << ", ret=" << ret << ", status=" << status
+                   << ", elapsed_ms=" << elapsed_ms;
+    }
+
+    std::this_thread::sleep_for(
+        std::chrono::milliseconds(kMasterRunningPollIntervalMs));
+    elapsed_ms += kMasterRunningPollIntervalMs;
+  }
+
+  last_failed_api_ = "NM_GetMasterStatus";
+  LOG(ERROR) << "NeoMove master is not running, controller_index="
+             << controller_index_ << ", master_index=" << kMasterIndex
+             << ", ret=" << last_ret << ", status=" << last_status
+             << ", timeout_ms=" << kMasterRunningTimeoutMs;
+  if (last_ret != NM_RETURN_OK) {
+    return last_ret;
+  }
+  return NM_RETURN_ERROR_EBUS;
 }
 
 int NeoMoveMotionMgrContextImpl::LoadHomeConfig(
@@ -380,7 +430,9 @@ int NeoMoveMotionMgrContextImpl::Init(const char* path, size_t path_len,
   }
 
   // 连接设备前必须先选择控制器类型。
-  ret = NM_SetControllerType(controller_type_);
+  ret = neomove_sdk_guard::Call([&]() {
+    return NM_SetControllerType(controller_type_);
+  });
   if (ret != NM_RETURN_OK) {
     LOG(ERROR) << "NM_SetControllerType failed, ret=" << ret
                << ", controller_type=" << controller_type_;
@@ -393,7 +445,9 @@ int NeoMoveMotionMgrContextImpl::Init(const char* path, size_t path_len,
     // 这里的截断路径不会丢失合法配置。
     char ip[256]{};
     strncpy_s(ip, sizeof(ip), controller_ip_.c_str(), _TRUNCATE);
-    ret = NM_SetControllerIP(controller_index_, ip);
+    ret = neomove_sdk_guard::Call([&]() {
+      return NM_SetControllerIP(controller_index_, ip);
+    });
     if (ret != NM_RETURN_OK) {
       LOG(ERROR) << "NM_SetControllerIP failed, ret=" << ret
                  << ", controller_index=" << controller_index_;
@@ -404,7 +458,9 @@ int NeoMoveMotionMgrContextImpl::Init(const char* path, size_t path_len,
 
   // NM_Open 是真正连接配置控制器的步骤。成功后 initialized_ 置为 true，
   // Finalize() 负责用同一个 controller_index 调用 NM_Close。
-  ret = NM_Open(controller_index_);
+  ret = neomove_sdk_guard::Call([&]() {
+    return NM_Open(controller_index_);
+  });
   if (ret != NM_RETURN_OK  && ret != NM_RETURN_ERROR_ALREADYOPEN ) {
     LOG(ERROR) << "NM_Open failed, ret=" << ret
                << ", controller_index=" << controller_index_;
@@ -414,6 +470,18 @@ int NeoMoveMotionMgrContextImpl::Init(const char* path, size_t path_len,
 
   if (ret == NM_RETURN_ERROR_ALREADYOPEN) {
    LOG(INFO) << "NM_Open already open, controller_index=" << controller_index_;
+  }
+
+  ret = WaitForMasterRunning();
+  if (ret != NM_RETURN_OK) {
+    const int close_ret = neomove_sdk_guard::Call([&]() {
+      return NM_Close(controller_index_);
+    });
+    if (close_ret != NM_RETURN_OK) {
+      LOG(ERROR) << "NM_Close after master wait failure failed, ret="
+                 << close_ret << ", controller_index=" << controller_index_;
+    }
+    return ret;
   }
 
   initialized_ = true;
@@ -430,7 +498,9 @@ int NeoMoveMotionMgrContextImpl::Finalize() {
   // 关闭该上下文拥有的 SDK 连接。更上层的 manager 资源由
   // NeoMoveMotionMgr::ClearResources() 释放。
   LOG(INFO) << "NeoMoveMotionMgrContextImpl::Finalize";
-  int ret = NM_Close(controller_index_);
+  int ret = neomove_sdk_guard::Call([&]() {
+    return NM_Close(controller_index_);
+  });
   if (ret != NM_RETURN_OK) {
     LOG(ERROR) << "NM_Close failed, ret=" << ret;
   }

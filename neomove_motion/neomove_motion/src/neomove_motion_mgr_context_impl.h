@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <string>
 
 #include "NeoMove CPlusPlus.h"
@@ -40,6 +41,7 @@ public:
   int controller_index() const { return controller_index_; }
   NeoMoveHomeParamConfig GetHomeParamConfig(int axis_index) const;
   bool is_initialized() const { return initialized_; }
+  std::mutex& sdk_mutex() { return sdk_mutex_; }
   // 记录 Init() 中最近一次失败的配置步骤或 NeoMove SDK API 名称。
   // NeoMoveMotionMgr 会把它写入 GetError() 的 custom_data，便于定位失败点。
   const std::string& last_failed_api() const { return last_failed_api_; }
@@ -56,6 +58,7 @@ private:
   // 读取并校验按轴回零参数；未配置的轴继续由读取接口回退默认值。
   int LoadHomeConfig(const std::filesystem::path& config_file);
   static bool IsValidHomeType(int home_type);
+  int WaitForMasterRunning();
 
   // 传给 NM_Open/NM_Close 以及其他按索引访问控制器的 SDK API 的控制器编号。
   int controller_index_ = 0;
@@ -71,6 +74,7 @@ private:
   std::string controller_ip_ = "172.30.30.10";
   int controller_type_ = NM_CONTROLLERTYPE_E2_M100;
   std::map<int, NeoMoveHomeParamConfig> home_param_configs_;
+  std::mutex sdk_mutex_;
 };
 
 #endif  // NEOMOVE_MOTION_MGR_CONTEXT_IMPL_H_

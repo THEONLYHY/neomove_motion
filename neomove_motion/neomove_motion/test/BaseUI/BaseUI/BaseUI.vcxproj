@@ -56,11 +56,18 @@
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <NeoMoveMotionOutputDir>$(MSBuildProjectDirectory)\..\..\..\..\x64\$(Configuration)\motion\</NeoMoveMotionOutputDir>
+  </PropertyGroup>
   <Target Name="ValidateYottaPublicDir" BeforeTargets="PrepareForBuild">
     <Error Condition="'$(YottaPublicDir)'==''" Text="YottaPublicDir is not configured. Define YottaPublicDir in Microsoft.Cpp.$(Platform).user.props." />
     <Error Condition="!Exists('$(YottaPublicDir)include')" Text="YottaPublicDir include directory does not exist: $(YottaPublicDir)include" />
     <Error Condition="!Exists('$(YottaPublicDir)lib_2019')" Text="YottaPublicDir lib_2019 directory does not exist: $(YottaPublicDir)lib_2019" />
     <Error Condition="!Exists('$(YottaPublicDir)bin')" Text="YottaPublicDir bin directory does not exist: $(YottaPublicDir)bin" />
+  </Target>
+  <Target Name="ValidateLocalNeoMoveMotionRuntime" BeforeTargets="PostBuildEvent">
+    <Error Condition="!Exists('$(NeoMoveMotionOutputDir)neomove_motion.mot')" Text="Local neomove_motion.mot does not exist. Build neomove_motion first: $(NeoMoveMotionOutputDir)neomove_motion.mot" />
+    <Error Condition="!Exists('$(NeoMoveMotionOutputDir)NeoMove CPlusPlus.dll')" Text="Local NeoMove runtime DLLs are missing. Build neomove_motion first: $(NeoMoveMotionOutputDir)" />
   </Target>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutDir>$(MSBuildProjectDirectory)\..\x64\$(Configuration)\</OutDir>
@@ -96,7 +103,10 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(YottaPublicDir)bin\*.dll" "$(OutDir)"
-xcopy /E /I /Y "$(YottaPublicDir)bin\motion\*" "$(OutDir)motion\"
+if not exist "$(OutDir)motion\" mkdir "$(OutDir)motion\"
+copy /Y "$(NeoMoveMotionOutputDir)neomove_motion.mot" "$(OutDir)motion\"
+copy /Y "$(NeoMoveMotionOutputDir)*.dll" "$(OutDir)motion\"
+if exist "$(NeoMoveMotionOutputDir)neomove_motion.pdb" copy /Y "$(NeoMoveMotionOutputDir)neomove_motion.pdb" "$(OutDir)motion\"
 xcopy /E /I /Y "$(MSBuildProjectDirectory)\..\..\..\doc\config\BaseUI\*" "$(OutDir)config\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -116,7 +126,10 @@ xcopy /E /I /Y "$(MSBuildProjectDirectory)\..\..\..\doc\config\BaseUI\*" "$(OutD
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(YottaPublicDir)bin\*.dll" "$(OutDir)"
-xcopy /E /I /Y "$(YottaPublicDir)bin\motion\*" "$(OutDir)motion\"
+if not exist "$(OutDir)motion\" mkdir "$(OutDir)motion\"
+copy /Y "$(NeoMoveMotionOutputDir)neomove_motion.mot" "$(OutDir)motion\"
+copy /Y "$(NeoMoveMotionOutputDir)*.dll" "$(OutDir)motion\"
+if exist "$(NeoMoveMotionOutputDir)neomove_motion.pdb" copy /Y "$(NeoMoveMotionOutputDir)neomove_motion.pdb" "$(OutDir)motion\"
 xcopy /E /I /Y "$(MSBuildProjectDirectory)\..\..\..\doc\config\BaseUI\*" "$(OutDir)config\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -303,6 +316,14 @@ xcopy /E /I /Y "$(MSBuildProjectDirectory)\..\..\..\doc\config\BaseUI\*" "$(OutD
   <ItemGroup>
     <QtRcc Include="res\main_res.qrc" />
     <QtRcc Include="src\view\tools\multi_image_show_view\image_show_view\image_show_view.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\neomove_motion.vcxproj">
+      <Project>{d4e5f6a7-b8c9-4d0e-a1b2-c3d4e5f6a7b8}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="src\view\main_window\base_main_window.ui" />

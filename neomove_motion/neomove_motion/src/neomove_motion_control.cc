@@ -3,9 +3,31 @@
 
 #include <glog/glog_helper.h>
 
+#include <sstream>
+
 #include "neomove_motion_mgr_context_impl.h"
+#include "neomove_sdk_guard.h"
 
 using namespace yotta;
+
+namespace {
+
+std::string FormatLinearIntplCommand(Axis* axes[], double dest_pos[],
+                                     AccDecProfile* profiles[],
+                                     size_t array_count) {
+  std::ostringstream oss;
+  oss << "axis_count=" << array_count;
+  for (size_t i = 0; i < array_count; ++i) {
+    oss << ", item[" << i << "]={axis=" << axes[i]->id()
+        << ", dest=" << dest_pos[i]
+        << ", velocity=" << profiles[i]->velocity()
+        << ", acc=" << profiles[i]->acceleration()
+        << ", dec=" << profiles[i]->deceleration() << "}";
+  }
+  return oss.str();
+}
+
+}  // namespace
 
 NeoMoveMotionControl::NeoMoveMotionControl() {
   LOG(INFO) << "NeoMoveMotionControl constructed.";
@@ -78,11 +100,26 @@ int YOTTA_API_CALL NeoMoveMotionControl::AsyncLinearIntplPos(
   ClearError();
   LOG(INFO) << "AsyncLinearIntplPos called, axis count=" << array_count;
 
-  if (array_count == 0 || !axes || !profiles) {
+  if (array_count == 0 || !axes || !dest_pos || !profiles ||
+      array_count > 8) {
     LOG(ERROR) << "AsyncLinearIntplPos failed: invalid args.";
     SetError(MotionErrors::ParamInvalid, "AsyncLinearIntplPos 参数无效");
     return -1;
   }
+
+  for (size_t i = 0; i < array_count; ++i) {
+    if (!axes[i] || !profiles[i]) {
+      LOG(ERROR) << "AsyncLinearIntplPos failed: null item, index=" << i;
+      SetError(MotionErrors::ParamInvalid,
+               "AsyncLinearIntplPos invalid item",
+               "null_item_index=" + std::to_string(i));
+      return -1;
+    }
+  }
+
+  const std::string command_text =
+      FormatLinearIntplCommand(axes, dest_pos, profiles, array_count);
+  LOG(INFO) << "AsyncLinearIntplPos command, " << command_text;
 
   if (array_count == 1) {
     return axes[0]->AsyncMoveTo(dest_pos[0], profiles[0]);
@@ -99,14 +136,16 @@ int YOTTA_API_CALL NeoMoveMotionControl::AsyncLinearIntplPos(
     path_config.axisList[i] = static_cast<unsigned int>(axes[i]->id());
   }
 
-  int ret = NM_SetPathIntplLookaheadConfiguration(GetControllerIndex(), 0,
-                                                    path_config);
+  int ret = neomove_sdk_guard::Call([&]() {
+    return NM_SetPathIntplLookaheadConfiguration(GetControllerIndex(), 0,
+                                                 path_config);
+  });
   if (ret != NM_RETURN_OK) {
     LOG(ERROR) << "NM_SetPathIntplLookaheadConfiguration failed, ret=" << ret;
     SetError(MotionErrors::InterpolationFailed,
              "AsyncLinearIntplPos 配置失败",
              "neomove_api=NM_SetPathIntplLookaheadConfiguration, ret=" +
-                 ToHex(ret));
+                 ToHex(ret) + ", command=" + command_text);
     return ret;
   }
 
@@ -116,21 +155,27 @@ int YOTTA_API_CALL NeoMoveMotionControl::AsyncLinearIntplPos(
     point.position[i] = dest_pos[i];
   }
 
-  ret = NM_AddPathIntplLookahead(GetControllerIndex(), 0, 1, &point);
+  ret = neomove_sdk_guard::Call([&]() {
+    return NM_AddPathIntplLookahead(GetControllerIndex(), 0, 1, &point);
+  });
   if (ret != NM_RETURN_OK) {
     LOG(ERROR) << "NM_AddPathIntplLookahead failed, ret=" << ret;
     SetError(MotionErrors::InterpolationFailed,
              "AsyncLinearIntplPos 添加点失败",
-             "neomove_api=NM_AddPathIntplLookahead, ret=" + ToHex(ret));
+             "neomove_api=NM_AddPathIntplLookahead, ret=" + ToHex(ret) +
+                 ", command=" + command_text);
     return ret;
   }
 
-  ret = NM_Motion_PathIntplLookahead(GetControllerIndex(), 0);
+  ret = neomove_sdk_guard::Call([&]() {
+    return NM_Motion_PathIntplLookahead(GetControllerIndex(), 0);
+  });
   if (ret != NM_RETURN_OK) {
     LOG(ERROR) << "NM_Motion_PathIntplLookahead failed, ret=" << ret;
     SetError(MotionErrors::InterpolationFailed,
              "AsyncLinearIntplPos 启动失败",
-             "neomove_api=NM_Motion_PathIntplLookahead, ret=" + ToHex(ret));
+             "neomove_api=NM_Motion_PathIntplLookahead, ret=" + ToHex(ret) +
+                 ", command=" + command_text);
     return ret;
   }
 

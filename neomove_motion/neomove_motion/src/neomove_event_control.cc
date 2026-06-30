@@ -6,6 +6,7 @@
 #include <thread>
 
 #include "neomove_motion_mgr_context_impl.h"
+#include "neomove_sdk_guard.h"
 
 using namespace yotta;
 
@@ -59,9 +60,13 @@ int YOTTA_API_CALL NeoMoveEventControl::SyncTriggerCameraByEqualStep(
   // Use NeoMove line compare for equal-step trigger
   // The line compare generates trigger pulses at equal distance intervals
   for (size_t i = 0; i < io_count; ++i) {
-    NM_Trigger_SetLineCompareParam(GetControllerIndex(), 0, 0, 0, 0,
-                                    scan_start, scan_end, fabs(step));
-    NM_Trigger_EnableLineCompare(GetControllerIndex(), 0, 0, 0, 1);
+    neomove_sdk_guard::Call([&]() {
+      return NM_Trigger_SetLineCompareParam(
+          GetControllerIndex(), 0, 0, 0, 0, scan_start, scan_end, fabs(step));
+    });
+    neomove_sdk_guard::Call([&]() {
+      return NM_Trigger_EnableLineCompare(GetControllerIndex(), 0, 0, 0, 1);
+    });
   }
 
   // Move to scan start position
@@ -78,7 +83,9 @@ int YOTTA_API_CALL NeoMoveEventControl::SyncTriggerCameraByEqualStep(
 
   // Disable line compare
   for (size_t i = 0; i < io_count; ++i) {
-    NM_Trigger_EnableLineCompare(GetControllerIndex(), 0, 0, 0, 0);
+    neomove_sdk_guard::Call([&]() {
+      return NM_Trigger_EnableLineCompare(GetControllerIndex(), 0, 0, 0, 0);
+    });
   }
 
   // Return to start position
@@ -129,12 +136,16 @@ int YOTTA_API_CALL NeoMoveEventControl::SyncSoftwareTouchProbe(
     for (int t = 0; t < touch_count; ++t) {
       // Use both rising and falling edge latch modes
       for (int mode = 0; mode < 6; ++mode) {
-        int latch_ret = NM_SingleAxis_Get_LatchPosition(
-            GetControllerIndex(), axis->id(), mode, &latch_pos);
+        int latch_ret = neomove_sdk_guard::Call([&]() {
+          return NM_SingleAxis_Get_LatchPosition(
+              GetControllerIndex(), axis->id(), mode, &latch_pos);
+        });
         if (latch_ret == NM_RETURN_OK) {
           touch_probe_data_[i].push_back(latch_pos);
-          NM_SingleAxis_Clear_LatchPosition(
-              GetControllerIndex(), axis->id(), mode);
+          neomove_sdk_guard::Call([&]() {
+            return NM_SingleAxis_Clear_LatchPosition(
+                GetControllerIndex(), axis->id(), mode);
+          });
         }
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(5));

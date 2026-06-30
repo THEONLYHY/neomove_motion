@@ -4,6 +4,7 @@
 #include <common/encode_helper.h>
 #include <glog/glog_helper.h>
 
+#include <cmath>
 #include <memory>
 
 using namespace yotta;
@@ -108,16 +109,45 @@ int YOTTA_API_CALL NeoMoveMotionMgr::Finalize() {
 
 int YOTTA_API_CALL NeoMoveMotionMgr::SetAxisMultiplier(double multiplier) {
   ClearError();
+  std::unique_lock<std::shared_mutex> lock(mutex_);
+  if (!std::isfinite(multiplier) || multiplier <= 0.0) {
+    LOG(ERROR) << "SetAxisMultiplier failed: invalid multiplier="
+               << multiplier;
+    SetError(MotionErrors::ParamInvalid, "SetAxisMultiplier 倍率无效",
+             "axis_multiplier=" + std::to_string(multiplier));
+    return MotionErrors::ParamInvalid;
+  }
+  if (!axes_.empty()) {
+    if (multiplier != axis_multiplier_) {
+      LOG(ERROR) << "SetAxisMultiplier failed: axes already created"
+                 << ", old_multiplier=" << axis_multiplier_
+                 << ", new_multiplier=" << multiplier;
+      SetError(MotionErrors::ParamInvalid,
+               "SetAxisMultiplier cannot change after axis creation",
+               "old_axis_multiplier=" + std::to_string(axis_multiplier_) +
+                   ", new_axis_multiplier=" + std::to_string(multiplier));
+      return MotionErrors::ParamInvalid;
+    }
+    return 0;
+  }
   // 保存原始倍率值。Axis 对象会通过共享 MotionMgrContext 回调读取它并完成单位转换。
   axis_multiplier_ = multiplier;
   return 0;
 }
 
 Axis* YOTTA_API_CALL NeoMoveMotionMgr::GetAxis(int id) {
+  ClearError();
   std::unique_lock<std::shared_mutex> lock(mutex_);
   // 控制器打开后轴对象才有效；负数 id 不映射到硬件轴。
-  if (!initialized_ || id < 0) {
-    LOG(ERROR) << "GetAxis failed: not initialized or invalid id.";
+  if (!initialized_) {
+    LOG(ERROR) << "GetAxis failed: not initialized.";
+    SetError(MotionErrors::DeviceCreateFailed, "GetAxis 未初始化");
+    return nullptr;
+  }
+  if (id < 0) {
+    LOG(ERROR) << "GetAxis failed: invalid id=" << id;
+    SetError(MotionErrors::ParamInvalid, "GetAxis 轴号无效",
+             "axis=" + std::to_string(id));
     return nullptr;
   }
 
@@ -126,7 +156,8 @@ Axis* YOTTA_API_CALL NeoMoveMotionMgr::GetAxis(int id) {
     return it->second.get();
   }
 
-  // 懒加载：如果没有则创建
+  // 懒加载：如果没有则创建。通用 axis.json 软限位由上层 limit_motion 负责，
+  // 这里不把轴创建绑定到控制器软限位下发。
   auto new_axis = std::make_unique<NeoMoveAxis>(id);
   new_axis->SetIoMonitorThread(io_monitor_thread_);
   auto* axis = new_axis.get();
