@@ -5,7 +5,7 @@
 	"controller_ip": "172.30.30.10",
     "home": {
       "0": {
-        "home_type": 35,
+        "home_type": 21,
         "velocity_fast": 10.0,
         "velocity_slow": 1.0,
         "acc": 100.0,

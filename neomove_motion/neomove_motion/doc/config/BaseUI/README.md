@@ -3,9 +3,12 @@
 This config package is copied to `<BaseUI output>/config` by the BaseUI
 post-build step.
 
-The default axis and IO modules are `virtual_motion`, so BaseUI can start on a
-local development machine without a NeoMove controller.
+This package is currently configured for real NeoMove hardware. Both
+`axis.json` and `io.json` must keep `default_module` set to `neomove_motion`,
+and `neomove.json` must match the site controller and axis parameters before
+hardware operations.
 
-For real equipment, replace `axis.json` and `io.json` module settings with the
-site-specific motion module and verify `neomove.json` before running hardware
-operations.
+Use `test/BaseUI/scripts/verify_real_neomove_runtime_contract.ps1` to verify the
+post-build runtime directory. The existing
+`test/BaseUI/scripts/verify_motion_runtime_contract.ps1` is the local virtual
+machine contract and must not be used to approve real equipment configuration.

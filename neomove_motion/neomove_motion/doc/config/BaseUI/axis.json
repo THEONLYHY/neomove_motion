@@ -17,7 +17,7 @@
       },
       "ids": "平台X轴",
       "index": 0,
-      "module": "virtual_motion",
+      "module": "neomove_motion",
       "region": [],
       "speed": [
         {
@@ -74,7 +74,7 @@
       },
       "ids": "平台Y轴",
       "index": 1,
-      "module": "virtual_motion",
+      "module": "neomove_motion",
       "region": [],
       "speed": [
         {
@@ -131,7 +131,7 @@
       },
       "ids": "平台Z轴",
       "index": 2,
-      "module": "virtual_motion",
+      "module": "neomove_motion",
       "region": [
         {
           "ids": "检测区",
@@ -206,7 +206,7 @@
       },
       "ids": "平台R轴",
       "index": 3,
-      "module": "virtual_motion",
+      "module": "neomove_motion",
       "region": [],
       "speed": [
         {
@@ -248,5 +248,5 @@
     }
     
   ],
-  "default_module": "virtual_motion"
+  "default_module": "neomove_motion"
 }

@@ -1,6 +1,6 @@
 {
   "analog_io": [],
-  "default_module": "virtual_motion",
+  "default_module": "neomove_motion",
   "io_axis": [
     {
       "axis_ids": "平台R轴",
