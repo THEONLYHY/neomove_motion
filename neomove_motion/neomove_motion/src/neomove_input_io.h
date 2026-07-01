@@ -33,6 +33,9 @@ class NeoMoveInputIo : public yotta::InputIO {
 
   void SetIoMonitorThread(std::weak_ptr<NeoMoveIoMonitorThread> monitor);
 
+  // 插件内部接口：由 NeoMoveIoMonitorThread 调用更新缓存
+  void UpdateCachedValue(unsigned char value);
+
   int addr() const { return addr_; }
   int bit() const { return bit_; }
 
@@ -43,6 +46,10 @@ class NeoMoveInputIo : public yotta::InputIO {
   int bit_;
   std::weak_ptr<NeoMoveIoMonitorThread> io_monitor_thread_;
   yotta::IOWatcherPtr io_watcher_ptr_;
+
+  // IO 值缓存
+  std::atomic<unsigned char> cached_value_{0};
+  std::atomic<bool> cache_valid_{false};
 
   mutable ExecutionErrorPtr last_error_;
   mutable std::mutex error_mutex_;

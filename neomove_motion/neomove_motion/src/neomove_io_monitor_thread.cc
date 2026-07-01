@@ -196,6 +196,12 @@ void NeoMoveIoMonitorThread::MonitorAxis() {
     });
     if (ret != NM_RETURN_OK) continue;
 
+    // 更新轴对象内部缓存
+    if (entry.second) {
+      entry.second->UpdateCachedStatus(axis_status);
+    }
+
+    // 通知 watcher（如果有）
     bool new_alarm = axis_status.ampAlarm != 0;
     auto alarm_it = last_axis_alarm_state_.find(axis_id);
     if (alarm_it != last_axis_alarm_state_.end()) {

@@ -66,6 +66,11 @@ public:
 
   void SetIoMonitorThread(std::weak_ptr<NeoMoveIoMonitorThread> monitor);
 
+  // 插件内部接口：由 NeoMoveIoMonitorThread 调用更新缓存
+  void UpdateCachedStatus(const NM_AXISSTATUS& status);
+  // 读取缓存状态，失败时返回 false
+  bool ReadCachedStatus(NM_AXISSTATUS* status) const;
+
 private:
     // 获取控制器编号
   int GetControllerIndex();
@@ -80,6 +85,21 @@ private:
   std::atomic<int> last_move_direction_{0}; // +1=正向, -1=负向, 0=未知
   Watcher* axis_watcher_ = nullptr; // 轴状态回调
   std::weak_ptr<NeoMoveIoMonitorThread> io_monitor_thread_; // 监控线程弱引用
+
+  // 状态缓存：由 NeoMoveIoMonitorThread 独占更新
+  struct CachedStatus {
+    NM_AXISSTATUS axis_status{};
+    std::atomic<bool> valid{false};
+    std::chrono::steady_clock::time_point last_update;
+  };
+  CachedStatus cached_status_;
+  mutable std::mutex cache_mutex_; // 保护 cached_status_ 读写
+
+  // Wait() 用的条件变量
+  enum class WaitResult { kPending = 0, kCompleted = 1, kError = -1 };
+  std::mutex wait_mutex_;
+  std::condition_variable wait_cv_;
+  std::atomic<WaitResult> wait_result_{WaitResult::kPending};
 
   mutable ExecutionErrorPtr last_error_;
   mutable std::mutex error_mutex_;

@@ -62,6 +62,68 @@ bool IsAtNegativeLimit(const NM_AXISSTATUS& axis_status) {
 
 NeoMoveAxis::NeoMoveAxis(int axis_index) : axis_index_(axis_index) {
   LOG(INFO) << "NeoMoveAxis constructed, axis_index=" << axis_index_;
+  // 初始化缓存为无效状态
+  cached_status_.valid = false;
+}
+
+void NeoMoveAxis::UpdateCachedStatus(const NM_AXISSTATUS& status) {
+  {
+    std::lock_guard<std::mutex> lock(cache_mutex_);
+    cached_status_.axis_status = status;
+    cached_status_.last_update = std::chrono::steady_clock::now();
+    cached_status_.valid = true;
+  }
+
+  // 检查 Wait() 唤醒条件
+  bool should_notify = false;
+  WaitResult result = WaitResult::kPending;
+
+  if (status.motionComplete && status.inPos) {
+    result = WaitResult::kCompleted;
+    should_notify = true;
+  } else if (HasAxisHardFault(status)) {
+    result = WaitResult::kError;
+    should_notify = true;
+    SetError(MotionErrors::MoveFailed, "Wait 检测到轴硬件报警",
+             "axis=" + std::to_string(axis_index_));
+  } else if (!status.servoOn) {
+    result = WaitResult::kError;
+    should_notify = true;
+    SetError(MotionErrors::MoveFailed, "Wait 检测到伺服未使能",
+             "axis=" + std::to_string(axis_index_));
+  } else {
+    // 限位方向感知
+    if (IsAtPositiveLimit(status) && last_move_direction_ > 0) {
+      result = WaitResult::kError;
+      should_notify = true;
+      SetError(MotionErrors::MoveFailed, "Wait 检测到正限位",
+               "axis=" + std::to_string(axis_index_));
+    } else if (IsAtNegativeLimit(status) && last_move_direction_ < 0) {
+      result = WaitResult::kError;
+      should_notify = true;
+      SetError(MotionErrors::MoveFailed, "Wait 检测到负限位",
+               "axis=" + std::to_string(axis_index_));
+    }
+  }
+
+  if (should_notify) {
+    std::lock_guard<std::mutex> lk(wait_mutex_);
+    wait_result_ = result;
+    wait_cv_.notify_all();
+  }
+}
+
+bool NeoMoveAxis::ReadCachedStatus(NM_AXISSTATUS* status) const {
+  std::lock_guard<std::mutex> lock(cache_mutex_);
+  if (!cached_status_.valid) {
+    LOG(WARNING) << "NeoMoveAxis::ReadCachedStatus: cache not ready, axis="
+                 << axis_index_;
+    return false;
+  }
+  if (status) {
+    *status = cached_status_.axis_status;
+  }
+  return true;
 }
 
 int NeoMoveAxis::GetControllerIndex() {
@@ -92,13 +154,9 @@ int YOTTA_API_CALL NeoMoveAxis::state(AxisState* state) {
   }
 
   NM_AXISSTATUS axis_status{};
-  int ret = neomove_sdk_guard::Call([&]() {
-    return NM_GetAxisStatus(GetControllerIndex(), axis_index_, &axis_status);
-  });
-  if (ret != NM_RETURN_OK) {
-    SetError(MotionErrors::MoveFailed, "获取轴状态失败",
-             "neomove_api=NM_GetAxisStatus, ret=" + ToHex(ret));
-    return ret;
+  if (!ReadCachedStatus(&axis_status)) {
+    SetError(MotionErrors::MoveFailed, "获取轴状态失败", "cache_not_ready");
+    return -1;
   }
 
   *state = axis_status.servoOn ? AxisState::kServoOn : AxisState::kServoOff;
@@ -114,13 +172,9 @@ int YOTTA_API_CALL NeoMoveAxis::home_state(AxisHomeState* state) {
   }
 
   NM_AXISSTATUS axis_status{};
-  int ret = neomove_sdk_guard::Call([&]() {
-    return NM_GetAxisStatus(GetControllerIndex(), axis_index_, &axis_status);
-  });
-  if (ret != NM_RETURN_OK) {
-    SetError(MotionErrors::MoveFailed, "获取轴状态失败",
-             "neomove_api=NM_GetAxisStatus, ret=" + ToHex(ret));
-    return ret;
+  if (!ReadCachedStatus(&axis_status)) {
+    SetError(MotionErrors::MoveFailed, "获取轴状态失败", "cache_not_ready");
+    return -1;
   }
 
   *state = axis_status.homeDone ? AxisHomeState::kHomeOn : AxisHomeState::kHomeOff;
@@ -136,14 +190,11 @@ int YOTTA_API_CALL NeoMoveAxis::operation_state(AxisOperationState* operation_st
   }
 
   NM_AXISSTATUS axis_status{};
-  int ret = neomove_sdk_guard::Call([&]() {
-    return NM_GetAxisStatus(GetControllerIndex(), axis_index_, &axis_status);
-  });
-  if (ret != NM_RETURN_OK) {
-    SetError(MotionErrors::MoveFailed, "获取轴状态失败",
-             "neomove_api=NM_GetAxisStatus, ret=" + ToHex(ret));
-    return ret;
+  if (!ReadCachedStatus(&axis_status)) {
+    SetError(MotionErrors::MoveFailed, "获取轴状态失败", "cache_not_ready");
+    return -1;
   }
+
   // 所有未完成的运动都归成了kPos，neomove中没有相应opstate
   // 无法可靠区分 Jog、Pos、Stop、插补等意图
   if (axis_status.homing) {
@@ -175,6 +226,7 @@ int YOTTA_API_CALL NeoMoveAxis::SetServoOn() {
     return NM_GetAxisStatus(GetControllerIndex(), axis_index_, &axis_status);
   });
   if (status_ret == NM_RETURN_OK) {
+    UpdateCachedStatus(axis_status);  // 同步缓存
     LOG(INFO) << "NeoMoveAxis::SetServoOn status, axis=" << axis_index_
               << ", " << FormatAxisStatus(axis_status, GetMultiplier());
   } else {
@@ -364,17 +416,14 @@ int YOTTA_API_CALL NeoMoveAxis::GetActualPosition(double* position) {
   }
 
   NM_AXISSTATUS axis_status{};
-  int ret = neomove_sdk_guard::Call([&]() {
-    return NM_GetAxisStatus(GetControllerIndex(), axis_index_, &axis_status);
-  });
-  if (ret == 0) {
-    double multiplier = NormalizeReadbackMultiplier(GetMultiplier());
-    *position = axis_status.actualPos / multiplier;
-  } else {
-    SetError(MotionErrors::MoveFailed, "GetActualPosition 调用失败",
-             "neomove_api=NM_GetAxisStatus, ret=" + ToHex(ret));
+  if (!ReadCachedStatus(&axis_status)) {
+    SetError(MotionErrors::MoveFailed, "GetActualPosition 失败", "cache_not_ready");
+    return -1;
   }
-  return ret;
+
+  double multiplier = NormalizeReadbackMultiplier(GetMultiplier());
+  *position = axis_status.actualPos / multiplier;
+  return 0;
 }
 
 int YOTTA_API_CALL NeoMoveAxis::GetActualVelocity(double* velocity) {
@@ -385,17 +434,14 @@ int YOTTA_API_CALL NeoMoveAxis::GetActualVelocity(double* velocity) {
   }
 
   NM_AXISSTATUS axis_status{};
-  int ret = neomove_sdk_guard::Call([&]() {
-    return NM_GetAxisStatus(GetControllerIndex(), axis_index_, &axis_status);
-  });
-  if (ret == 0) {
-    double multiplier = NormalizeReadbackMultiplier(GetMultiplier());
-    *velocity = axis_status.actualVelocity / multiplier;
-  } else {
-    SetError(MotionErrors::MoveFailed, "GetActualVelocity 调用失败",
-             "neomove_api=NM_GetAxisStatus, ret=" + ToHex(ret));
+  if (!ReadCachedStatus(&axis_status)) {
+    SetError(MotionErrors::MoveFailed, "GetActualVelocity 失败", "cache_not_ready");
+    return -1;
   }
-  return ret;
+
+  double multiplier = NormalizeReadbackMultiplier(GetMultiplier());
+  *velocity = axis_status.actualVelocity / multiplier;
+  return 0;
 }
 
 int YOTTA_API_CALL NeoMoveAxis::GetTargetPosition(double* target_position) {
@@ -406,17 +452,14 @@ int YOTTA_API_CALL NeoMoveAxis::GetTargetPosition(double* target_position) {
   }
 
   NM_AXISSTATUS axis_status{};
-  int ret = neomove_sdk_guard::Call([&]() {
-    return NM_GetAxisStatus(GetControllerIndex(), axis_index_, &axis_status);
-  });
-  if (ret == 0) {
-    double multiplier = NormalizeReadbackMultiplier(GetMultiplier());
-    *target_position = axis_status.posCmd / multiplier;
-  } else {
-    SetError(MotionErrors::MoveFailed, "GetTargetPosition 调用失败",
-             "neomove_api=NM_GetAxisStatus, ret=" + ToHex(ret));
+  if (!ReadCachedStatus(&axis_status)) {
+    SetError(MotionErrors::MoveFailed, "GetTargetPosition 失败", "cache_not_ready");
+    return -1;
   }
-  return ret;
+
+  double multiplier = NormalizeReadbackMultiplier(GetMultiplier());
+  *target_position = axis_status.posCmd / multiplier;
+  return 0;
 }
 
 int YOTTA_API_CALL NeoMoveAxis::AsyncMoveTo(double dest_pos,
@@ -427,12 +470,9 @@ int YOTTA_API_CALL NeoMoveAxis::AsyncMoveTo(double dest_pos,
     return 1;
   }
 
-  // 预检限位：读取当前状态，拒绝朝已触发限位方向的运动
+  // 预检限位：读取缓存状态，拒绝朝已触发限位方向的运动
   NM_AXISSTATUS cur_status{};
-  int status_ret = neomove_sdk_guard::Call([&]() {
-    return NM_GetAxisStatus(GetControllerIndex(), axis_index_, &cur_status);
-  });
-  if (status_ret == NM_RETURN_OK) {
+  if (ReadCachedStatus(&cur_status)) {
     double multiplier_check = NormalizeReadbackMultiplier(GetMultiplier());
     double cur_pos = cur_status.actualPos / multiplier_check;
     bool going_positive = dest_pos > cur_pos;
@@ -489,75 +529,27 @@ int YOTTA_API_CALL NeoMoveAxis::Wait() {
   ClearError();
   LOG(INFO) << "NeoMoveAxis::Wait, axis=" << axis_index_;
 
-  NM_AXISSTATUS axis_status{};
-  int timeout = 60000;
-  int elapsed = 0;
-  const int poll_interval_ms = 20;
-  const double multiplier = GetMultiplier();
+  std::unique_lock<std::mutex> lk(wait_mutex_);
+  wait_result_ = WaitResult::kPending;
 
-  while (elapsed < timeout) {
-    int ret = neomove_sdk_guard::Call([&]() {
-      return NM_GetAxisStatus(GetControllerIndex(), axis_index_, &axis_status);
-    });
-    if (ret != 0) {
-      SetError(MotionErrors::MoveFailed, "Wait 获取状态失败",
-               "neomove_api=NM_GetAxisStatus, ret=" + ToHex(ret));
-      LOG(ERROR) << "NeoMoveAxis::Wait status read failed, axis=" << axis_index_
-                 << ", ret=" << ToHex(ret);
-      return ret;
-    }
-    if (elapsed == 0 || elapsed % 1000 == 0) {
-      LOG(INFO) << "NeoMoveAxis::Wait status, axis=" << axis_index_
-                << ", elapsed_ms=" << elapsed << ", "
-                << FormatAxisStatus(axis_status, multiplier);
-    }
-    if (HasAxisHardFault(axis_status)) {
-      const std::string status_text = FormatAxisStatus(axis_status, multiplier);
-      SetError(MotionErrors::MoveFailed, "Wait 检测到轴硬件报警",
-               "neomove_api=NM_GetAxisStatus, " + status_text);
-      LOG(ERROR) << "NeoMoveAxis::Wait hard fault, axis=" << axis_index_
-                 << ", elapsed_ms=" << elapsed << ", " << status_text;
-      return -1;
-    }
-    // 限位方向感知：只有朝触发限位方向运动时才中止
-    if (IsAtPositiveLimit(axis_status) && last_move_direction_ > 0) {
-      const std::string status_text = FormatAxisStatus(axis_status, multiplier);
-      SetError(MotionErrors::MoveFailed, "Wait 检测到正限位",
-               "neomove_api=NM_GetAxisStatus, " + status_text);
-      LOG(WARNING) << "NeoMoveAxis::Wait positive limit, axis=" << axis_index_
-                   << ", elapsed_ms=" << elapsed << ", " << status_text;
-      return -1;
-    }
-    if (IsAtNegativeLimit(axis_status) && last_move_direction_ < 0) {
-      const std::string status_text = FormatAxisStatus(axis_status, multiplier);
-      SetError(MotionErrors::MoveFailed, "Wait 检测到负限位",
-               "neomove_api=NM_GetAxisStatus, " + status_text);
-      LOG(WARNING) << "NeoMoveAxis::Wait negative limit, axis=" << axis_index_
-                   << ", elapsed_ms=" << elapsed << ", " << status_text;
-      return -1;
-    }
-    if (!axis_status.servoOn) {
-      const std::string status_text = FormatAxisStatus(axis_status, multiplier);
-      SetError(MotionErrors::MoveFailed, "Wait 检测到伺服未使能",
-               "neomove_api=NM_GetAxisStatus, " + status_text);
-      LOG(ERROR) << "NeoMoveAxis::Wait servo off, axis=" << axis_index_
-                 << ", elapsed_ms=" << elapsed << ", " << status_text;
-      return -1;
-    }
-    if (axis_status.motionComplete && axis_status.inPos) {
-      LOG(INFO) << "NeoMoveAxis::Wait completed, axis=" << axis_index_
-                << ", elapsed_ms=" << elapsed << ", "
-                << FormatAxisStatus(axis_status, multiplier);
-      return 0;
-    }
-    std::this_thread::sleep_for(std::chrono::milliseconds(poll_interval_ms));
-    elapsed += poll_interval_ms;
+  bool ok = wait_cv_.wait_for(lk, std::chrono::milliseconds(60000), [this] {
+    return wait_result_ != WaitResult::kPending;
+  });
+
+  if (!ok) {
+    SetError(MotionErrors::MoveFailed, "Wait 超时");
+    LOG(ERROR) << "NeoMoveAxis::Wait timeout, axis=" << axis_index_;
+    return -1;
   }
 
-  SetError(MotionErrors::MoveFailed, "Wait 超时");
-  LOG(ERROR) << "NeoMoveAxis::Wait timeout, axis=" << axis_index_
-             << ", " << FormatAxisStatus(axis_status, multiplier);
-  return -1;
+  // 错误已由 UpdateCachedStatus() 在唤醒前设置
+  if (wait_result_ == WaitResult::kCompleted) {
+    LOG(INFO) << "NeoMoveAxis::Wait completed, axis=" << axis_index_;
+    return 0;
+  } else {
+    LOG(ERROR) << "NeoMoveAxis::Wait error, axis=" << axis_index_;
+    return -1;
+  }
 }
 
 int YOTTA_API_CALL NeoMoveAxis::StartJog(yotta::AccDecProfile* profile,
@@ -570,10 +562,7 @@ int YOTTA_API_CALL NeoMoveAxis::StartJog(yotta::AccDecProfile* profile,
 
   // 预检限位：拒绝朝已触发限位方向的 Jog
   NM_AXISSTATUS cur_status{};
-  int status_ret = neomove_sdk_guard::Call([&]() {
-    return NM_GetAxisStatus(GetControllerIndex(), axis_index_, &cur_status);
-  });
-  if (status_ret == NM_RETURN_OK) {
+  if (ReadCachedStatus(&cur_status)) {
     if (positive && IsAtPositiveLimit(cur_status)) {
       SetError(MotionErrors::JogFailed, "StartJog 被正限位阻止", "direction=positive");
       LOG(WARNING) << "NeoMoveAxis::StartJog blocked by positive limit, axis=" << axis_index_;
